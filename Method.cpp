@@ -8,7 +8,7 @@
 
 Method::Method(QDataStream &data, ConstantPool const &cp)
 {
-    data >> d.flags;
+    data >> d.accessFlags;
     data >> d.nameIndex;
     data >> d.descriptorIndex;
 
@@ -43,6 +43,20 @@ Method::Method(QDataStream &data, ConstantPool const &cp)
     d.attributes = Attributes(data, cp);
 }
 
+quint16 Method::accessFlags() const
+{
+    return d.accessFlags;
+}
+
+quint16 Method::nameIndex() const
+{
+    return d.nameIndex;
+}
+
+quint16 Method::descriptorIndex() const
+{
+    return d.descriptorIndex;
+}
 
 QString Method::name() const
 {
@@ -99,15 +113,15 @@ QList<ExceptionHandler> Method::exceptionHandlers() const
     return code->exceptionHandlers();
 }
 
-bool Method::isPublic() const { return d.flags & ACC_PUBLIC; }
-bool Method::isPrivate() const { return d.flags & ACC_PRIVATE; }
-bool Method::isProtected() const { return d.flags & ACC_PROTECTED; }
-bool Method::isStatic() const { return d.flags & ACC_STATIC; }
-bool Method::isFinal() const { return d.flags & ACC_FINAL; }
-bool Method::isSynchronized() const { return d.flags & ACC_SYNCHRONIZED; }
-bool Method::isNative() const { return d.flags & ACC_NATIVE; }
-bool Method::isAbstract() const { return d.flags & ACC_ABSTRACT; }
-bool Method::isStrictfp() const { return d.flags & ACC_STRICTFP; }
+bool Method::isPublic() const { return d.accessFlags & ACC_PUBLIC; }
+bool Method::isPrivate() const { return d.accessFlags & ACC_PRIVATE; }
+bool Method::isProtected() const { return d.accessFlags & ACC_PROTECTED; }
+bool Method::isStatic() const { return d.accessFlags & ACC_STATIC; }
+bool Method::isFinal() const { return d.accessFlags & ACC_FINAL; }
+bool Method::isSynchronized() const { return d.accessFlags & ACC_SYNCHRONIZED; }
+bool Method::isNative() const { return d.accessFlags & ACC_NATIVE; }
+bool Method::isAbstract() const { return d.accessFlags & ACC_ABSTRACT; }
+bool Method::isStrictfp() const { return d.accessFlags & ACC_STRICTFP; }
 
 QString Method::flagsString() const
 {

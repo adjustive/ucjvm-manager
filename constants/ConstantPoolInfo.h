@@ -1,7 +1,19 @@
 #ifndef CONSTANTPOOLINFO_H
 #define CONSTANTPOOLINFO_H
 
-class QDebug;
+class ConstantPoolInfo_Class;
+class ConstantPoolInfo_Double;
+class ConstantPoolInfo_Fieldref;
+class ConstantPoolInfo_Float;
+class ConstantPoolInfo_Integer;
+class ConstantPoolInfo_InterfaceMethodref;
+class ConstantPoolInfo_Long;
+class ConstantPoolInfo_Methodref;
+class ConstantPoolInfo_NameAndType;
+class ConstantPoolInfo_String;
+class ConstantPoolInfo_Utf8;
+
+class ConstantPoolVisitor;
 
 class ConstantPoolInfo
 {
@@ -27,18 +39,7 @@ public:
     virtual ~ConstantPoolInfo();
 
     virtual void print() const = 0;
+    virtual void accept(ConstantPoolVisitor &v) const = 0;
 };
-
-class ConstantPoolInfo_Class;
-class ConstantPoolInfo_Double;
-class ConstantPoolInfo_Fieldref;
-class ConstantPoolInfo_Float;
-class ConstantPoolInfo_Integer;
-class ConstantPoolInfo_InterfaceMethodref;
-class ConstantPoolInfo_Long;
-class ConstantPoolInfo_Methodref;
-class ConstantPoolInfo_NameAndType;
-class ConstantPoolInfo_String;
-class ConstantPoolInfo_Utf8;
 
 #endif // CONSTANTPOOLINFO_H

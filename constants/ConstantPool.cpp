@@ -21,7 +21,7 @@ ConstantPool::ConstantPool()
 {
 }
 
-void ConstantPool::parse(QDataStream &data)
+ConstantPool::ConstantPool(QDataStream &data)
 {
     quint16 constantPoolSize;
     data >> constantPoolSize;
@@ -83,5 +83,11 @@ void ConstantPool::parse(QDataStream &data)
 void ConstantPool::add(ConstantPoolInfo *constant)
 {
 //    constant->print();
-    constants.append(QSharedPointer<ConstantPoolInfo>(constant));
+    constantList.append(QSharedPointer<ConstantPoolInfo>(constant));
+}
+
+void ConstantPool::accept(ConstantPoolVisitor &v) const
+{
+    foreach (QSharedPointer<ConstantPoolInfo> constant, constantList)
+        constant->accept(v);
 }

@@ -5,15 +5,23 @@
 
 #include "ConstantPoolInfo.h"
 
+struct ConstantPoolInfo_DoublePrivate
+{
+    double value;
+};
+
 class ConstantPoolInfo_Double : public ConstantPoolInfo
 {
 public:
     ConstantPoolInfo_Double(QDataStream &data);
 
+    double value() const;
+
     void print() const;
+	void accept(ConstantPoolVisitor &v) const;
 
 private:
-    double value;
+    ConstantPoolInfo_DoublePrivate d;
 };
 
 #endif // CONSTANTPOOLINFO_DOUBLE_H

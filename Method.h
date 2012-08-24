@@ -10,7 +10,7 @@
 
 struct MethodPrivate
 {
-    quint16 flags;
+    quint16 accessFlags;
     quint16 nameIndex;
     quint16 descriptorIndex;
 
@@ -40,6 +40,10 @@ public:
 
 public:
     explicit Method(QDataStream &data, ConstantPool const &cp);
+
+    quint16 accessFlags() const;
+    quint16 nameIndex() const;
+    quint16 descriptorIndex() const;
 
     QString name() const;
     QString descriptor() const;

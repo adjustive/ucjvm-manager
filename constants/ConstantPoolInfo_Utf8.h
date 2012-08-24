@@ -16,9 +16,10 @@ public:
     ConstantPoolInfo_Utf8(QDataStream &data);
     ConstantPoolInfo_Utf8(QString string);
 
-    void print() const;
-
     QString string() const;
+
+    void print() const;
+	void accept(ConstantPoolVisitor &v) const;
 
 private:
     ConstantPoolInfo_Utf8Private d;

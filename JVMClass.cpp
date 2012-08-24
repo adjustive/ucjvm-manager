@@ -59,7 +59,7 @@ JVMClass::JVMClass(QDataStream &data)
     data >> d->minorVersion;
     data >> d->majorVersion;
 
-    d->constantPool.parse(data);
+    d->constantPool = ConstantPool(data);
 
     data >> d->accessFlags;
     data >> d->thisClass;

@@ -11,6 +11,7 @@ public:
     ConstantPoolInfo_InterfaceMethodref(QDataStream &data);
 
     void print() const;
+	void accept(ConstantPoolVisitor &v) const;
 };
 
 #endif // CONSTANTPOOLINFO_INTERFACEMETHODREF_H

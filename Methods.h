@@ -5,6 +5,11 @@
 
 #include "Method.h"
 
+struct MethodsPrivate
+{
+    QList<Method> methods;
+};
+
 class Methods
 {
 public:
@@ -13,9 +18,10 @@ public:
 
     quint16 count() const;
     Method const &get(int index) const;
+    QList<Method> methods() const;
 
 private:
-    QList<Method> methods;
+    MethodsPrivate d;
 };
 
 #endif // METHODS_H

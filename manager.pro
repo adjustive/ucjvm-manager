@@ -9,7 +9,7 @@ QT       += core gui xml
 TARGET = manager
 TEMPLATE = app
 
-INCLUDEPATH += constants attributes
+INCLUDEPATH += attributes constants struct
 
 SOURCES += main.cpp\
         MainWindow.cpp \
@@ -58,7 +58,32 @@ SOURCES += main.cpp\
     JavaName.cpp \
     MethodsModel.cpp \
     MethodsView.cpp \
-    Linker.cpp
+    Linker.cpp \
+    struct/Struct_ClassTable.cpp \
+    struct/Struct_Class.cpp \
+    struct/Struct_CP.cpp \
+    struct/Struct_CP_Class.cpp \
+    struct/Struct_CP_Double.cpp \
+    struct/Struct_CP_Field.cpp \
+    struct/Struct_CP_Float.cpp \
+    struct/Struct_CP_Integer.cpp \
+    struct/Struct_CP_Long.cpp \
+    struct/Struct_CP_Method.cpp \
+    struct/Struct_CP_Name.cpp \
+    struct/Struct_CP_String.cpp \
+    struct/Struct_CP_Table.cpp \
+    struct/Struct_CP_UTF8.cpp \
+    struct/Struct_Exception_Handler_Table.cpp \
+    struct/Struct_Exception_Handler.cpp \
+    struct/Struct_Exceptions.cpp \
+    struct/Struct_Field.cpp \
+    struct/Struct_Field_Table.cpp \
+    struct/Struct_Method.cpp \
+    struct/Struct_Method_Table.cpp \
+    constants/ConstantPoolVisitor.cpp \
+    struct/Struct.cpp \
+    struct/DataWriter.cpp \
+    struct/DryRunWriter.cpp
 
 HEADERS  += MainWindow.h \
     JVMConfig.h \
@@ -106,19 +131,44 @@ HEADERS  += MainWindow.h \
     JavaName.h \
     MethodsModel.h \
     MethodsView.h \
-    Linker.h
+    Linker.h \
+    struct/Struct_ClassTable.h \
+    struct/Struct_Class.h \
+    struct/Struct_CP.h \
+    struct/Struct_CP_Class.h \
+    struct/Struct_CP_Double.h \
+    struct/Struct_CP_Field.h \
+    struct/Struct_CP_Float.h \
+    struct/Struct_CP_Integer.h \
+    struct/Struct_CP_Long.h \
+    struct/Struct_CP_Method.h \
+    struct/Struct_CP_Name.h \
+    struct/Struct_CP_String.h \
+    struct/Struct_CP_Table.h \
+    struct/Struct_CP_UTF8.h \
+    struct/Struct_Exception_Handler_Table.h \
+    struct/Struct_Exception_Handler.h \
+    struct/Struct_Exceptions.h \
+    struct/Struct_Field.h \
+    struct/Struct_Field_Table.h \
+    struct/Struct_Method.h \
+    struct/Struct_Method_Table.h \
+    constants/ConstantPoolVisitor.h \
+    struct/Struct.h \
+    struct/DataWriter.h \
+    struct/DryRunWriter.h
 
 FORMS    += MainWindow.ui \
     FieldsView.ui \
     MethodsView.ui
 
 OTHER_FILES += \
-    resources/jvmconfig/terminator V1.0d.cfg \
-    resources/jvmconfig/Terminator.cfg \
-    resources/jvmconfig/Spielbrett V1.1.cfg \
-    resources/jvmconfig/Spielbrett V1.0d.cfg \
-    resources/jvmconfig/LED Cube2.cfg \
-    resources/jvmconfig/LedCube.cfg
+    data/jvmconfig/terminator V1.0d.cfg \
+    data/jvmconfig/Terminator.cfg \
+    data/jvmconfig/Spielbrett V1.1.cfg \
+    data/jvmconfig/Spielbrett V1.0d.cfg \
+    data/jvmconfig/LED Cube2.cfg \
+    data/jvmconfig/LedCube.cfg
 
 RESOURCES += \
     manager.qrc

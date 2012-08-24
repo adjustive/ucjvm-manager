@@ -12,15 +12,15 @@ class ConstantPool
 {
 public:
     ConstantPool();
-
-    void parse(QDataStream &data);
+    ConstantPool(QDataStream &data);
 
     void add(ConstantPoolInfo *constant);
+    void accept(ConstantPoolVisitor &v) const;
 
     template<typename T>
     QSharedPointer<T> get(int index) const
     {
-        QSharedPointer<ConstantPoolInfo> constant = constants[index - 1];
+        QSharedPointer<ConstantPoolInfo> constant = constantList[index - 1];
         return constant.dynamicCast<T>();
     }
 
@@ -28,7 +28,7 @@ public:
     QList<QSharedPointer<T> > findAll() const
     {
         QList<QSharedPointer<T> > found;
-        foreach (QSharedPointer<ConstantPoolInfo> constant, constants)
+        foreach (QSharedPointer<ConstantPoolInfo> constant, constantList)
             if (QSharedPointer<T> candidate = constant.dynamicCast<T>())
                 found.append(candidate);
 
@@ -36,7 +36,7 @@ public:
     }
 
 private:
-    QList<QSharedPointer<ConstantPoolInfo> > constants;
+    QList<QSharedPointer<ConstantPoolInfo> > constantList;
 };
 
 #endif // CONSTANTPOOL_H

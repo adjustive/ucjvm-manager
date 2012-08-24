@@ -1,5 +1,7 @@
 #include "Linker.h"
 
+#include "Struct_ClassTable.h"
+
 struct LinkerPrivate
 {
     JVMConfig config;
@@ -23,5 +25,10 @@ Linker::~Linker()
 
 void Linker::link()
 {
-    qWarning("unimplemented: linker");
+    Q_D(Linker);
+    qDebug("linking...");
+
+    Struct_ClassTable classTable(d->classList, d->config.baseAddress());
+
+    qDebug("linking done");
 }

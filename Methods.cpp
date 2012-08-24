@@ -11,16 +11,21 @@ Methods::Methods(QDataStream &data, ConstantPool const &cp)
 
     for (int i = 0; i < count; i++)
     {
-        methods.append(Method(data, cp));
+        d.methods.append(Method(data, cp));
     }
 }
 
 quint16 Methods::count() const
 {
-    return methods.size();
+    return d.methods.size();
 }
 
 Method const &Methods::get(int index) const
 {
-    return methods[index];
+    return d.methods[index];
+}
+
+QList<Method> Methods::methods() const
+{
+    return d.methods;
 }

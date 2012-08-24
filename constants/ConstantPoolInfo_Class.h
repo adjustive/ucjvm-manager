@@ -17,6 +17,7 @@ public:
     ConstantPoolInfo_Class(quint16 nameIndex);
 
     void print() const;
+	void accept(ConstantPoolVisitor &v) const;
 
     quint16 nameIndex() const;
 

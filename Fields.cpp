@@ -13,17 +13,22 @@ Fields::Fields(QDataStream &data, ConstantPool const &cp)
 
     for (int i = 0; i < count; i++)
     {
-        fields.append(Field(data, cp));
+        d.fields.append(Field(data, cp));
     }
 }
 
 
 quint16 Fields::count() const
 {
-    return fields.size();
+    return d.fields.size();
 }
 
 Field const &Fields::get(int index) const
 {
-    return fields[index];
+    return d.fields[index];
+}
+
+QList<Field> Fields::fields() const
+{
+    return d.fields;
 }

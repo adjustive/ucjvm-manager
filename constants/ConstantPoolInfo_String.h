@@ -5,15 +5,23 @@
 
 #include "ConstantPoolInfo.h"
 
+struct ConstantPoolInfo_StringPrivate
+{
+    quint16 nameIndex;
+};
+
 class ConstantPoolInfo_String : public ConstantPoolInfo
 {
 public:
     ConstantPoolInfo_String(QDataStream &data);
 
+    quint16 nameIndex() const;
+
     void print() const;
+	void accept(ConstantPoolVisitor &v) const;
 
 private:
-    quint16 nameIndex;
+    ConstantPoolInfo_StringPrivate d;
 };
 
 #endif // CONSTANTPOOLINFO_STRING_H

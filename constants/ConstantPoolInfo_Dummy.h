@@ -9,6 +9,7 @@ public:
     ConstantPoolInfo_Dummy();
 
     void print() const;
+	void accept(ConstantPoolVisitor &v) const;
 };
 
 #endif // CONSTANTPOOLINFO_DUMMY_H

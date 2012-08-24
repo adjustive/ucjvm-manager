@@ -4,6 +4,11 @@
 #include "Field.h"
 class ConstantPool;
 
+struct FieldsPrivate
+{
+    QList<Field> fields;
+};
+
 class Fields
 {
 public:
@@ -12,9 +17,10 @@ public:
 
     quint16 count() const;
     Field const &get(int index) const;
+    QList<Field> fields() const;
 
 private:
-    QList<Field> fields;
+    FieldsPrivate d;
 };
 
 #endif // FIELDS_H

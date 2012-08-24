@@ -36,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent)
     qInstallMsgHandler(msgHandler);
 
     QDir config;
-    config.setPath(":/resources/jvmconfig");
+    config.setPath(":/data/jvmconfig");
 
     foreach (QFileInfo entry, config.entryInfoList(QStringList() << "*.cfg"))
     {
