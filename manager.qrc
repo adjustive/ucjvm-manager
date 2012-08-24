@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resources/jvmconfig/LedCube.cfg</file>
+        <file>resources/jvmconfig/LED Cube2.cfg</file>
+        <file>resources/jvmconfig/Spielbrett V1.0d.cfg</file>
+        <file>resources/jvmconfig/Spielbrett V1.1.cfg</file>
+        <file>resources/jvmconfig/Terminator.cfg</file>
+        <file>resources/jvmconfig/terminator V1.0d.cfg</file>
+    </qresource>
+</RCC>
