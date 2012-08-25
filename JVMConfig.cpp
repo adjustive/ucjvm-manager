@@ -87,13 +87,16 @@ JVMConfig::JVMConfig(QString path)
     for (int i = 0; i < functionCount; i++)
     {
         QString number = QString("%0").arg(i);
+        bool ok;
         d.nativeInterface.append(NativeFunction(
              handler["functionClass_" + number],
              handler["functionDescription_" + number],
+             handler["functionID_" + number].toInt(&ok),
              handler["functionName_" + number],
-             handler["functionID_" + number],
              handler["functionParams_" + number]
         ));
+        if (!ok)
+            qWarning("failed to parse ID for native function %d", i);
     }
 }
 

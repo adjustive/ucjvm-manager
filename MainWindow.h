@@ -27,6 +27,8 @@ private slots:
     void on_showFields_clicked();
     void on_showMethods_clicked();
 
+    void on_action_Edit_JVMConfig_triggered();
+
 private:
     Ui::MainWindow *ui;
 };

@@ -7,13 +7,13 @@ struct NativeFunction
 {
     NativeFunction(QString className,
                    QString description,
-                   QString id,
+                   quint16 id,
                    QString name,
                    QString params);
 
     QString className;
     QString description;
-    QString id;
+    quint16 id;
     QString name;
     QString params;
 };

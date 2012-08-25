@@ -3,6 +3,7 @@
 #include "DryRunWriter.h"
 
 Struct::Struct()
+    : memoryAddress(0)
 {
 }
 
@@ -19,17 +20,16 @@ quint32 Struct::setMemoryAddress(quint32 baseAddress)
 quint32 Struct::memorySize() const
 {
     DryRunWriter dryRun;
-    writeThis(dryRun);
+    writeStruct(dryRun);
     return dryRun.memorySize;
 }
 
-void Struct::writeChildren(DataWriter &data) const
+void Struct::writeData(DataWriter &data) const
 {
-    Q_UNUSED(data);
 }
 
 void Struct::write(DataWriter &data) const
 {
-    writeThis(data);
-    writeChildren(data);
+    writeStruct(data);
+    writeData(data);
 }

@@ -11,11 +11,13 @@ class Struct_CP_Field : public Struct_CP
 public:
     Struct_CP_Field(ConstantPoolInfo_Fieldref const &v);
 
-    void writeThis(DataWriter &data) const;
+    void writeStruct(DataWriter &data) const;
+    quint32 computeMemoryMap(quint32 baseAddress);
+    void printMemoryMap(QTextStream &ts) const;
 
     Type type() const { return CONSTANT_TYPE_FIELD_REF; }
 
-public:
+private:
     quint16 classIndex;
     quint16 descriptorIndex;
     Struct_Field *fieldAddress;

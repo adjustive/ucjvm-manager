@@ -11,7 +11,9 @@ class Struct_Field_Table : public Struct
 public:
     Struct_Field_Table(Fields const &fields);
 
-    void writeThis(DataWriter &data) const;
+    void writeStruct(DataWriter &data) const;
+    quint32 computeMemoryMap(quint32 baseAddress);
+    void printMemoryMap(QTextStream &ts) const;
 
 private:
     QList<Struct_Field> fields;

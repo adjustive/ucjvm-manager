@@ -10,7 +10,9 @@ class Struct_Exceptions : public Struct
 public:
     Struct_Exceptions();
 
-    void writeThis(DataWriter &data) const;
+    void writeStruct(DataWriter &data) const;
+    quint32 computeMemoryMap(quint32 baseAddress);
+    void printMemoryMap(QTextStream &ts) const;
 
 private:
     QList<quint16> exceptions; // index into constant pool

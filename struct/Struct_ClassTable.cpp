@@ -1,18 +1,17 @@
 #include "Struct_ClassTable.h"
 
 #include "JVMClassList.h"
+#include "DataWriter.h"
 
 #include <QDebug>
 
 Struct_ClassTable::Struct_ClassTable(JVMClassList const &classList, quint32 baseAddress)
 {
     foreach (JVMClass const &classData, classList)
-    {
         classes.append(Struct_Class(classData));
-    }
 
     sort();
-    computeClassPositions(baseAddress);
+    computeMemoryMap(baseAddress);
 }
 
 
@@ -25,7 +24,7 @@ struct FindClass
 
     bool operator()(Struct_Class const &candidate) const
     {
-        return candidate.name == name;
+        return candidate.name() == name;
     }
 
 private:
@@ -64,14 +63,41 @@ void Struct_ClassTable::sort()
 }
 
 
-quint32 Struct_ClassTable::computeClassPositions(quint32 baseAddress)
+void Struct_ClassTable::writeStruct(DataWriter &data) const
 {
+    data.put16(classes.size());
+    data.pad16();
+
+    data.putAddress(/*resource table address*/0);
+
+    foreach (Struct_Class const &classData, classes)
+        data.put32(classData.memoryAddress);
+}
+
+void Struct_ClassTable::writeData(DataWriter &data) const
+{
+    foreach (Struct_Class const &classData, classes)
+        classData.write(data);
+}
+
+
+quint32 Struct_ClassTable::computeMemoryMap(quint32 baseAddress)
+{
+    baseAddress = setMemoryAddress(baseAddress);
+
     for (int i = 0; i < classes.size(); i++)
-        baseAddress = classes[i].setMemoryAddress(baseAddress);
+        baseAddress = classes[i].computeMemoryMap(baseAddress);
+
     return baseAddress;
 }
 
 
-void Struct_ClassTable::writeThis(DataWriter &data) const
+void Struct_ClassTable::printMemoryMap(QTextStream &ts) const
 {
+    ts << "ClassTable @0x" << hex << memoryAddress << " {\n";
+
+    foreach (Struct_Class const &classData, classes)
+        classData.printMemoryMap(ts);
+
+    ts << "}\n";
 }

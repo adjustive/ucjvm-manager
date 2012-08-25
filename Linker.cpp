@@ -2,6 +2,11 @@
 
 #include "Struct_ClassTable.h"
 
+#include <QTextStream>
+#include <QDebug>
+
+#include <cstdio>
+
 struct LinkerPrivate
 {
     JVMConfig config;
@@ -29,6 +34,12 @@ void Linker::link()
     qDebug("linking...");
 
     Struct_ClassTable classTable(d->classList, d->config.baseAddress());
+
+    QString map;
+    QTextStream ts(&map);
+    classTable.printMemoryMap(ts);
+    ts.flush();
+    fprintf(stderr, "%s", map.toUtf8().constData());
 
     qDebug("linking done");
 }

@@ -28,10 +28,9 @@ static QString demangle1(QString::const_iterator &mangled)
         }
     case '[':
         return demangle1(mangled) + "[]";
+    default:
+        return QString(--mangled).replace('/', '.');
     }
-
-    qWarning() << "unknown mangled name:" << QString(mangled - 1);
-    return "<invalid>";
 }
 
 QString JavaName::demangle(QString mangled)

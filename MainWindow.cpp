@@ -7,6 +7,7 @@
 #include "FieldsView.h"
 #include "MethodsView.h"
 #include "Linker.h"
+#include "ConfigView.h"
 
 #include <QFileDialog>
 #include <QDebug>
@@ -130,5 +131,12 @@ void MainWindow::on_showMethods_clicked()
 {
     JVMClass const &currentClass = qvariant_cast<JVMClass>(ui->classList->currentIndex().data(Qt::UserRole));
     MethodsView view(currentClass);
+    view.exec();
+}
+
+void MainWindow::on_action_Edit_JVMConfig_triggered()
+{
+    JVMConfig config = qvariant_cast<JVMConfig>(ui->config->itemData(ui->config->currentIndex()));
+    ConfigView view(config);
     view.exec();
 }

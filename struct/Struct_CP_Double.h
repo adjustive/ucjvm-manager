@@ -9,11 +9,13 @@ class Struct_CP_Double : public Struct_CP
 public:
     Struct_CP_Double(ConstantPoolInfo_Double const &v);
 
-    void writeThis(DataWriter &data) const;
+    void writeStruct(DataWriter &data) const;
+    quint32 computeMemoryMap(quint32 baseAddress);
+    void printMemoryMap(QTextStream &ts) const;
 
     Type type() const { return CONSTANT_TYPE_DOUBLE; }
 
-public:
+private:
     double value;
 };
 

@@ -51,7 +51,7 @@
        <item>
         <widget class="QPushButton" name="load">
          <property name="text">
-          <string>Load</string>
+          <string>&amp;Load</string>
          </property>
         </widget>
        </item>
@@ -61,7 +61,7 @@
        <item>
         <widget class="QPushButton" name="link">
          <property name="text">
-          <string>Link</string>
+          <string>Lin&amp;k</string>
          </property>
         </widget>
        </item>
@@ -333,6 +333,9 @@
          <property name="selectionMode">
           <enum>QAbstractItemView::NoSelection</enum>
          </property>
+         <attribute name="verticalHeaderVisible">
+          <bool>false</bool>
+         </attribute>
         </widget>
        </item>
       </layout>
@@ -359,7 +362,7 @@
     <property name="title">
      <string>&amp;Edit</string>
     </property>
-    <addaction name="action_JVM_Config"/>
+    <addaction name="action_Edit_JVMConfig"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Edit"/>
@@ -381,7 +384,7 @@
     <string>Ctrl+Q</string>
    </property>
   </action>
-  <action name="action_JVM_Config">
+  <action name="action_Edit_JVMConfig">
    <property name="text">
     <string>&amp;JVM Config</string>
    </property>

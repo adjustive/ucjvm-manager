@@ -26,6 +26,8 @@ public:
     virtual ~Struct_CP();
 
     virtual Type type() const = 0;
+
+    virtual void writeStruct(DataWriter &data) const = 0;
 };
 
 #endif // STRUCT_CP_H

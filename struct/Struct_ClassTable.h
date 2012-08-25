@@ -5,18 +5,21 @@
 struct JVMClassList;
 
 #include <QList>
+class QTextStream;
 
 class Struct_ClassTable : public Struct
 {
 public:
     Struct_ClassTable(const JVMClassList &classList, quint32 baseAddress);
 
-    void writeThis(DataWriter &data) const;
+    void writeStruct(DataWriter &data) const;
+    void writeData(DataWriter &data) const;
+    quint32 computeMemoryMap(quint32 baseAddress);
+    void printMemoryMap(QTextStream &ts) const;
 
 private:
     void moveClass(QString name, int index);
     void sort();
-    quint32 computeClassPositions(quint32 baseAddress);
 
 private:
     QList<Struct_Class> classes;

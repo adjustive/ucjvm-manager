@@ -14,6 +14,7 @@
 #include "ConstantPool.h"
 #include "ConstantPoolVisitor.h"
 
+#include <QTextStream>
 
 class CPMaker : public ConstantPoolVisitor
 {
@@ -95,6 +96,30 @@ Struct_CP_Table::Struct_CP_Table(ConstantPool const &constantPool)
     constantPool.accept(v);
 }
 
-void Struct_CP_Table::writeThis(DataWriter &data) const
+void Struct_CP_Table::writeStruct(DataWriter &data) const
 {
+}
+
+quint32 Struct_CP_Table::computeMemoryMap(quint32 baseAddress)
+{
+    baseAddress = setMemoryAddress(baseAddress);
+
+    foreach (QSharedPointer<Struct_CP> cp, constants)
+        baseAddress = cp->computeMemoryMap(baseAddress);
+
+    return baseAddress;
+}
+
+void Struct_CP_Table::printMemoryMap(QTextStream &ts) const
+{
+    ts << "CP_Table @0x" << memoryAddress << " {\n";
+
+    int i = 1;
+    foreach (QSharedPointer<Struct_CP> cp, constants)
+    {
+        ts << "      [" << i << "] = ";
+        cp->printMemoryMap(ts);
+        i++;
+    }
+    ts << "    }\n";
 }

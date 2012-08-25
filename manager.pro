@@ -83,7 +83,9 @@ SOURCES += main.cpp\
     constants/ConstantPoolVisitor.cpp \
     struct/Struct.cpp \
     struct/DataWriter.cpp \
-    struct/DryRunWriter.cpp
+    struct/DryRunWriter.cpp \
+    ConfigView.cpp \
+    NativeInterfaceModel.cpp
 
 HEADERS  += MainWindow.h \
     JVMConfig.h \
@@ -156,11 +158,14 @@ HEADERS  += MainWindow.h \
     constants/ConstantPoolVisitor.h \
     struct/Struct.h \
     struct/DataWriter.h \
-    struct/DryRunWriter.h
+    struct/DryRunWriter.h \
+    ConfigView.h \
+    NativeInterfaceModel.h
 
 FORMS    += MainWindow.ui \
     FieldsView.ui \
-    MethodsView.ui
+    MethodsView.ui \
+    ConfigView.ui
 
 OTHER_FILES += \
     data/jvmconfig/terminator V1.0d.cfg \

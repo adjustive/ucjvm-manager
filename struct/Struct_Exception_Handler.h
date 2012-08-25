@@ -8,7 +8,9 @@ class Struct_Exception_Handler : public Struct
 public:
     Struct_Exception_Handler();
 
-    void writeThis(DataWriter &data) const;
+    void writeStruct(DataWriter &data) const;
+    quint32 computeMemoryMap(quint32 baseAddress);
+    void printMemoryMap(QTextStream &ts) const;
 
 private:
     quint16 startPC;   // index into JVM_Method.code[]

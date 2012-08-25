@@ -2,7 +2,7 @@
 
 NativeFunction::NativeFunction(QString className,
                                QString description,
-                               QString id,
+                               quint16 id,
                                QString name,
                                QString params)
     : className(className)

@@ -12,7 +12,9 @@ class Struct_CP_Table : public Struct
 public:
     Struct_CP_Table(ConstantPool const &constantPool);
 
-    void writeThis(DataWriter &data) const;
+    void writeStruct(DataWriter &data) const;
+    quint32 computeMemoryMap(quint32 baseAddress);
+    void printMemoryMap(QTextStream &ts) const;
 
 private:
     QList<QSharedPointer<Struct_CP> > constants;

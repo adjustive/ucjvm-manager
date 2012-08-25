@@ -10,11 +10,13 @@ class Struct_CP_Class : public Struct_CP
 public:
     Struct_CP_Class(const ConstantPoolInfo_Class &v);
 
-    void writeThis(DataWriter &data) const;
+    void writeStruct(DataWriter &data) const;
+    quint32 computeMemoryMap(quint32 baseAddress);
+    void printMemoryMap(QTextStream &ts) const;
 
     Type type() const { return CONSTANT_TYPE_CLASS_INFO; }
 
-public:
+private:
     quint16 index;
     Struct_Class *classAddress;
 };

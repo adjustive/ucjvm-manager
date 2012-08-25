@@ -5,6 +5,9 @@
 
 class DryRunWriter : public DataWriter
 {
+private:
+    bool nullOk() const { return true; }
+
 public:
     DryRunWriter();
 
@@ -12,7 +15,8 @@ public:
     void put16(quint16) { memorySize += 2; }
     void put32(quint32) { memorySize += 4; }
     void put64(quint64) { memorySize += 8; }
-    void put(QByteArray value) { memorySize += value.size(); }
+    void putFloat(float) { memorySize += 4; }
+    void putDouble(double) { memorySize += 8; }
 
 public:
     quint32 memorySize;

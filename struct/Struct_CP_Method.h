@@ -11,11 +11,13 @@ class Struct_CP_Method : public Struct_CP
 public:
     Struct_CP_Method(ConstantPoolInfo_Methodref const &v);
 
-    void writeThis(DataWriter &data) const;
+    void writeStruct(DataWriter &data) const;
+    quint32 computeMemoryMap(quint32 baseAddress);
+    void printMemoryMap(QTextStream &ts) const;
 
     Type type() const { return CONSTANT_TYPE_METHOD_REF; }
 
-public:
+private:
     quint16 classIndex;
     quint16 descriptorIndex;
     Struct_Method *address;
