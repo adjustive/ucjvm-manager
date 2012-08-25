@@ -10,7 +10,7 @@ class QTextStream;
 class Struct_ClassTable : public Struct
 {
 public:
-    Struct_ClassTable(const JVMClassList &classList, quint32 baseAddress);
+    Struct_ClassTable(const JVMClassList &classList, quint32 baseAddress, QList<NativeFunction> const &nativeInterface);
 
     void writeStruct(DataWriter &data) const;
     void writeData(DataWriter &data) const;
@@ -20,6 +20,8 @@ public:
 private:
     void moveClass(QString name, int index);
     void sort();
+
+    void loadNativeInterface(QList<NativeFunction> const &nativeInterface);
 
 private:
     QList<Struct_Class> classes;

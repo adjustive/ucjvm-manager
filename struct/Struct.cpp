@@ -21,7 +21,7 @@ quint32 Struct::memorySize() const
 {
     DryRunWriter dryRun;
     writeStruct(dryRun);
-    return dryRun.memorySize;
+    return dryRun.memorySize();
 }
 
 void Struct::writeData(DataWriter &data) const

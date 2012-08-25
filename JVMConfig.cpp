@@ -120,7 +120,7 @@ quint32 JVMConfig::memorySize() const
     return d.memorySize;
 }
 
-QList<NativeFunction> JVMConfig::nativeInterface() const
+QList<NativeFunction> const &JVMConfig::nativeInterface() const
 {
     return d.nativeInterface;
 }

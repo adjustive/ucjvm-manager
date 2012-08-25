@@ -2,11 +2,12 @@
 #define STRUCT_EXCEPTION_HANDLER_H
 
 #include "Struct.h"
+class ExceptionHandler;
 
 class Struct_Exception_Handler : public Struct
 {
 public:
-    Struct_Exception_Handler();
+    Struct_Exception_Handler(ExceptionHandler const &handler);
 
     void writeStruct(DataWriter &data) const;
     quint32 computeMemoryMap(quint32 baseAddress);

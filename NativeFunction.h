@@ -16,6 +16,8 @@ struct NativeFunction
     quint16 id;
     QString name;
     QString params;
+
+    bool matches(QString className, QString name, QString params) const;
 };
 
 #endif // NATIVEFUNCTION_H

@@ -20,6 +20,12 @@ void Struct_Method_Table::writeStruct(DataWriter &data) const
         data.putAddress(method);
 }
 
+void Struct_Method_Table::writeData(DataWriter &data) const
+{
+    foreach (Struct_Method const &method, methods)
+        method.write(data);
+}
+
 quint32 Struct_Method_Table::computeMemoryMap(quint32 baseAddress)
 {
     baseAddress = setMemoryAddress(baseAddress);
@@ -37,4 +43,17 @@ void Struct_Method_Table::printMemoryMap(QTextStream &ts) const
     foreach (Struct_Method const &method, methods)
         method.printMemoryMap(ts);
     ts << "    }\n";
+}
+
+
+void Struct_Method_Table::collectExceptions(Struct_Exception_Handler_Table &ehTable, Struct_Exceptions &eTable)
+{
+    for (int i = 0; i < methods.size(); i++)
+        methods[i].collectExceptions(ehTable, eTable);
+}
+
+void Struct_Method_Table::loadNativeInterface(QList<NativeFunction> const &nativeInterface, QString className, Struct_CP_Table const &constantPoolTable)
+{
+    for (int i = 0; i < methods.size(); i++)
+        methods[i].loadNativeInterface(nativeInterface, className, constantPoolTable);
 }

@@ -1,5 +1,7 @@
 #include "ConstantPoolInfo_Dummy.h"
 
+#include "ConstantPoolVisitor.h"
+
 #include <QDebug>
 
 ConstantPoolInfo_Dummy::ConstantPoolInfo_Dummy()
@@ -14,5 +16,5 @@ void ConstantPoolInfo_Dummy::print() const
 
 void ConstantPoolInfo_Dummy::accept(ConstantPoolVisitor &v) const
 {
-    Q_UNUSED(v);
+    v.visit(*this);
 }

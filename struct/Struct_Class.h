@@ -14,12 +14,14 @@ class Struct_Class : public Struct
 public:
     Struct_Class(JVMClass const &classData);
 
+    QString name() const;
+
+    void loadNativeInterface(QList<NativeFunction> const &nativeInterface);
+
     void writeStruct(DataWriter &data) const;
     void writeData(DataWriter &data) const;
     quint32 computeMemoryMap(quint32 baseAddress);
     void printMemoryMap(QTextStream &ts) const;
-
-    QString name() const;
 
 private:
     Struct_CP_Table constantPoolTable;

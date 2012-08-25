@@ -16,6 +16,8 @@ public:
     quint32 computeMemoryMap(quint32 baseAddress);
     void printMemoryMap(QTextStream &ts) const;
 
+    QString getUtf8(int index) const;
+
 private:
     QList<QSharedPointer<Struct_CP> > constants;
 };

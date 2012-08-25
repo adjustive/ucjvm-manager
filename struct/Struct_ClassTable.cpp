@@ -5,12 +5,13 @@
 
 #include <QDebug>
 
-Struct_ClassTable::Struct_ClassTable(JVMClassList const &classList, quint32 baseAddress)
+Struct_ClassTable::Struct_ClassTable(JVMClassList const &classList, quint32 baseAddress, QList<NativeFunction> const &nativeInterface)
 {
     foreach (JVMClass const &classData, classList)
         classes.append(Struct_Class(classData));
 
     sort();
+    loadNativeInterface(nativeInterface);
     computeMemoryMap(baseAddress);
 }
 
@@ -60,6 +61,13 @@ void Struct_ClassTable::sort()
     moveClass("java/lang/Error", 10);
     moveClass("java/lang/LinkageError", 10);
     moveClass("java/lang/UnsatisfiedLinkError", 11);
+}
+
+
+void Struct_ClassTable::loadNativeInterface(QList<NativeFunction> const &nativeInterface)
+{
+    for (int i = 0; i < classes.size(); i++)
+        classes[i].loadNativeInterface(nativeInterface);
 }
 
 

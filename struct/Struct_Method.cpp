@@ -3,15 +3,17 @@
 #include "Method.h"
 #include "NativeFunction.h"
 #include "DataWriter.h"
+#include "Struct_Exception_Handler_Table.h"
+#include "Struct_CP_Table.h"
 
 #include <QTextStream>
 
 Struct_Method::Struct_Method(Method const &method)
-    : exceptionHandler(NULL)
+    : exceptionHandlerTable(NULL)
     , offsetHandlers(0)
     , lengthHandlers(0)
 
-    , exceptions(NULL)
+    , exceptionsTable(NULL)
     , offsetExceptions(0)
     , lengthExceptions(0)
 
@@ -23,19 +25,23 @@ Struct_Method::Struct_Method(Method const &method)
     , nativeFunction(NULL)
     , code(method.code())
     , parameterTypes(method.parameters())
+
+    , exceptionHandlers(method.exceptionHandlers())
+    , exceptions(method.exceptions())
 {
 }
 
 void Struct_Method::writeStruct(DataWriter &data) const
 {
-    // TODO: exceptions
-    data.putAddress(0);
-    data.put16(0);
-    data.put16(0);
+    data.alignAddress();
 
-    data.putAddress(0);
-    data.put16(0);
-    data.put16(0);
+    data.putAddress(exceptionHandlerTable);
+    data.put16(offsetHandlers);
+    data.put16(lengthHandlers);
+
+    data.putAddress(exceptionsTable);
+    data.put16(offsetExceptions);
+    data.put16(lengthExceptions);
 
     data.put16(accessFlags);
     data.put16(nameIndex);
@@ -45,16 +51,17 @@ void Struct_Method::writeStruct(DataWriter &data) const
 
     if (nativeFunction != NULL)
     {
+        // TODO
         data.put16(nativeFunction->id);
     }
     else
     {
         data.put16(code.length());
-        data.put(code);
+        data.putBytes(code);
     }
 
-    data.put16(parameterTypes.length());
-    data.put(parameterTypes);
+    data.put8(parameterTypes.length());
+    data.putBytes(parameterTypes);
 }
 
 quint32 Struct_Method::computeMemoryMap(quint32 baseAddress)
@@ -66,4 +73,43 @@ quint32 Struct_Method::computeMemoryMap(quint32 baseAddress)
 void Struct_Method::printMemoryMap(QTextStream &ts) const
 {
     ts << "      Method @0x" << memoryAddress << " { nameIndex = " << nameIndex << " }\n";
+}
+
+
+void Struct_Method::collectExceptions(Struct_Exception_Handler_Table &ehTable, Struct_Exceptions &eTable)
+{
+    exceptionHandlerTable = &ehTable;
+    offsetHandlers = ehTable.size();
+    lengthHandlers = exceptionHandlers.size();
+    ehTable.add(exceptionHandlers);
+
+    exceptionsTable = &eTable;
+    offsetExceptions = eTable.size();
+    lengthExceptions = exceptions.size();
+    eTable.add(exceptions);
+}
+
+void Struct_Method::loadNativeInterface(QList<NativeFunction> const &nativeInterface, QString className, Struct_CP_Table const &constantPoolTable)
+{
+    if ((accessFlags & Method::ACC_NATIVE) == 0)
+        return;
+
+    QString name = constantPoolTable.getUtf8(nameIndex);
+    QString descriptor = constantPoolTable.getUtf8(descriptorIndex);
+
+    foreach (NativeFunction const &function, nativeInterface)
+    {
+        if (function.matches(className, name, descriptor))
+        {
+            if (nativeFunction != NULL)
+                qWarning("duplicate native function %s%s: %d and %d",
+                         name.toUtf8().constData(), descriptor.toUtf8().constData(),
+                         function.id, nativeFunction->id);
+            else
+                nativeFunction = &function;
+        }
+    }
+
+    if (nativeFunction == NULL)
+        qWarning("could not find native function for %s%s", name.toUtf8().constData(), descriptor.toUtf8().constData());
 }

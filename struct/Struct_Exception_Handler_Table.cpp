@@ -1,5 +1,6 @@
 #include "Struct_Exception_Handler_Table.h"
 
+#include "ExceptionHandler.h"
 #include "DataWriter.h"
 
 Struct_Exception_Handler_Table::Struct_Exception_Handler_Table()
@@ -8,6 +9,8 @@ Struct_Exception_Handler_Table::Struct_Exception_Handler_Table()
 
 void Struct_Exception_Handler_Table::writeStruct(DataWriter &data) const
 {
+    data.align16();
+
     data.put16(handlers.size());
 }
 
@@ -29,4 +32,16 @@ quint32 Struct_Exception_Handler_Table::computeMemoryMap(quint32 baseAddress)
 
 void Struct_Exception_Handler_Table::printMemoryMap(QTextStream &ts) const
 {
+}
+
+
+void Struct_Exception_Handler_Table::add(QList<ExceptionHandler> exceptionHandlers)
+{
+    foreach (ExceptionHandler const &handler, exceptionHandlers)
+        handlers.append(Struct_Exception_Handler(handler));
+}
+
+quint16 Struct_Exception_Handler_Table::size() const
+{
+    return handlers.size();
 }

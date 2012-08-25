@@ -1,6 +1,7 @@
 #include "Linker.h"
 
 #include "Struct_ClassTable.h"
+#include "MemoryWriter.h"
 
 #include <QTextStream>
 #include <QDebug>
@@ -33,13 +34,15 @@ void Linker::link()
     Q_D(Linker);
     qDebug("linking...");
 
-    Struct_ClassTable classTable(d->classList, d->config.baseAddress());
+    Struct_ClassTable classTable(d->classList, d->config.baseAddress(), d->config.nativeInterface());
 
     QString map;
     QTextStream ts(&map);
     classTable.printMemoryMap(ts);
-    ts.flush();
-    fprintf(stderr, "%s", map.toUtf8().constData());
+//    fprintf(stderr, "%s", map.toUtf8().constData());
 
-    qDebug("linking done");
+    MemoryWriter writer;
+    classTable.write(writer);
+
+    qDebug("linking done: %d bytes", writer.size());
 }

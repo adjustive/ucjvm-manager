@@ -14,6 +14,9 @@ public:
     quint32 computeMemoryMap(quint32 baseAddress);
     void printMemoryMap(QTextStream &ts) const;
 
+    void add(QList<quint16> exceptions);
+    quint16 size() const;
+
 private:
     QList<quint16> exceptions; // index into constant pool
 };

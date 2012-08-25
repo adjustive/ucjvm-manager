@@ -17,6 +17,8 @@ public:
 
     Type type() const { return CONSTANT_TYPE_UTF8; }
 
+    QString string() const;
+
 private:
     QByteArray data;
 };

@@ -1,5 +1,6 @@
 #include "Struct_CP_Table.h"
 
+#include "Struct_CP_Dummy.h"
 #include "Struct_CP_Class.h"
 #include "Struct_CP_Double.h"
 #include "Struct_CP_Field.h"
@@ -20,11 +21,21 @@ class CPMaker : public ConstantPoolVisitor
 {
     QList<QSharedPointer<Struct_CP> > &constants;
 
-    void add(Struct_CP *cp)
+    void add(QSharedPointer<Struct_CP> cp)
     {
-        constants.append(QSharedPointer<Struct_CP>(cp));
+        constants.append(cp);
     }
 
+    void add(Struct_CP *cp)
+    {
+        add(QSharedPointer<Struct_CP>(cp));
+    }
+
+    void visit(const ConstantPoolInfo_Dummy &v)
+    {
+        Q_UNUSED(v);
+        add(Struct_CP_Dummy::instance);
+    }
 
     void visit(const ConstantPoolInfo_Class &v)
 	{
@@ -122,4 +133,13 @@ void Struct_CP_Table::printMemoryMap(QTextStream &ts) const
         i++;
     }
     ts << "    }\n";
+}
+
+
+QString Struct_CP_Table::getUtf8(int index) const
+{
+    QSharedPointer<Struct_CP_UTF8> utf8 = constants[index - 1].dynamicCast<Struct_CP_UTF8>();
+    if (!utf8)
+        qFatal("constant %d is %s, not UTF8", index, typeid(*constants[index - 1]).name());
+    return utf8->string();
 }

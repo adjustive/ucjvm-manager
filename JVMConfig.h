@@ -28,7 +28,7 @@ public:
     quint32 baseAddress() const;
     quint32 memorySize() const;
 
-    QList<NativeFunction> nativeInterface() const;
+    QList<NativeFunction> const &nativeInterface() const;
 
 private:
     JVMConfigPrivate d;

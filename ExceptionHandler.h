@@ -16,6 +16,11 @@ class ExceptionHandler
 public:
     ExceptionHandler(QDataStream &data);
 
+    quint16 startPC() const;
+    quint16 endPC() const;
+    quint16 handlerPC() const;
+    quint16 catchType() const;
+
 private:
     ExceptionHandlerPrivate d;
 };

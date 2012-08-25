@@ -8,18 +8,19 @@ class DryRunWriter : public DataWriter
 private:
     bool nullOk() const { return true; }
 
+    void checkAlign(int alignment) const { Q_UNUSED(alignment); }
+
 public:
     DryRunWriter();
 
-    void put8 (quint8 ) { memorySize += 1; }
-    void put16(quint16) { memorySize += 2; }
-    void put32(quint32) { memorySize += 4; }
-    void put64(quint64) { memorySize += 8; }
-    void putFloat(float) { memorySize += 4; }
-    void putDouble(double) { memorySize += 8; }
+    void write8 (quint8 ) { }
+    void write16(quint16) { }
+    void write32(quint32) { }
+    void write64(quint64) { }
+    void writeFloat(float) { }
+    void writeDouble(double) { }
 
-public:
-    quint32 memorySize;
+    char const *name() const { return "DryRunWriter"; }
 };
 
 #endif // DRYRUNWRITER_H

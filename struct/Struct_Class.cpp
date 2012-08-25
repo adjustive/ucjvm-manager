@@ -17,6 +17,7 @@ Struct_Class::Struct_Class(const JVMClass &classData)
 
     , className(classData.name())
 {
+    methodPoolTable.collectExceptions(exceptionHandlerTable, exceptionsTable);
 }
 
 QString Struct_Class::name() const
@@ -24,8 +25,16 @@ QString Struct_Class::name() const
     return className;
 }
 
+void Struct_Class::loadNativeInterface(QList<NativeFunction> const &nativeInterface)
+{
+//    qDebug("loading native interface for %s", name().toUtf8().constData());
+    methodPoolTable.loadNativeInterface(nativeInterface, name(), constantPoolTable);
+}
+
 void Struct_Class::writeStruct(DataWriter &data) const
 {
+    data.align32();
+
     data.put32(constantPoolTable.memoryAddress);
     data.put32(fieldPoolTable.memoryAddress);
     data.put32(methodPoolTable.memoryAddress);
@@ -41,15 +50,21 @@ void Struct_Class::writeData(DataWriter &data) const
     constantPoolTable.write(data);
     fieldPoolTable.write(data);
     methodPoolTable.write(data);
+
+    exceptionHandlerTable.write(data);
+    exceptionsTable.write(data);
 }
 
 quint32 Struct_Class::computeMemoryMap(quint32 baseAddress)
 {
     baseAddress = setMemoryAddress(baseAddress);
 
-    constantPoolTable.computeMemoryMap(baseAddress);
-    fieldPoolTable.computeMemoryMap(baseAddress);
-    methodPoolTable.computeMemoryMap(baseAddress);
+    baseAddress = constantPoolTable.computeMemoryMap(baseAddress);
+    baseAddress = fieldPoolTable.computeMemoryMap(baseAddress);
+    baseAddress = methodPoolTable.computeMemoryMap(baseAddress);
+
+    baseAddress = exceptionHandlerTable.computeMemoryMap(baseAddress);
+    baseAddress = exceptionsTable.computeMemoryMap(baseAddress);
 
     return baseAddress;
 }
@@ -57,10 +72,8 @@ quint32 Struct_Class::computeMemoryMap(quint32 baseAddress)
 void Struct_Class::printMemoryMap(QTextStream &ts) const
 {
     ts << "  Class " << JavaName::demangle(name()) << " @0x" << memoryAddress << " {\n";
-#if 1
     ts << "    constantPoolTable = ";
     constantPoolTable.printMemoryMap(ts);
-#endif
     ts << "    fieldPoolTable = ";
     fieldPoolTable.printMemoryMap(ts);
     ts << "    methodPoolTable = ";

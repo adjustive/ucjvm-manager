@@ -12,3 +12,11 @@ NativeFunction::NativeFunction(QString className,
     , params(params)
 {
 }
+
+
+bool NativeFunction::matches(QString className, QString name, QString params) const
+{
+    return this->className == className &&
+           this->name == name &&
+           this->params == params;
+}

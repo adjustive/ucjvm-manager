@@ -8,6 +8,7 @@ class Struct_CP : public Struct
 public:
     enum Type
     {
+        CONSTANT_TYPE_DUMMY                 = 0,
         CONSTANT_TYPE_UTF8                  = 1,
         CONSTANT_TYPE_INTEGER               = 3,
         CONSTANT_TYPE_FLOAT                 = 4,

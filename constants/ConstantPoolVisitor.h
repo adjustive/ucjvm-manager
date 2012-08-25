@@ -1,6 +1,8 @@
 #ifndef CONSTANTPOOLVISITOR_H
 #define CONSTANTPOOLVISITOR_H
 
+class ConstantPoolInfo_Dummy;
+
 class ConstantPoolInfo_Class;
 class ConstantPoolInfo_Double;
 class ConstantPoolInfo_Fieldref;
@@ -17,6 +19,8 @@ class ConstantPoolVisitor
 {
 public:
     ConstantPoolVisitor();
+
+    virtual void visit(ConstantPoolInfo_Dummy const &v) = 0;
 
     virtual void visit(ConstantPoolInfo_Class const &v) = 0;
     virtual void visit(ConstantPoolInfo_Double const &v) = 0;

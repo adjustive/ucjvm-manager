@@ -4,6 +4,7 @@
 #include "Struct.h"
 
 #include "Struct_Exception_Handler.h"
+class ExceptionHandler;
 
 #include <QList>
 
@@ -16,6 +17,9 @@ public:
     void writeData(DataWriter &data) const;
     quint32 computeMemoryMap(quint32 baseAddress);
     void printMemoryMap(QTextStream &ts) const;
+
+    void add(QList<ExceptionHandler> exceptionHandlers);
+    quint16 size() const;
 
 private:
     QList<Struct_Exception_Handler> handlers;
