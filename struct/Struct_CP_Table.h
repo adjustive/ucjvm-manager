@@ -13,6 +13,7 @@ public:
     Struct_CP_Table(ConstantPool const &constantPool);
 
     void writeStruct(DataWriter &data) const;
+    void writeData(DataWriter &data) const;
     quint32 computeMemoryMap(quint32 baseAddress);
     void printMemoryMap(QTextStream &ts) const;
 

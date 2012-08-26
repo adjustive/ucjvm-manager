@@ -17,12 +17,16 @@ Struct_Class::Struct_Class(const JVMClass &classData)
 
     , className(classData.name())
 {
-    methodPoolTable.collectExceptions(exceptionHandlerTable, exceptionsTable);
 }
 
 QString Struct_Class::name() const
 {
     return className;
+}
+
+void Struct_Class::collectExceptions()
+{
+    methodPoolTable.collectExceptions(exceptionHandlerTable, exceptionsTable);
 }
 
 void Struct_Class::loadNativeInterface(QList<NativeFunction> const &nativeInterface)

@@ -33,6 +33,7 @@ Struct_Method::Struct_Method(Method const &method)
 
 void Struct_Method::writeStruct(DataWriter &data) const
 {
+    data.position(memoryAddress);
     data.alignAddress();
 
     data.putAddress(exceptionHandlerTable);
@@ -51,7 +52,6 @@ void Struct_Method::writeStruct(DataWriter &data) const
 
     if (nativeFunction != NULL)
     {
-        // TODO
         data.put16(nativeFunction->id);
     }
     else

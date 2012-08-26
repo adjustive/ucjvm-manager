@@ -18,14 +18,15 @@ private:
     void writeDouble(double value);
 
 public:
-    MemoryWriter();
+    MemoryWriter(quint32 baseAddress);
 
     char const *name() const { return "MemoryWriter"; }
 
-    int size() const { return data.size(); }
+    int size() const { return array.size(); }
+    QByteArray data() const { return array; }
 
 private:
-    QByteArray data;
+    QByteArray array;
     QDataStream stream;
 };
 

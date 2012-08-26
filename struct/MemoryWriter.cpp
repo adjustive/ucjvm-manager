@@ -1,7 +1,8 @@
 #include "MemoryWriter.h"
 
-MemoryWriter::MemoryWriter()
-    : stream(&data, QIODevice::WriteOnly)
+MemoryWriter::MemoryWriter(quint32 baseAddress)
+    : DataWriter(baseAddress)
+    , stream(&array, QIODevice::WriteOnly)
 {
 }
 

@@ -14,6 +14,7 @@
 
 #include "ConstantPool.h"
 #include "ConstantPoolVisitor.h"
+#include "DataWriter.h"
 
 #include <QTextStream>
 
@@ -109,6 +110,17 @@ Struct_CP_Table::Struct_CP_Table(ConstantPool const &constantPool)
 
 void Struct_CP_Table::writeStruct(DataWriter &data) const
 {
+    data.put16(constants.size());
+    data.pad16();
+
+    foreach (QSharedPointer<Struct_CP> cp, constants)
+        data.putAddress(cp);
+}
+
+void Struct_CP_Table::writeData(DataWriter &data) const
+{
+    foreach (QSharedPointer<Struct_CP> cp, constants)
+        cp->write(data);
 }
 
 quint32 Struct_CP_Table::computeMemoryMap(quint32 baseAddress)

@@ -16,6 +16,7 @@ public:
 
     QString name() const;
 
+    void collectExceptions();
     void loadNativeInterface(QList<NativeFunction> const &nativeInterface);
 
     void writeStruct(DataWriter &data) const;

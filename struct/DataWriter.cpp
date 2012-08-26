@@ -24,8 +24,9 @@ enum Size
     ADDRESS_ALIGN = INT_ALIGN
 };
 
-DataWriter::DataWriter()
+DataWriter::DataWriter(quint32 baseAddress)
     : written(0)
+    , baseAddress(baseAddress)
 {
 //    qDebug("new DataWriter");
 }
@@ -43,13 +44,19 @@ quint32 DataWriter::memorySize() const
 void DataWriter::checkAlign(int alignment) const
 {
     if (memorySize() % alignment != 0)
-        qFatal("alignment at %d is less than %d", written, alignment);
+        qWarning("alignment at %d is less than %d", written, alignment);
 }
 
 void DataWriter::setAlign(int alignment)
 {
     while (memorySize() % alignment != 0)
         pad8();
+}
+
+void DataWriter::position(quint32 pos) const
+{
+    if (pos != memorySize() && !nullOk())
+        qWarning("expected position %u is not actual %u", pos, memorySize());
 }
 
 void DataWriter::align8()
@@ -90,9 +97,9 @@ void DataWriter::alignAddress()
 
 void DataWriter::put8(quint8 value)
 {
-    checkAlign(BYTE_SIZE);
+//    checkAlign(BYTE_ALIGN);
 	write8(value);
-    wrote(BYTE_ALIGN);
+    wrote(BYTE_SIZE);
 }
 
 void DataWriter::put16(quint16 value)
@@ -139,8 +146,16 @@ void DataWriter::putBytes(QByteArray value)
 
 void DataWriter::putAddress(Struct const &reference)
 {
-    if (reference.memoryAddress == 0 && !nullOk())
-        qWarning("memory address for %p (%s) is NULL", &reference, typeid(reference).name());
+    if (reference.memoryAddress == 0)
+    {
+        if (!nullOk())
+            qWarning("memory address for %p (%s) is NULL", &reference, typeid(reference).name());
+    }
+    else if (reference.memoryAddress < baseAddress)
+    {
+        qFatal("memory address 0x%x is below base address 0x%x", reference.memoryAddress, baseAddress);
+    }
+
     put32(reference.memoryAddress);
 }
 
@@ -150,6 +165,11 @@ void DataWriter::putAddress(Struct const *pointer)
         putAddress(*pointer);
     else
         put32(0);
+}
+
+void DataWriter::putAddress(QSharedPointer<Struct> pointer)
+{
+    putAddress(pointer.data());
 }
 
 void DataWriter::pad8()

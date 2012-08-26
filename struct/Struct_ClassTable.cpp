@@ -10,6 +10,9 @@ Struct_ClassTable::Struct_ClassTable(JVMClassList const &classList, quint32 base
     foreach (JVMClass const &classData, classList)
         classes.append(Struct_Class(classData));
 
+    for (int i = 0; i < classes.size(); i++)
+        classes[i].collectExceptions();
+
     sort();
     loadNativeInterface(nativeInterface);
     computeMemoryMap(baseAddress);
@@ -73,10 +76,13 @@ void Struct_ClassTable::loadNativeInterface(QList<NativeFunction> const &nativeI
 
 void Struct_ClassTable::writeStruct(DataWriter &data) const
 {
+    data.alignAddress();
+
     data.put16(classes.size());
     data.pad16();
 
     data.putAddress(/*resource table address*/0);
+//    data.putBytes("RTBL");
 
     foreach (Struct_Class const &classData, classes)
         data.put32(classData.memoryAddress);

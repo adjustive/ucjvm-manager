@@ -2,6 +2,7 @@
 #define DATAWRITER_H
 
 #include <QByteArray>
+#include <QSharedPointer>
 
 class Struct;
 
@@ -23,7 +24,9 @@ private:
     void setAlign(int alignment);
 
 public:
-    DataWriter();
+    DataWriter(quint32 baseAddress = 0);
+
+    void position(quint32 pos) const;
 
     void align8();
     void align16();
@@ -45,6 +48,7 @@ public:
     void putBytes(QByteArray value);
     void putAddress(Struct const &reference);
     void putAddress(Struct const *pointer);
+    void putAddress(QSharedPointer<Struct> pointer);
 
     void pad8();
     void pad16();
@@ -55,6 +59,7 @@ public:
 
 private:
     quint32 written;
+    quint32 const baseAddress;
 };
 
 #endif // DATAWRITER_H
