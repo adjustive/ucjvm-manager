@@ -6,12 +6,10 @@
 class DryRunWriter : public DataWriter
 {
 private:
-    bool nullOk() const { return true; }
-
-    void checkAlign(int alignment) const { Q_UNUSED(alignment); }
+    bool permissive() const { return true; }
 
 public:
-    DryRunWriter();
+    DryRunWriter(quint32 baseAddress = 0);
 
     void write8 (quint8 ) { }
     void write16(quint16) { }
@@ -20,7 +18,7 @@ public:
     void writeFloat(float) { }
     void writeDouble(double) { }
 
-    char const *name() const { return "DryRunWriter"; }
+    char const *typeName() const { return "DryRunWriter"; }
 };
 
 #endif // DRYRUNWRITER_H

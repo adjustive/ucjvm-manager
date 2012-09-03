@@ -11,10 +11,15 @@ class Struct_Method_Table : public Struct
 public:
     Struct_Method_Table(Methods const &methods);
 
+    Struct_Method const *getMethod(QString name, QString descriptor) const;
+
+    quint8 alignment() const { return 4; }
     void writeStruct(DataWriter &data) const;
     void writeData(DataWriter &data) const;
     quint32 computeMemoryMap(quint32 baseAddress);
     void printMemoryMap(QTextStream &ts) const;
+
+    char const *typeName() const { return "Method_Table"; }
 
     void collectExceptions(Struct_Exception_Handler_Table &ehTable, Struct_Exceptions &eTable);
     void loadNativeInterface(const QList<NativeFunction> &nativeInterface, QString className, const Struct_CP_Table &constantPoolTable);

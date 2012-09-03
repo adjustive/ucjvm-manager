@@ -28,15 +28,16 @@ Struct_Method::Struct_Method(Method const &method)
 
     , exceptionHandlers(method.exceptionHandlers())
     , exceptions(method.exceptions())
+
+    , name(method.name())
+    , descriptor(method.descriptor())
 {
 }
 
 void Struct_Method::writeStruct(DataWriter &data) const
 {
-    data.position(memoryAddress);
-    data.alignAddress();
-
-    data.putAddress(exceptionHandlerTable);
+    data.putAddress(0);
+//    data.putAddress(exceptionHandlerTable);
     data.put16(offsetHandlers);
     data.put16(lengthHandlers);
 
@@ -72,7 +73,7 @@ quint32 Struct_Method::computeMemoryMap(quint32 baseAddress)
 
 void Struct_Method::printMemoryMap(QTextStream &ts) const
 {
-    ts << "      Method @0x" << memoryAddress << " { nameIndex = " << nameIndex << " }\n";
+    ts << "      Method @0x" << structStart << " = " << descriptor << " " << name << "\n";
 }
 
 

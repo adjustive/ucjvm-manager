@@ -9,11 +9,15 @@ class Struct_CP_String : public Struct_CP
 public:
     Struct_CP_String(ConstantPoolInfo_String const &v);
 
+    void resolveClassReferences(const ResolveContext &context);
+
     void writeStruct(DataWriter &data) const;
     quint32 computeMemoryMap(quint32 baseAddress);
     void printMemoryMap(QTextStream &ts) const;
 
     Type type() const { return CONSTANT_TYPE_STRING; }
+
+    char const *typeName() const { return "CP_String"; }
 
 private:
     quint16 stringIndex;

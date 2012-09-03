@@ -10,6 +10,10 @@ Struct_CP_Dummy::Struct_CP_Dummy()
 {
 }
 
+void Struct_CP_Dummy::resolveClassReferences(const ResolveContext &context)
+{
+}
+
 void Struct_CP_Dummy::writeStruct(DataWriter &data) const
 {
     Q_UNUSED(data);
@@ -17,6 +21,7 @@ void Struct_CP_Dummy::writeStruct(DataWriter &data) const
 
 quint32 Struct_CP_Dummy::computeMemoryMap(quint32 baseAddress)
 {
+    setMemoryAddress(-1);
     return baseAddress;
 }
 

@@ -1,8 +1,10 @@
 #include "Struct_CP_Class.h"
 
+#include "Struct_ClassTable.h"
 #include "Struct_Class.h"
 #include "ConstantPoolInfo_Class.h"
 #include "DataWriter.h"
+#include "ResolveContext.h"
 
 #include <QTextStream>
 
@@ -10,6 +12,11 @@ Struct_CP_Class::Struct_CP_Class(const ConstantPoolInfo_Class &v)
     : index(v.nameIndex())
     , classAddress(0)
 {
+}
+
+void Struct_CP_Class::resolveClassReferences(const ResolveContext &context)
+{
+    classAddress = &context.classTable().byName(context.constantTable().getUtf8(index));
 }
 
 void Struct_CP_Class::writeStruct(DataWriter &data) const
@@ -27,5 +34,5 @@ quint32 Struct_CP_Class::computeMemoryMap(quint32 baseAddress)
 
 void Struct_CP_Class::printMemoryMap(QTextStream &ts) const
 {
-    ts << "Class @0x" << memoryAddress << " -> " << index << "\n";
+    ts << "Class @0x" << structStart << " -> " << index << "(" << memoryAddress(classAddress) << ")" << "\n";
 }

@@ -9,8 +9,6 @@ Struct_Exception_Handler_Table::Struct_Exception_Handler_Table()
 
 void Struct_Exception_Handler_Table::writeStruct(DataWriter &data) const
 {
-    data.align16();
-
     data.put16(handlers.size());
 }
 

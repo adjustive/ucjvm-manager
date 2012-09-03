@@ -8,8 +8,28 @@ class Struct;
 
 class DataWriter
 {
+    enum Size
+    {
+        BYTE_SIZE   = 1,
+        BYTE_ALIGN  = 1,
+        SHORT_SIZE  = 2,
+        SHORT_ALIGN = 2,
+        INT_SIZE    = 4,
+        INT_ALIGN   = 4,
+        LONG_SIZE   = 8,
+        LONG_ALIGN  = 8,
+
+        FLOAT_SIZE  = 4,
+        FLOAT_ALIGN = 4,
+        DOUBLE_SIZE = 8,
+        DOUBLE_ALIGN= 8,
+
+        ADDRESS_SIZE = INT_SIZE,
+        ADDRESS_ALIGN = INT_ALIGN
+    };
+
 private:
-    virtual bool nullOk() const = 0;
+    virtual bool permissive() const = 0;
 
     virtual void write8(quint8 value) = 0;
     virtual void write16(quint16 value) = 0;
@@ -18,23 +38,16 @@ private:
     virtual void writeFloat(float value) = 0;
     virtual void writeDouble(double value) = 0;
 
-    virtual void wrote(int bytes);
+    virtual void wrote(quint16 bytes);
 
-    virtual void checkAlign(int alignment) const;
-    void setAlign(int alignment);
+    virtual void checkAlign(Size alignment) const;
 
 public:
     DataWriter(quint32 baseAddress = 0);
 
-    void position(quint32 pos) const;
-
-    void align8();
-    void align16();
-    void align32();
-    void align64();
-    void alignFloat();
-    void alignDouble();
-    void alignAddress();
+    static quint32 align(quint32 address, quint8 alignment);
+    void align(quint8 alignment);
+    void verifyPosition(quint32 currentAddress, quint32 nextAddress);
 
     virtual quint32 memorySize() const;
 
@@ -55,11 +68,12 @@ public:
     void pad32();
     void pad64();
 
-    virtual char const *name() const = 0;
+    virtual char const *typeName() const = 0;
 
 private:
-    quint32 written;
     quint32 const baseAddress;
+    quint32 nextAddress;
+    quint32 currentAddress;
 };
 
 #endif // DATAWRITER_H

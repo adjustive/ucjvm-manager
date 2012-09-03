@@ -10,6 +10,11 @@ Struct_Field::Struct_Field(Field const &field)
     , dataOffset(0)
     , constantValueReference(field.constantValueIndex())
     , fieldType(field.dataType())
+
+    , nameIndex(field.nameIndex())
+    , descriptorIndex(field.descriptorIndex())
+    , name(field.name())
+    , descriptor(field.descriptor())
 {
 }
 
@@ -30,5 +35,5 @@ quint32 Struct_Field::computeMemoryMap(quint32 baseAddress)
 
 void Struct_Field::printMemoryMap(QTextStream &ts) const
 {
-    ts << "      Field @0x" << memoryAddress << " { offset = " << dataOffset << " }\n";
+    ts << "      Field @0x" << structStart << " { offset = " << dataOffset << " }\n";
 }

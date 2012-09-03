@@ -10,6 +10,10 @@ Struct_CP_Integer::Struct_CP_Integer(const ConstantPoolInfo_Integer &v)
 {
 }
 
+void Struct_CP_Integer::resolveClassReferences(const ResolveContext &context)
+{
+}
+
 void Struct_CP_Integer::writeStruct(DataWriter &data) const
 {
     Struct_CP::writeStruct(data);
@@ -24,5 +28,5 @@ quint32 Struct_CP_Integer::computeMemoryMap(quint32 baseAddress)
 
 void Struct_CP_Integer::printMemoryMap(QTextStream &ts) const
 {
-    ts << "Integer @0x" << memoryAddress << " = " << value << "\n";
+    ts << "Integer @0x" << structStart << " = " << value << "\n";
 }

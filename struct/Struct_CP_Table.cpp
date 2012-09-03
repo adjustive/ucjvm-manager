@@ -108,6 +108,24 @@ Struct_CP_Table::Struct_CP_Table(ConstantPool const &constantPool)
     constantPool.accept(v);
 }
 
+void Struct_CP_Table::resolveClassReferences(ResolveContext const &context)
+{
+    foreach (QSharedPointer<Struct_CP> cp, constants)
+        cp->resolveClassReferences(context);
+}
+
+void Struct_CP_Table::resolveFieldReferences(const ResolveContext &context)
+{
+    foreach (QSharedPointer<Struct_CP> cp, constants)
+        cp->resolveFieldReferences(context);
+}
+
+void Struct_CP_Table::resolveMethodReferences(const ResolveContext &context)
+{
+    foreach (QSharedPointer<Struct_CP> cp, constants)
+        cp->resolveMethodReferences(context);
+}
+
 void Struct_CP_Table::writeStruct(DataWriter &data) const
 {
     data.put16(constants.size());
@@ -135,7 +153,7 @@ quint32 Struct_CP_Table::computeMemoryMap(quint32 baseAddress)
 
 void Struct_CP_Table::printMemoryMap(QTextStream &ts) const
 {
-    ts << "CP_Table @0x" << memoryAddress << " {\n";
+    ts << "CP_Table @0x" << structStart << " {\n";
 
     int i = 1;
     foreach (QSharedPointer<Struct_CP> cp, constants)
@@ -150,8 +168,24 @@ void Struct_CP_Table::printMemoryMap(QTextStream &ts) const
 
 QString Struct_CP_Table::getUtf8(int index) const
 {
-    QSharedPointer<Struct_CP_UTF8> utf8 = constants[index - 1].dynamicCast<Struct_CP_UTF8>();
-    if (!utf8)
+    QSharedPointer<Struct_CP_UTF8> utf8Info = constants[index - 1].dynamicCast<Struct_CP_UTF8>();
+    if (!utf8Info)
         qFatal("constant %d is %s, not UTF8", index, typeid(*constants[index - 1]).name());
-    return utf8->string();
+    return utf8Info->string();
+}
+
+Struct_CP_Class &Struct_CP_Table::getClass(int index) const
+{
+    QSharedPointer<Struct_CP_Class> classInfo = constants[index - 1].dynamicCast<Struct_CP_Class>();
+    if (!classInfo)
+        qFatal("constant %d is %s, not Class", index, typeid(*constants[index - 1]).name());
+    return *classInfo;
+}
+
+Struct_CP_Name const &Struct_CP_Table::getName(int index) const
+{
+    QSharedPointer<Struct_CP_Name> classInfo = constants[index - 1].dynamicCast<Struct_CP_Name>();
+    if (!classInfo)
+        qFatal("constant %d is %s, not Name", index, typeid(*constants[index - 1]).name());
+    return *classInfo;
 }

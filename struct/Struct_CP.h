@@ -28,6 +28,7 @@ public:
 
     virtual Type type() const = 0;
 
+    quint8 alignment() const { return 1; }
     virtual void writeStruct(DataWriter &data) const = 0;
 };
 

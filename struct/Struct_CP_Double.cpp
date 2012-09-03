@@ -10,6 +10,10 @@ Struct_CP_Double::Struct_CP_Double(ConstantPoolInfo_Double const &v)
 {
 }
 
+void Struct_CP_Double::resolveClassReferences(const ResolveContext &context)
+{
+}
+
 void Struct_CP_Double::writeStruct(DataWriter &data) const
 {
     Struct_CP::writeStruct(data);
@@ -24,5 +28,5 @@ quint32 Struct_CP_Double::computeMemoryMap(quint32 baseAddress)
 
 void Struct_CP_Double::printMemoryMap(QTextStream &ts) const
 {
-    ts << "Double @0x" << memoryAddress << " = " << value << "\n";
+    ts << "Double @0x" << structStart << " = " << value << "\n";
 }

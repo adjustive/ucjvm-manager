@@ -46,7 +46,10 @@ void Linker::link()
     QString map;
     QTextStream ts(&map);
     classTable.printMemoryMap(ts);
-//    fprintf(stderr, "%s", map.toUtf8().constData());
+
+    FILE *out = fopen("memory.log", "w");
+    fprintf(out, "%s", map.toUtf8().constData());
+    fclose(out);
 
     MemoryWriter writer(d->config.baseAddress());
     classTable.write(writer);

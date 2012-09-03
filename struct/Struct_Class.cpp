@@ -1,8 +1,10 @@
 #include "Struct_Class.h"
 
+#include "Struct_CP_Class.h"
 #include "JVMClass.h"
 #include "DataWriter.h"
 #include "JavaName.h"
+#include "ResolveContext.h"
 
 #include <QTextStream>
 
@@ -19,9 +21,19 @@ Struct_Class::Struct_Class(const JVMClass &classData)
 {
 }
 
-QString Struct_Class::name() const
+QString Struct_Class::javaTypeName() const
 {
     return className;
+}
+
+Struct_Class const *Struct_Class::superClass() const
+{
+    Struct_CP_Class const &superClassInfo = constantPoolTable.getClass(3);
+    Struct_Class const *superClass = superClassInfo.classAddress;
+    Q_ASSERT(superClass != NULL);
+    if (superClass->javaTypeName() == "java/lang/Object")
+        return NULL;
+    return superClass;
 }
 
 void Struct_Class::collectExceptions()
@@ -32,16 +44,37 @@ void Struct_Class::collectExceptions()
 void Struct_Class::loadNativeInterface(QList<NativeFunction> const &nativeInterface)
 {
 //    qDebug("loading native interface for %s", name().toUtf8().constData());
-    methodPoolTable.loadNativeInterface(nativeInterface, name(), constantPoolTable);
+    methodPoolTable.loadNativeInterface(nativeInterface, javaTypeName(), constantPoolTable);
+}
+
+ResolveContext Struct_Class::resolveContext(ResolveContext const &context) const
+{
+    return context
+        .setConstantTable(constantPoolTable)
+        .setFieldTable(fieldPoolTable)
+        .setMethodTable(methodPoolTable);
+}
+
+void Struct_Class::resolveClassReferences(ResolveContext const &context)
+{
+    constantPoolTable.resolveClassReferences(resolveContext(context));
+}
+
+void Struct_Class::resolveFieldReferences(const ResolveContext &context)
+{
+    constantPoolTable.resolveFieldReferences(resolveContext(context));
+}
+
+void Struct_Class::resolveMethodReferences(const ResolveContext &context)
+{
+    constantPoolTable.resolveMethodReferences(resolveContext(context));
 }
 
 void Struct_Class::writeStruct(DataWriter &data) const
 {
-    data.align32();
-
-    data.put32(constantPoolTable.memoryAddress);
-    data.put32(fieldPoolTable.memoryAddress);
-    data.put32(methodPoolTable.memoryAddress);
+    data.put32(constantPoolTable.structStart);
+    data.put32(fieldPoolTable.structStart);
+    data.put32(methodPoolTable.structStart);
 
     data.put16(staticDataSize);
     data.put16(instanceDataSize);
@@ -75,7 +108,7 @@ quint32 Struct_Class::computeMemoryMap(quint32 baseAddress)
 
 void Struct_Class::printMemoryMap(QTextStream &ts) const
 {
-    ts << "  Class " << JavaName::demangle(name()) << " @0x" << memoryAddress << " {\n";
+    ts << "  Class " << JavaName::demangle(javaTypeName()) << " @0x" << structStart << " {\n";
     ts << "    constantPoolTable = ";
     constantPoolTable.printMemoryMap(ts);
     ts << "    fieldPoolTable = ";

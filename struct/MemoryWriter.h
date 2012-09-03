@@ -8,7 +8,7 @@
 class MemoryWriter : public DataWriter
 {
 private:
-    bool nullOk() const { return false; }
+    bool permissive() const { return false; }
 
     void write8(quint8 value);
     void write16(quint16 value);
@@ -20,7 +20,7 @@ private:
 public:
     MemoryWriter(quint32 baseAddress);
 
-    char const *name() const { return "MemoryWriter"; }
+    char const *typeName() const { return "MemoryWriter"; }
 
     int size() const { return array.size(); }
     QByteArray data() const { return array; }

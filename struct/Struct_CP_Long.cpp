@@ -10,6 +10,10 @@ Struct_CP_Long::Struct_CP_Long(const ConstantPoolInfo_Long &v)
 {
 }
 
+void Struct_CP_Long::resolveClassReferences(const ResolveContext &context)
+{
+}
+
 void Struct_CP_Long::writeStruct(DataWriter &data) const
 {
     Struct_CP::writeStruct(data);
@@ -24,5 +28,5 @@ quint32 Struct_CP_Long::computeMemoryMap(quint32 baseAddress)
 
 void Struct_CP_Long::printMemoryMap(QTextStream &ts) const
 {
-    ts << "Long @0x" << memoryAddress << " = " << value << "\n";
+    ts << "Long @0x" << structStart << " = " << value << "\n";
 }

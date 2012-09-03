@@ -16,9 +16,12 @@ class Struct_Method : public Struct
 public:
     Struct_Method(Method const &method);
 
+    quint8 alignment() const { return 4; }
     void writeStruct(DataWriter &data) const;
     quint32 computeMemoryMap(quint32 baseAddress);
     void printMemoryMap(QTextStream &ts) const;
+
+    char const *typeName() const { return "Method"; }
 
     void collectExceptions(Struct_Exception_Handler_Table &ehTable, Struct_Exceptions &eTable);
     void loadNativeInterface(const QList<NativeFunction> &nativeInterface, QString className, const Struct_CP_Table &constantPoolTable);
@@ -45,6 +48,10 @@ private:
 private:
     QList<ExceptionHandler> exceptionHandlers;
     QList<quint16> exceptions;
+
+public:
+    QString name;
+    QString descriptor;
 };
 
 #endif // STRUCT_METHOD_H

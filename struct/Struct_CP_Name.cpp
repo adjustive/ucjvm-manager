@@ -11,6 +11,10 @@ Struct_CP_Name::Struct_CP_Name(const ConstantPoolInfo_NameAndType &v)
 {
 }
 
+void Struct_CP_Name::resolveClassReferences(const ResolveContext &context)
+{
+}
+
 void Struct_CP_Name::writeStruct(DataWriter &data) const
 {
     Struct_CP::writeStruct(data);
@@ -26,5 +30,5 @@ quint32 Struct_CP_Name::computeMemoryMap(quint32 baseAddress)
 
 void Struct_CP_Name::printMemoryMap(QTextStream &ts) const
 {
-    ts << "Name @0x" << memoryAddress << " = " << nameIndex << ", " << descriptorIndex << "\n";
+    ts << "Name @0x" << structStart << " = " << nameIndex << ", " << descriptorIndex << "\n";
 }

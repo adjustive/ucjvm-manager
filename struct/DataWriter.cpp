@@ -4,100 +4,77 @@
 
 #include <typeinfo>
 
-enum Size
-{
-    BYTE_SIZE   = 1,
-    BYTE_ALIGN  = 1,
-    SHORT_SIZE  = 2,
-    SHORT_ALIGN = 2,
-    INT_SIZE    = 4,
-    INT_ALIGN   = 4,
-    LONG_SIZE   = 8,
-    LONG_ALIGN  = 8,
-
-    FLOAT_SIZE  = 4,
-    FLOAT_ALIGN = 4,
-    DOUBLE_SIZE = 8,
-    DOUBLE_ALIGN= 8,
-
-    ADDRESS_SIZE = INT_SIZE,
-    ADDRESS_ALIGN = INT_ALIGN
-};
-
 DataWriter::DataWriter(quint32 baseAddress)
-    : written(0)
-    , baseAddress(baseAddress)
+    : baseAddress(baseAddress)
+    , nextAddress(0)
+    , currentAddress(baseAddress)
 {
-//    qDebug("new DataWriter");
 }
 
-void DataWriter::wrote(int bytes)
+void DataWriter::wrote(quint16 bytes)
 {
-    written += bytes;
+    if (!permissive())
+    {
+        if (nextAddress != 0)
+        {
+            quint32 actual = currentAddress + bytes - baseAddress;
+            quint32 expected = nextAddress - baseAddress;
+//            qDebug("%u > %u", actual, expected);
+            if (actual > expected)
+                qFatal("wrote %u bytes beyond expected size", actual - expected);
+        }
+    }
+    currentAddress += bytes;
+//    log << typeName() << " ~ " << currentAddress << " : " << bytes << std::endl;
 }
 
 quint32 DataWriter::memorySize() const
 {
-    return written;
+    return currentAddress - baseAddress;
 }
 
-void DataWriter::checkAlign(int alignment) const
+void DataWriter::checkAlign(Size alignment) const
 {
-    if (memorySize() % alignment != 0)
-        qWarning("alignment at %d is less than %d", written, alignment);
+#if 0
+    if (currentAddress % alignment != 0)
+        qWarning("alignment at %u is less than %u", written, alignment);
+#endif
 }
 
-void DataWriter::setAlign(int alignment)
+quint32 DataWriter::align(quint32 address, quint8 alignment)
 {
-    while (memorySize() % alignment != 0)
-        pad8();
+    return (address & ~(alignment - 1)) + alignment * !!(address & (alignment - 1));
 }
 
-void DataWriter::position(quint32 pos) const
+void DataWriter::align(quint8 alignment)
 {
-    if (pos != memorySize() && !nullOk())
-        qWarning("expected position %u is not actual %u", pos, memorySize());
+//    if (currentAddress % alignment != 0)
+//    {
+//        log << "aligning to " << uint(alignment) << std::endl;
+        while (currentAddress % alignment != 0)
+            pad8();
+//        log << "aligning complete" << std::endl;
+//    }
 }
 
-void DataWriter::align8()
+void DataWriter::verifyPosition(quint32 currentAddress, quint32 nextAddress)
 {
-    setAlign(BYTE_ALIGN);
-}
+    if (!permissive())
+    {
+        if (currentAddress < baseAddress)
+            qFatal("memory address 0x%x is below base address 0x%x", currentAddress, baseAddress);
 
-void DataWriter::align16()
-{
-    setAlign(SHORT_ALIGN);
-}
-
-void DataWriter::align32()
-{
-    setAlign(INT_ALIGN);
-}
-
-void DataWriter::align64()
-{
-    setAlign(LONG_ALIGN);
-}
-
-void DataWriter::alignFloat()
-{
-    setAlign(FLOAT_ALIGN);
-}
-
-void DataWriter::alignDouble()
-{
-    setAlign(DOUBLE_ALIGN);
-}
-
-void DataWriter::alignAddress()
-{
-    setAlign(ADDRESS_ALIGN);
+        quint32 relativeAddress = currentAddress - baseAddress;
+        if (relativeAddress != memorySize())
+            qFatal("expected position %u is not actual %u", relativeAddress, memorySize());
+    }
+    this->nextAddress = nextAddress;
 }
 
 
 void DataWriter::put8(quint8 value)
 {
-//    checkAlign(BYTE_ALIGN);
+    checkAlign(BYTE_ALIGN);
 	write8(value);
     wrote(BYTE_SIZE);
 }
@@ -146,17 +123,15 @@ void DataWriter::putBytes(QByteArray value)
 
 void DataWriter::putAddress(Struct const &reference)
 {
-    if (reference.memoryAddress == 0)
+    if (!permissive())
     {
-        if (!nullOk())
+        if (reference.structStart == 0)
             qWarning("memory address for %p (%s) is NULL", &reference, typeid(reference).name());
-    }
-    else if (reference.memoryAddress < baseAddress)
-    {
-        qFatal("memory address 0x%x is below base address 0x%x", reference.memoryAddress, baseAddress);
+        else if (reference.structStart < baseAddress)
+            qFatal("memory address 0x%x is below base address 0x%x", reference.structStart, baseAddress);
     }
 
-    put32(reference.memoryAddress);
+    put32(reference.structStart);
 }
 
 void DataWriter::putAddress(Struct const *pointer)

@@ -87,7 +87,8 @@ SOURCES += main.cpp\
     ConfigView.cpp \
     NativeInterfaceModel.cpp \
     struct/MemoryWriter.cpp \
-    struct/Struct_CP_Dummy.cpp
+    struct/Struct_CP_Dummy.cpp \
+    struct/ResolveContext.cpp
 
 HEADERS  += MainWindow.h \
     JVMConfig.h \
@@ -164,7 +165,8 @@ HEADERS  += MainWindow.h \
     ConfigView.h \
     NativeInterfaceModel.h \
     struct/MemoryWriter.h \
-    struct/Struct_CP_Dummy.h
+    struct/Struct_CP_Dummy.h \
+    struct/ResolveContext.h
 
 FORMS    += MainWindow.ui \
     FieldsView.ui \

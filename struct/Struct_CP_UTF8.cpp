@@ -10,6 +10,10 @@ Struct_CP_UTF8::Struct_CP_UTF8(const ConstantPoolInfo_Utf8 &v)
 {
 }
 
+void Struct_CP_UTF8::resolveClassReferences(const ResolveContext &context)
+{
+}
+
 void Struct_CP_UTF8::writeStruct(DataWriter &data) const
 {
     Struct_CP::writeStruct(data);
@@ -25,7 +29,7 @@ quint32 Struct_CP_UTF8::computeMemoryMap(quint32 baseAddress)
 
 void Struct_CP_UTF8::printMemoryMap(QTextStream &ts) const
 {
-    ts << "UTF8 @0x" << memoryAddress << " = " << data << "\n";
+    ts << "UTF8 @0x" << structStart << " = " << data << "\n";
 }
 
 QString Struct_CP_UTF8::string() const

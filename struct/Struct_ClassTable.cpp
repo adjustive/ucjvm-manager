@@ -2,6 +2,7 @@
 
 #include "JVMClassList.h"
 #include "DataWriter.h"
+#include "ResolveContext.h"
 
 #include <QDebug>
 
@@ -15,7 +16,18 @@ Struct_ClassTable::Struct_ClassTable(JVMClassList const &classList, quint32 base
 
     sort();
     loadNativeInterface(nativeInterface);
+    resolveClassReferences();
     computeMemoryMap(baseAddress);
+}
+
+
+Struct_Class const &Struct_ClassTable::byName(QString name) const
+{
+    foreach (Struct_Class const &classData, classes)
+        if (classData.javaTypeName() == name)
+            return classData;
+
+    throw "not found";
 }
 
 
@@ -28,7 +40,7 @@ struct FindClass
 
     bool operator()(Struct_Class const &candidate) const
     {
-        return candidate.name() == name;
+        return candidate.javaTypeName() == name;
     }
 
 private:
@@ -74,10 +86,20 @@ void Struct_ClassTable::loadNativeInterface(QList<NativeFunction> const &nativeI
 }
 
 
+void Struct_ClassTable::resolveClassReferences()
+{
+    ResolveContext context = ResolveContext().setClassTable(*this);
+    for (int i = 0; i < classes.size(); i++)
+        classes[i].resolveClassReferences(context);
+    for (int i = 0; i < classes.size(); i++)
+        classes[i].resolveFieldReferences(context);
+    for (int i = 0; i < classes.size(); i++)
+        classes[i].resolveMethodReferences(context);
+}
+
+
 void Struct_ClassTable::writeStruct(DataWriter &data) const
 {
-    data.alignAddress();
-
     data.put16(classes.size());
     data.pad16();
 
@@ -85,7 +107,7 @@ void Struct_ClassTable::writeStruct(DataWriter &data) const
 //    data.putBytes("RTBL");
 
     foreach (Struct_Class const &classData, classes)
-        data.put32(classData.memoryAddress);
+        data.put32(classData.structStart);
 }
 
 void Struct_ClassTable::writeData(DataWriter &data) const
@@ -108,7 +130,7 @@ quint32 Struct_ClassTable::computeMemoryMap(quint32 baseAddress)
 
 void Struct_ClassTable::printMemoryMap(QTextStream &ts) const
 {
-    ts << "ClassTable @0x" << hex << memoryAddress << " {\n";
+    ts << "ClassTable @0x" << hex << structStart << " {\n";
 
     foreach (Struct_Class const &classData, classes)
         classData.printMemoryMap(ts);

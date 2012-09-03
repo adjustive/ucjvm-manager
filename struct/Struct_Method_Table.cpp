@@ -1,5 +1,6 @@
 #include "Struct_Method_Table.h"
 
+#include "JavaName.h"
 #include "Methods.h"
 #include "DataWriter.h"
 
@@ -9,6 +10,28 @@ Struct_Method_Table::Struct_Method_Table(const Methods &methods)
 {
     foreach (Method const &method, methods.methods())
         this->methods.append(Struct_Method(method));
+}
+
+Struct_Method const *Struct_Method_Table::getMethod(QString name, QString descriptor) const
+{
+#if 0
+    qDebug("resolving field: %s %s",
+           JavaName::demangle(descriptor).toUtf8().constData(),
+           name.toUtf8().constData());
+#endif
+    foreach (Struct_Method const &method, methods)
+        if (method.name == name && method.descriptor == descriptor)
+        {
+#if 0
+            qDebug("method resolved: %s %s (%p)",
+                   JavaName::demangle(descriptor).toUtf8().constData(),
+                   name.toUtf8().constData(),
+                   &method);
+#endif
+            return &method;
+        }
+
+    return NULL;
 }
 
 void Struct_Method_Table::writeStruct(DataWriter &data) const
@@ -38,7 +61,7 @@ quint32 Struct_Method_Table::computeMemoryMap(quint32 baseAddress)
 
 void Struct_Method_Table::printMemoryMap(QTextStream &ts) const
 {
-    ts << "Method_Table @0x" << memoryAddress << " {\n";
+    ts << "Method_Table @0x" << structStart << " {\n";
 
     foreach (Struct_Method const &method, methods)
         method.printMemoryMap(ts);
