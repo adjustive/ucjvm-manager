@@ -77,11 +77,15 @@ void Struct::write(DataWriter &data) const
 
     data.align(alignment());
 
+    data.start(typeName(), structStart);
+
     data.verifyPosition(structStart, dataStart);
     writeStruct(data);
     data.verifyPosition(dataStart, dataEnd);
     writeData(data);
     data.verifyPosition(dataEnd, 0);
+
+    data.end(typeName(), dataEnd);
 
 //    log << typeName() << "@" << this << ": write ends" << std::endl;
 }

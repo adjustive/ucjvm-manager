@@ -3,6 +3,7 @@
 #include "Struct_ClassTable.h"
 #include "MemoryWriter.h"
 #include "DryRunWriter.h"
+#include "MemoryMapWriter.h"
 
 #include <QTextStream>
 #include <QDebug>
@@ -35,7 +36,9 @@ void Linker::link()
     Q_D(Linker);
     qDebug("linking...");
 
-    Struct_ClassTable classTable(d->classList, d->config.baseAddress(), d->config.nativeInterface());
+    quint32 const baseAddress = d->config.baseAddress();
+
+    Struct_ClassTable classTable(d->classList, baseAddress, d->config.nativeInterface());
 
 #if 0
     DryRunWriter drw;
@@ -47,13 +50,23 @@ void Linker::link()
     QTextStream ts(&map);
     classTable.printMemoryMap(ts);
 
-    FILE *out = fopen("memory.log", "w");
-    fprintf(out, "%s", map.toUtf8().constData());
-    fclose(out);
+    {
+        FILE *out = fopen("memory.log", "w");
+        fprintf(out, "%s", map.toUtf8().constData());
+        fclose(out);
+    }
 
-    MemoryWriter writer(d->config.baseAddress());
+    MemoryMapWriter memMap(baseAddress);
+    classTable.write(memMap);
+    memMap.flush();
+    {
+        QFile out("new.xml");
+        out.open(QFile::WriteOnly);
+        out.write(memMap.data());
+    }
+
+    MemoryWriter writer(baseAddress);
     classTable.write(writer);
-
     {
         QFile out("new.bin");
         out.open(QFile::WriteOnly);

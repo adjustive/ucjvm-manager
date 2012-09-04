@@ -61,21 +61,30 @@ void Struct_ClassTable::moveClass(QString name, int index)
 
 void Struct_ClassTable::sort()
 {
-    moveClass("java/lang/Object", 0);
-    moveClass("java/lang/String", 1);
+    static struct
+    {
+        char const *className;
+        int position;
+    } fixedOrder[] = {
+        { "java/lang/Object", 0 },
+		{ "java/lang/String", 1 },
 
-    // exceptions
-    moveClass("java/lang/Throwable", 2);
-    moveClass("java/lang/Exception", 3);
-    moveClass("java/lang/NullPointerException", 4);
-    moveClass("java/lang/ArithmeticException", 5);
-    moveClass("java/lang/NegativeArraySizeException", 6);
-    moveClass("java/lang/IndexOutOfBoundsException", 7);
-    moveClass("java/lang/ArrayIndexOutOfBoundsException", 8);
-//	moveClass("java/lang/IllegalFunctionCallException", 9);
-    moveClass("java/lang/Error", 10);
-    moveClass("java/lang/LinkageError", 10);
-    moveClass("java/lang/UnsatisfiedLinkError", 11);
+        // exceptions
+		{ "java/lang/Throwable", 2 },
+		{ "java/lang/Exception", 3 },
+		{ "java/lang/NullPointerException", 4 },
+		{ "java/lang/ArithmeticException", 5 },
+		{ "java/lang/NegativeArraySizeException", 6 },
+		{ "java/lang/IndexOutOfBoundsException", 7 },
+		{ "java/lang/ArrayIndexOutOfBoundsException", 8 },
+//	    { "java/lang/IllegalFunctionCallException", 9 },
+		{ "java/lang/Error", 10 },
+		{ "java/lang/LinkageError", 10 },
+		{ "java/lang/UnsatisfiedLinkError", 11 },
+    };
+
+    for (size_t i = 0; i < sizeof fixedOrder / sizeof *fixedOrder; i++)
+        moveClass(fixedOrder[i].className, fixedOrder[i].position);
 }
 
 

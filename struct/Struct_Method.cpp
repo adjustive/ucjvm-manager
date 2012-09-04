@@ -41,7 +41,8 @@ void Struct_Method::writeStruct(DataWriter &data) const
     data.put16(offsetHandlers);
     data.put16(lengthHandlers);
 
-    data.putAddress(exceptionsTable);
+    data.putAddress(0);
+//    data.putAddress(exceptionsTable);
     data.put16(offsetExceptions);
     data.put16(lengthExceptions);
 

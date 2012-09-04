@@ -1,14 +1,17 @@
-#ifndef MEMORYWRITER_H
-#define MEMORYWRITER_H
+#ifndef MEMORYMAPWRITER_H
+#define MEMORYMAPWRITER_H
 
 #include "DataWriter.h"
 
-#include <QDataStream>
+#include <QList>
+#include <QTextStream>
 
-class MemoryWriter : public DataWriter
+class MemoryMapWriter : public DataWriter
 {
-private:
     bool permissive() const { return false; }
+
+public:
+    MemoryMapWriter(quint32 baseAddress);
 
     void write8(quint8 value);
     void write16(quint16 value);
@@ -20,17 +23,20 @@ private:
     void start(const char *section, quint32 address);
     void end(const char *section, quint32 address);
 
-public:
-    MemoryWriter(quint32 baseAddress);
-
-    char const *typeName() const { return "MemoryWriter"; }
+    char const *typeName() const { return "MemoryMapWriter"; }
 
     int size() const { return array.size(); }
     QByteArray data() const { return array; }
+    void flush() { stream.flush(); }
 
 private:
+    QList<char const *> sectionStack;
     QByteArray array;
-    QDataStream stream;
+    QTextStream stream;
+
+private:
+    int level;
+    void indent();
 };
 
-#endif // MEMORYWRITER_H
+#endif // MEMORYMAPWRITER_H

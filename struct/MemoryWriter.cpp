@@ -28,10 +28,25 @@ void MemoryWriter::write64(quint64 value)
 
 void MemoryWriter::writeFloat(float value)
 {
+    stream.setFloatingPointPrecision(QDataStream::SinglePrecision);
     stream << value;
 }
 
 void MemoryWriter::writeDouble(double value)
 {
+    stream.setFloatingPointPrecision(QDataStream::DoublePrecision);
     stream << value;
+}
+
+
+void MemoryWriter::start(const char *section, quint32 address)
+{
+    if (address - baseAddress != size())
+        qFatal("address %x in %s is not expected %x", size(), section, address);
+}
+
+void MemoryWriter::end(const char *section, quint32 address)
+{
+    if (address - baseAddress != size())
+        qFatal("address %x in %s is not expected %x", size(), section, address);
 }

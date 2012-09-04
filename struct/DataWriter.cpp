@@ -3,6 +3,7 @@
 #include "Struct.h"
 
 #include <typeinfo>
+#include <limits>
 
 DataWriter::DataWriter(quint32 baseAddress)
     : baseAddress(baseAddress)
@@ -165,4 +166,13 @@ void DataWriter::pad32()
 void DataWriter::pad64()
 {
     put64(0);
+}
+
+
+void DataWriter::start(const char *section, quint32 address)
+{
+}
+
+void DataWriter::end(const char *section, quint32 address)
+{
 }

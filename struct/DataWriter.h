@@ -43,7 +43,7 @@ private:
     virtual void checkAlign(Size alignment) const;
 
 public:
-    DataWriter(quint32 baseAddress = 0);
+    DataWriter(quint32 baseAddress);
 
     static quint32 align(quint32 address, quint8 alignment);
     void align(quint8 alignment);
@@ -68,10 +68,15 @@ public:
     void pad32();
     void pad64();
 
+    virtual void start(char const *section, quint32 address);
+    virtual void end(char const *section, quint32 address);
+
     virtual char const *typeName() const = 0;
 
-private:
+protected:
     quint32 const baseAddress;
+
+private:
     quint32 nextAddress;
     quint32 currentAddress;
 };
