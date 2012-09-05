@@ -89,7 +89,8 @@ SOURCES += main.cpp\
     struct/MemoryWriter.cpp \
     struct/Struct_CP_Dummy.cpp \
     struct/ResolveContext.cpp \
-    struct/MemoryMapWriter.cpp
+    struct/MemoryMapWriter.cpp \
+    editors/Bitmap2DEditor.cpp
 
 HEADERS  += MainWindow.h \
     JVMConfig.h \
@@ -168,12 +169,14 @@ HEADERS  += MainWindow.h \
     struct/MemoryWriter.h \
     struct/Struct_CP_Dummy.h \
     struct/ResolveContext.h \
-    struct/MemoryMapWriter.h
+    struct/MemoryMapWriter.h \
+    editors/Bitmap2DEditor.h
 
 FORMS    += MainWindow.ui \
     FieldsView.ui \
     MethodsView.ui \
-    ConfigView.ui
+    ConfigView.ui \
+    editors/Bitmap2DEditor.ui
 
 OTHER_FILES += \
     data/jvmconfig/terminator V1.0d.cfg \
