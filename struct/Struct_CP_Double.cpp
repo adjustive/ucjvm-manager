@@ -17,7 +17,7 @@ void Struct_CP_Double::resolveClassReferences(const ResolveContext &context)
 void Struct_CP_Double::writeStruct(DataWriter &data) const
 {
     Struct_CP::writeStruct(data);
-    data.putDouble(value);
+    data.putDouble(value, "value");
 }
 
 quint32 Struct_CP_Double::computeMemoryMap(quint32 baseAddress)

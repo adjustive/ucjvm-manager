@@ -17,8 +17,8 @@ void Struct_CP_UTF8::resolveClassReferences(const ResolveContext &context)
 void Struct_CP_UTF8::writeStruct(DataWriter &data) const
 {
     Struct_CP::writeStruct(data);
-    data.put16(this->data.size());
-    data.putBytes(this->data);
+    data.put16(this->data.size(), "size");
+    data.putBytes(this->data, "data");
 }
 
 quint32 Struct_CP_UTF8::computeMemoryMap(quint32 baseAddress)

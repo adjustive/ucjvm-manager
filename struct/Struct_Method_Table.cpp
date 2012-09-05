@@ -36,11 +36,11 @@ Struct_Method const *Struct_Method_Table::getMethod(QString name, QString descri
 
 void Struct_Method_Table::writeStruct(DataWriter &data) const
 {
-    data.put16(methods.size());
+    data.put16(methods.size(), "size");
     data.pad16();
 
     foreach (Struct_Method const &method, methods)
-        data.putAddress(method);
+        data.putAddress(method, "method");
 }
 
 void Struct_Method_Table::writeData(DataWriter &data) const

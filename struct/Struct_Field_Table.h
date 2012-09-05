@@ -13,6 +13,8 @@ public:
 
     Struct_Field const *getField(QString name, QString descriptor) const;
 
+    void computeFieldOffsets(quint16 staticBase, quint16 instanceBase);
+
     quint8 alignment() const { return 4; }
     void writeStruct(DataWriter &data) const;
     void writeData(DataWriter &data) const;

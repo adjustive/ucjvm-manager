@@ -33,7 +33,7 @@ static QString demangle1(QString::const_iterator &mangled)
     }
 }
 
-QString JavaName::demangle(QString mangled)
+QString JavaName::demangle(QString mangled, QString functionName, QString className)
 {
     QString::const_iterator it = mangled.constBegin();
 
@@ -44,7 +44,9 @@ QString JavaName::demangle(QString mangled)
         while (*it != ')')
             argumentList << demangle1(it);
         ++it;
-        return demangle1(it) + "(" + argumentList.join(", ") + ")";
+        if (!className.isEmpty())
+            functionName = className + "#" + functionName;
+        return demangle1(it) + " " + functionName + "(" + argumentList.join(", ") + ")";
     }
     else
     {

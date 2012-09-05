@@ -22,8 +22,8 @@ void Struct_CP_Class::resolveClassReferences(const ResolveContext &context)
 void Struct_CP_Class::writeStruct(DataWriter &data) const
 {
     Struct_CP::writeStruct(data);
-    data.put16(index);
-    data.putAddress(classAddress);
+    data.put16(index, "index");
+    data.putAddress(classAddress, "classAddress");
 }
 
 quint32 Struct_CP_Class::computeMemoryMap(quint32 baseAddress)

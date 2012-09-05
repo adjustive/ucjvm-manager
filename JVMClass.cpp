@@ -22,6 +22,9 @@ struct JVMClassPrivate
     Fields fields;
     Methods methods;
     Attributes attributes;
+
+    quint16 staticDataSize;
+    quint16 instanceDataSize;
 };
 
 
@@ -69,6 +72,15 @@ JVMClass::JVMClass(QDataStream &data)
     d->fields = Fields(data, d->constantPool);
     d->methods = Methods(data, d->constantPool);
     d->attributes = Attributes(data, d->constantPool);
+
+    d->staticDataSize = 0;
+    d->instanceDataSize = 0;
+
+    foreach (Field const &field, d->fields.fields())
+        if (field.isStatic())
+            d->staticDataSize += field.dataSize();
+        else
+            d->instanceDataSize += field.dataSize();
 }
 
 
@@ -85,6 +97,9 @@ JVMClass::JVMClass(const ConstantPool &constantPool)
     d->accessFlags = ACC_PUBLIC;
     d->thisClass = 1;
     d->superClass = 3;
+
+    d->staticDataSize = 0;
+    d->instanceDataSize = 0;
 }
 
 
@@ -224,4 +239,16 @@ Method const &JVMClass::method(int index) const
 {
     Q_D(const JVMClass);
     return d->methods.get(index);
+}
+
+quint16 JVMClass::staticDataSize() const
+{
+    Q_D(const JVMClass);
+    return d->staticDataSize;
+}
+
+quint16 JVMClass::instanceDataSize() const
+{
+    Q_D(const JVMClass);
+    return d->instanceDataSize;
 }

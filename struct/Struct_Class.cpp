@@ -13,9 +13,12 @@ Struct_Class::Struct_Class(const JVMClass &classData)
     , fieldPoolTable(classData.fields())
     , methodPoolTable(classData.methods())
 
-    , staticDataSize(0)
-    , instanceDataSize(0)
+    , inheritedStaticDataSize(0)
+    , inheritedInstanceDataSize(0)
     , staticDataHandle(0)
+
+    , ownStaticDataSize(classData.staticDataSize())
+    , ownInstanceDataSize(classData.instanceDataSize())
 
     , className(classData.name())
 {
@@ -28,17 +31,23 @@ QString Struct_Class::javaTypeName() const
 
 Struct_Class const *Struct_Class::superClass() const
 {
+    if (javaTypeName() == "java/lang/Object")
+        return NULL;
+
     Struct_CP_Class const &superClassInfo = constantPoolTable.getClass(3);
     Struct_Class const *superClass = superClassInfo.classAddress;
     Q_ASSERT(superClass != NULL);
-    if (superClass->javaTypeName() == "java/lang/Object")
-        return NULL;
     return superClass;
 }
 
 void Struct_Class::collectExceptions()
 {
     methodPoolTable.collectExceptions(exceptionHandlerTable, exceptionsTable);
+}
+
+void Struct_Class::setStaticDataHandle(quint16 staticDataHandle)
+{
+    this->staticDataHandle = staticDataHandle;
 }
 
 void Struct_Class::loadNativeInterface(QList<NativeFunction> const &nativeInterface)
@@ -70,15 +79,37 @@ void Struct_Class::resolveMethodReferences(const ResolveContext &context)
     constantPoolTable.resolveMethodReferences(resolveContext(context));
 }
 
+
+void Struct_Class::computeDataSize()
+{
+    Struct_Class const *current = this;
+
+    inheritedStaticDataSize = 0;
+    inheritedInstanceDataSize = 0;
+
+    while ((current = current->superClass()))
+    {
+        inheritedStaticDataSize += current->ownStaticDataSize;
+        inheritedInstanceDataSize += current->ownInstanceDataSize;
+    }
+}
+
+
+void Struct_Class::computeFieldOffsets()
+{
+    fieldPoolTable.computeFieldOffsets(inheritedStaticDataSize, inheritedInstanceDataSize);
+}
+
+
 void Struct_Class::writeStruct(DataWriter &data) const
 {
-    data.put32(constantPoolTable.structStart);
-    data.put32(fieldPoolTable.structStart);
-    data.put32(methodPoolTable.structStart);
+    data.put32(constantPoolTable.structStart, "constantPoolTable");
+    data.put32(fieldPoolTable.structStart, "fieldPoolTable");
+    data.put32(methodPoolTable.structStart, "methodPoolTable");
 
-    data.put16(staticDataSize);
-    data.put16(instanceDataSize);
-    data.put16(staticDataHandle);
+    data.put16(inheritedStaticDataSize + ownStaticDataSize, "staticDataSize");
+    data.put16(inheritedInstanceDataSize + ownInstanceDataSize, "instanceDataSize");
+    data.put16(staticDataHandle, "staticDataHandle");
     data.pad16();
 }
 
@@ -115,8 +146,8 @@ void Struct_Class::printMemoryMap(QTextStream &ts) const
     fieldPoolTable.printMemoryMap(ts);
     ts << "    methodPoolTable = ";
     methodPoolTable.printMemoryMap(ts);
-    ts << "    staticDataSize = " << staticDataSize << "\n";
-    ts << "    instanceDataSize = " << instanceDataSize << "\n";
+    ts << "    staticDataSize = " << inheritedStaticDataSize + ownStaticDataSize << "\n";
+    ts << "    instanceDataSize = " << inheritedInstanceDataSize + ownInstanceDataSize << "\n";
     ts << "    staticDataHandle = " << staticDataHandle << "\n";
     ts << "  }\n";
 }

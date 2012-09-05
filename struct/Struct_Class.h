@@ -19,12 +19,16 @@ public:
     Struct_Class const *superClass() const;
 
     void collectExceptions();
+    void setStaticDataHandle(quint16 staticDataHandle);
     void loadNativeInterface(QList<NativeFunction> const &nativeInterface);
 
     ResolveContext resolveContext(const ResolveContext &context) const;
     void resolveClassReferences(const ResolveContext &context);
     void resolveFieldReferences(const ResolveContext &context);
     void resolveMethodReferences(const ResolveContext &context);
+
+    void computeDataSize();
+    void computeFieldOffsets();
 
     quint8 alignment() const { return 4; }
     void writeStruct(DataWriter &data) const;
@@ -42,11 +46,13 @@ public:
     Struct_Exception_Handler_Table exceptionHandlerTable;
     Struct_Exceptions exceptionsTable;
 
-    quint16 staticDataSize;
-    quint16 instanceDataSize;
+    quint16 inheritedStaticDataSize;
+    quint16 inheritedInstanceDataSize;
     quint16 staticDataHandle;
 
 private:
+    quint16 ownStaticDataSize;
+    quint16 ownInstanceDataSize;
     QString className;
 };
 

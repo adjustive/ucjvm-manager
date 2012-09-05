@@ -15,15 +15,30 @@ Struct_Field::Struct_Field(Field const &field)
     , descriptorIndex(field.descriptorIndex())
     , name(field.name())
     , descriptor(field.descriptor())
+
+    , dataSize(field.dataSize())
 {
 }
 
+
+quint16 Struct_Field::setDataOffset(quint16 base)
+{
+    dataOffset = base;
+    return dataSize;
+}
+
+bool Struct_Field::isStatic() const
+{
+    return accessFlags & Field::ACC_STATIC;
+}
+
+
 void Struct_Field::writeStruct(DataWriter &data) const
 {
-    data.put16(accessFlags);
-    data.put16(dataOffset);
-    data.put16(constantValueReference);
-    data.put8(fieldType);
+    data.put16(accessFlags, "accessFlags");
+    data.put16(dataOffset, "dataOffset");
+    data.put16(constantValueReference, "constantValueReference");
+    data.put8(fieldType, "fieldType");
     data.pad8();
 }
 

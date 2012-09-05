@@ -23,12 +23,14 @@ public:
     char const *typeName() const { return "ClassTable"; }
 
 private:
-    void moveClass(QString typeName, int index);
+    void moveClass(int index, QString name);
     void sort();
 
+    void setStaticDataHandles();
     void loadNativeInterface(QList<NativeFunction> const &nativeInterface);
-
     void resolveClassReferences();
+    void computeClassSizes();
+    void computeFieldOffsets();
 
 private:
     QList<Struct_Class> classes;

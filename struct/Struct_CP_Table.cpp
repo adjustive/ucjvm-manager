@@ -128,11 +128,11 @@ void Struct_CP_Table::resolveMethodReferences(const ResolveContext &context)
 
 void Struct_CP_Table::writeStruct(DataWriter &data) const
 {
-    data.put16(constants.size());
+    data.put16(constants.size(), "size");
     data.pad16();
 
     foreach (QSharedPointer<Struct_CP> cp, constants)
-        data.putAddress(cp);
+        data.putAddress(cp, "constant");
 }
 
 void Struct_CP_Table::writeData(DataWriter &data) const

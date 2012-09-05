@@ -25,7 +25,7 @@ public:
 
     char const *typeName() const { return "MemoryWriter"; }
 
-    int size() const { return array.size(); }
+    uint size() const { return array.size(); }
     QByteArray data() const { return array; }
 
 private:

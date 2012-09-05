@@ -51,17 +51,17 @@ public:
 
     virtual quint32 memorySize() const;
 
-    void put8(quint8 value);
-    void put16(quint16 value);
-    void put32(quint32 value);
-    void put64(quint64 value);
-    void putFloat(float value);
-    void putDouble(double value);
+    void put8(quint8 value, char const *field);
+    void put16(quint16 value, char const *field);
+    void put32(quint32 value, char const *field);
+    void put64(quint64 value, char const *field);
+    void putFloat(float value, char const *field);
+    void putDouble(double value, char const *field);
 
-    void putBytes(QByteArray value);
-    void putAddress(Struct const &reference);
-    void putAddress(Struct const *pointer);
-    void putAddress(QSharedPointer<Struct> pointer);
+    void putBytes(QByteArray value, char const *field);
+    void putAddress(Struct const &reference, char const *field);
+    void putAddress(Struct const *pointer, char const *field);
+    void putAddress(QSharedPointer<Struct> pointer, char const *field);
 
     void pad8();
     void pad16();

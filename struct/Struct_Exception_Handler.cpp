@@ -13,10 +13,10 @@ Struct_Exception_Handler::Struct_Exception_Handler(ExceptionHandler const &handl
 
 void Struct_Exception_Handler::writeStruct(DataWriter &data) const
 {
-    data.put16(startPC);
-    data.put16(endPC);
-    data.put16(handlerPC);
-    data.put16(catchType);
+    data.put16(startPC, "startPC");
+    data.put16(endPC, "endPC");
+    data.put16(handlerPC, "handlerPC");
+    data.put16(catchType, "catchType");
 }
 
 quint32 Struct_Exception_Handler::computeMemoryMap(quint32 baseAddress)

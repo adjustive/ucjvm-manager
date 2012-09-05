@@ -37,8 +37,11 @@ quint32 DataWriter::memorySize() const
 void DataWriter::checkAlign(Size alignment) const
 {
 #if 0
-    if (currentAddress % alignment != 0)
-        qWarning("alignment at %u is less than %u", written, alignment);
+    if (!permissive())
+    {
+        if (currentAddress % alignment != 0)
+            qWarning("alignment at %u is less than %u", currentAddress, alignment);
+    }
 #endif
 }
 
@@ -73,56 +76,70 @@ void DataWriter::verifyPosition(quint32 currentAddress, quint32 nextAddress)
 }
 
 
-void DataWriter::put8(quint8 value)
+void DataWriter::put8(quint8 value, const char *field)
 {
+    start(field, currentAddress);
     checkAlign(BYTE_ALIGN);
 	write8(value);
     wrote(BYTE_SIZE);
+    end(field, currentAddress);
 }
 
-void DataWriter::put16(quint16 value)
+void DataWriter::put16(quint16 value, char const *field)
 {
+    start(field, currentAddress);
     checkAlign(SHORT_ALIGN);
     write16(value);
     wrote(SHORT_SIZE);
+    end(field, currentAddress);
 }
 
-void DataWriter::put32(quint32 value)
+void DataWriter::put32(quint32 value, const char *field)
 {
+    start(field, currentAddress);
     checkAlign(INT_ALIGN);
     write32(value);
     wrote(INT_SIZE);
+    end(field, currentAddress);
 }
 
-void DataWriter::put64(quint64 value)
+void DataWriter::put64(quint64 value, const char *field)
 {
+    start(field, currentAddress);
     checkAlign(LONG_ALIGN);
     write64(value);
     wrote(LONG_SIZE);
+    end(field, currentAddress);
 }
 
-void DataWriter::putFloat(float value)
+void DataWriter::putFloat(float value, const char *field)
 {
+    start(field, currentAddress);
     checkAlign(FLOAT_ALIGN);
     writeFloat(value);
     wrote(FLOAT_SIZE);
+    end(field, currentAddress);
 }
 
-void DataWriter::putDouble(double value)
+void DataWriter::putDouble(double value, const char *field)
 {
+    start(field, currentAddress);
     checkAlign(DOUBLE_ALIGN);
 	writeDouble(value);
     wrote(DOUBLE_SIZE);
+    end(field, currentAddress);
 }
 
-void DataWriter::putBytes(QByteArray value)
+void DataWriter::putBytes(QByteArray value, const char *field)
 {
+    start(field, currentAddress);
     foreach (char byte, value)
         write8(byte);
     wrote(value.size());
+    end(field, currentAddress);
 }
 
-void DataWriter::putAddress(Struct const &reference)
+void DataWriter::putAddress(Struct const &reference, const char *field)
 {
     if (!permissive())
     {
@@ -132,47 +149,51 @@ void DataWriter::putAddress(Struct const &reference)
             qFatal("memory address 0x%x is below base address 0x%x", reference.structStart, baseAddress);
     }
 
-    put32(reference.structStart);
+    put32(reference.structStart, field);
 }
 
-void DataWriter::putAddress(Struct const *pointer)
+void DataWriter::putAddress(Struct const *pointer, const char *field)
 {
     if (pointer)
-        putAddress(*pointer);
+        putAddress(*pointer, field);
     else
-        put32(0);
+        put32(0, field);
 }
 
-void DataWriter::putAddress(QSharedPointer<Struct> pointer)
+void DataWriter::putAddress(QSharedPointer<Struct> pointer, const char *field)
 {
-    putAddress(pointer.data());
+    putAddress(pointer.data(), field);
 }
 
 void DataWriter::pad8()
 {
-    put8(0);
+    put8(0, "__pad8");
 }
 
 void DataWriter::pad16()
 {
-    put16(0);
+    put16(0, "__pad16");
 }
 
 void DataWriter::pad32()
 {
-    put32(0);
+    put32(0, "__pad32");
 }
 
 void DataWriter::pad64()
 {
-    put64(0);
+    put64(0, "__pad64");
 }
 
 
 void DataWriter::start(const char *section, quint32 address)
 {
+    Q_UNUSED(section);
+    Q_UNUSED(address);
 }
 
 void DataWriter::end(const char *section, quint32 address)
 {
+    Q_UNUSED(section);
+    Q_UNUSED(address);
 }

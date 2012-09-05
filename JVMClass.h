@@ -60,6 +60,9 @@ public:
     Field const &field(int index) const;
     Method const &method(int index) const;
 
+    quint16 staticDataSize() const;
+    quint16 instanceDataSize() const;
+
 private:
     Q_DECLARE_PRIVATE(JVMClass)
     QSharedPointer<JVMClassPrivate> d_ptr;

@@ -12,37 +12,40 @@ MemoryMapWriter::MemoryMapWriter(quint32 baseAddress)
 void MemoryMapWriter::write8(quint8 value)
 {
     indent();
-    stream << "<u8>" << value << "</u8>\n";
+    stream << value;
+    if (isprint(value))
+        stream << " = " << char(value);
+    stream << "\n";
 }
 
 void MemoryMapWriter::write16(quint16 value)
 {
     indent();
-    stream << "<u16>" << value << "</u16>\n";
+    stream << value << "\n";
 }
 
 void MemoryMapWriter::write32(quint32 value)
 {
     indent();
-    stream << "<u32>" << value << "</u32>\n";
+    stream << value << "\n";
 }
 
 void MemoryMapWriter::write64(quint64 value)
 {
     indent();
-    stream << "<u64>" << value << "</u64>\n";
+    stream << value << "\n";
 }
 
 void MemoryMapWriter::writeFloat(float value)
 {
     indent();
-    stream << "<float>" << value << "</float>\n";
+    stream << value << "\n";
 }
 
 void MemoryMapWriter::writeDouble(double value)
 {
     indent();
-    stream << "<double>" << value << "</double>\n";
+    stream << value << "\n";
 }
 
 

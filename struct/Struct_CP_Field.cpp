@@ -37,8 +37,8 @@ void Struct_CP_Field::resolveFieldReferences(const ResolveContext &context)
     Struct_Class const *current = classAddress;
     do
     {
-        Struct_Field const *field = current->fieldPoolTable.getField(fieldName, fieldDescriptor);
-        if (field != NULL)
+        fieldAddress = current->fieldPoolTable.getField(fieldName, fieldDescriptor);
+        if (fieldAddress != NULL)
             return;
     }
     while ((current = current->superClass()));
@@ -52,10 +52,10 @@ void Struct_CP_Field::resolveFieldReferences(const ResolveContext &context)
 void Struct_CP_Field::writeStruct(DataWriter &data) const
 {
     Struct_CP::writeStruct(data);
-    data.put16(classIndex);
-    data.put16(descriptorIndex);
-    data.putAddress(fieldAddress);
-    data.putAddress(classAddress);
+    data.put16(classIndex, "classIndex");
+    data.put16(descriptorIndex, "descriptorIndex");
+    data.putAddress(fieldAddress, "fieldAddress");
+    data.putAddress(classAddress, "classAddress");
 }
 
 quint32 Struct_CP_Field::computeMemoryMap(quint32 baseAddress)

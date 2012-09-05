@@ -6,7 +6,7 @@
 class JavaName
 {
 public:
-    static QString demangle(QString mangled);
+    static QString demangle(QString mangled, QString functionName = QString(), QString className = QString());
 
     JavaName();
 };

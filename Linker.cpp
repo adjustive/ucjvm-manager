@@ -8,6 +8,7 @@
 #include <QTextStream>
 #include <QDebug>
 
+#include <sys/time.h>
 #include <cstdio>
 
 struct LinkerPrivate
@@ -36,6 +37,9 @@ void Linker::link()
     Q_D(Linker);
     qDebug("linking...");
 
+    timeval start;
+    gettimeofday(&start, NULL);
+
     quint32 const baseAddress = d->config.baseAddress();
 
     Struct_ClassTable classTable(d->classList, baseAddress, d->config.nativeInterface());
@@ -46,32 +50,39 @@ void Linker::link()
     qFatal("%u", drw.memorySize());
 #endif
 
-    QString map;
-    QTextStream ts(&map);
-    classTable.printMemoryMap(ts);
-
     {
-        FILE *out = fopen("memory.log", "w");
-        fprintf(out, "%s", map.toUtf8().constData());
-        fclose(out);
+        QFile out("memory.log");
+        out.open(QFile::WriteOnly);
+
+        QString map;
+        QTextStream ts(&out);
+        classTable.printMemoryMap(ts);
     }
 
-    MemoryMapWriter memMap(baseAddress);
-    classTable.write(memMap);
-    memMap.flush();
     {
+        MemoryMapWriter memMap(baseAddress);
+        classTable.write(memMap);
+        memMap.flush();
+
         QFile out("new.xml");
         out.open(QFile::WriteOnly);
         out.write(memMap.data());
     }
 
-    MemoryWriter writer(baseAddress);
-    classTable.write(writer);
     {
+        MemoryWriter writer(baseAddress);
+        classTable.write(writer);
+
         QFile out("new.bin");
         out.open(QFile::WriteOnly);
         out.write(writer.data());
-    }
 
-    qDebug("linking done: %d bytes", writer.size());
+        timeval end;
+        gettimeofday(&end, NULL);
+
+        timeval diff;
+        timersub(&end, &start, &diff);
+
+        qDebug("linking done: %d bytes %ld.%06lu secs", writer.size(), diff.tv_sec, diff.tv_usec);
+    }
 }

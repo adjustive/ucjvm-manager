@@ -35,13 +35,27 @@ Struct_Field const *Struct_Field_Table::getField(QString name, QString descripto
     return NULL;
 }
 
+
+void Struct_Field_Table::computeFieldOffsets(quint16 staticBase, quint16 instanceBase)
+{
+    for (int i = 0; i < fields.size(); i++)
+    {
+        Struct_Field &field = fields[i];
+        if (field.isStatic())
+            staticBase += field.setDataOffset(staticBase);
+        else
+            instanceBase += field.setDataOffset(instanceBase);
+    }
+}
+
+
 void Struct_Field_Table::writeStruct(DataWriter &data) const
 {
-    data.put16(fields.size());
+    data.put16(fields.size(), "size");
     data.pad16();
 
     foreach (Struct_Field const &field, fields)
-        data.putAddress(field);
+        data.putAddress(field, "field");
 }
 
 void Struct_Field_Table::writeData(DataWriter &data) const

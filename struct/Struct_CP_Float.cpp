@@ -17,7 +17,7 @@ void Struct_CP_Float::resolveClassReferences(const ResolveContext &context)
 void Struct_CP_Float::writeStruct(DataWriter &data) const
 {
     Struct_CP::writeStruct(data);
-    data.putFloat(value);
+    data.putFloat(value, "value");
 }
 
 quint32 Struct_CP_Float::computeMemoryMap(quint32 baseAddress)

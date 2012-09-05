@@ -10,6 +10,10 @@ class Struct_Field : public Struct
 public:
     Struct_Field(Field const &field);
 
+    quint16 setDataOffset(quint16 base);
+
+    bool isStatic() const;
+
     quint8 alignment() const { return 2; }
     void writeStruct(DataWriter &data) const;
     quint32 computeMemoryMap(quint32 baseAddress);
@@ -29,6 +33,9 @@ public:
 
     QString name;
     QString descriptor;
+
+private:
+    quint16 dataSize;
 };
 
 #endif // STRUCT_FIELD_H

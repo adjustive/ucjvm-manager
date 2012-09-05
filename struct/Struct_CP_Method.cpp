@@ -36,8 +36,8 @@ void Struct_CP_Method::resolveMethodReferences(const ResolveContext &context)
     Struct_Class const *current = realClass;
     do
     {
-        Struct_Method const *method = current->methodPoolTable.getMethod(methodName, methodDescriptor);
-        if (method != NULL)
+        address = current->methodPoolTable.getMethod(methodName, methodDescriptor);
+        if (address != NULL)
             return;
     }
     while ((current = current->superClass()));
@@ -51,10 +51,10 @@ void Struct_CP_Method::resolveMethodReferences(const ResolveContext &context)
 void Struct_CP_Method::writeStruct(DataWriter &data) const
 {
     Struct_CP::writeStruct(data);
-    data.put16(classIndex);
-    data.put16(descriptorIndex);
-    data.putAddress(address);
-    data.putAddress(realClass);
+    data.put16(classIndex, "classIndex");
+    data.put16(descriptorIndex, "descriptorIndex");
+    data.putAddress(address, "address");
+    data.putAddress(realClass, "realClass");
 }
 
 quint32 Struct_CP_Method::computeMemoryMap(quint32 baseAddress)
