@@ -4,12 +4,15 @@
 #
 #-------------------------------------------------
 
-QT       += core gui xml
+QT       += core gui xml opengl network
 
 TARGET = manager
 TEMPLATE = app
 
-INCLUDEPATH += attributes constants struct
+INCLUDEPATH += attributes constants struct editors resources
+INCLUDEPATH += ../qt3d/painting ../qt3d/global ../qt3d/math3d ../qt3d/api ../qt3d/arrays ../qt3d/effects ../qt3d/geometry ../qt3d/graphicsview ../qt3d/materials ../qt3d/network ../qt3d/scene ../qt3d/surfaces ../qt3d/textures ../qt3d/viewing
+
+LIBS += -L../qt3d-build -Wl,-rpath,../qt3d-build -lqt3d
 
 SOURCES += main.cpp\
         MainWindow.cpp \
@@ -90,7 +93,13 @@ SOURCES += main.cpp\
     struct/Struct_CP_Dummy.cpp \
     struct/ResolveContext.cpp \
     struct/MemoryMapWriter.cpp \
-    editors/Bitmap2DEditor.cpp
+    editors/Bitmap2DDialog.cpp \
+    editors/Bitmap2DView.cpp \
+    resources/Bitmap2D.cpp \
+    resources/Bitmap3D.cpp \
+    editors/Bitmap3DDialog.cpp \
+    editors/Bitmap3DRender.cpp \
+    editors/Bitmap3DView.cpp
 
 HEADERS  += MainWindow.h \
     JVMConfig.h \
@@ -170,13 +179,21 @@ HEADERS  += MainWindow.h \
     struct/Struct_CP_Dummy.h \
     struct/ResolveContext.h \
     struct/MemoryMapWriter.h \
-    editors/Bitmap2DEditor.h
+    editors/Bitmap2DDialog.h \
+    editors/Bitmap2DView.h \
+    resources/Bitmap2D.h \
+    resources/Bitmap3D.h \
+    editors/Bitmap3DDialog.h \
+    editors/Bitmap3DRender.h \
+    editors/Bitmap3DView.h
 
 FORMS    += MainWindow.ui \
     FieldsView.ui \
     MethodsView.ui \
     ConfigView.ui \
-    editors/Bitmap2DEditor.ui
+    editors/Bitmap2DDialog.ui \
+    editors/Bitmap3DDialog.ui \
+    editors/Bitmap3DView.ui
 
 OTHER_FILES += \
     data/jvmconfig/terminator V1.0d.cfg \

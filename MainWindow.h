@@ -29,6 +29,10 @@ private slots:
 
     void on_action_Edit_JVMConfig_triggered();
 
+    void on_action_Edit_Bitmap2D_triggered();
+
+    void on_action_Edit_Bitmap3D_triggered();
+
 private:
     Ui::MainWindow *ui;
 };

@@ -8,10 +8,15 @@
 #include "MethodsView.h"
 #include "Linker.h"
 #include "ConfigView.h"
+#include "Bitmap2DDialog.h"
+#include "Bitmap3DDialog.h"
+#include "Bitmap2D.h"
+#include "Bitmap3D.h"
 
 #include <QFileDialog>
 #include <QDebug>
 #include <QMessageBox>
+#include <QInputDialog>
 
 
 static MessageModel messageModel;
@@ -64,7 +69,8 @@ void MainWindow::on_pathSearch_clicked()
         QStringList files = dialog.selectedFiles();
         if (!files.empty())
         {
-            ui->path->setText(files[0]);
+            Q_ASSERT(files.size() == 1);
+            ui->path->setText(files.front());
         }
     }
 }
@@ -139,4 +145,40 @@ void MainWindow::on_action_Edit_JVMConfig_triggered()
     JVMConfig config = qvariant_cast<JVMConfig>(ui->config->itemData(ui->config->currentIndex()));
     ConfigView view(config);
     view.exec();
+}
+
+void MainWindow::on_action_Edit_Bitmap2D_triggered()
+{
+    QStringList sizes = QStringList()
+            << "32x16"
+            << "64x64";
+
+    QString size = QInputDialog::getItem(this, "Bitmap size", "Bitmap size", sizes, 0, false);
+    QStringList splitSize = size.split('x');
+    Q_ASSERT(splitSize.size() == 2);
+    int width  = splitSize.at(0).toInt();
+    int height = splitSize.at(1).toInt();
+
+    Bitmap2D bitmap(width, height);
+    Bitmap2DDialog editor(bitmap);
+    editor.exec();
+}
+
+void MainWindow::on_action_Edit_Bitmap3D_triggered()
+{
+    QStringList sizes = QStringList()
+            << "8x8x8"
+            << "16x16x16"
+            << "32x32x32";
+
+    QString size = QInputDialog::getItem(this, "Bitmap size", "Bitmap size", sizes, 0, false);
+    QStringList splitSize = size.split('x');
+    Q_ASSERT(splitSize.size() == 3);
+    int width  = splitSize.at(0).toInt();
+    int height = splitSize.at(1).toInt();
+    int depth  = splitSize.at(2).toInt();
+
+    Bitmap3D bitmap(width, height, depth);
+    Bitmap3DDialog editor(bitmap);
+    editor.exec();
 }

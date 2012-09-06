@@ -6,5 +6,6 @@
         <file>data/jvmconfig/Spielbrett V1.1.cfg</file>
         <file>data/jvmconfig/Terminator.cfg</file>
         <file>data/jvmconfig/terminator V1.0d.cfg</file>
+        <file>data/qtlogo.png</file>
     </qresource>
 </RCC>

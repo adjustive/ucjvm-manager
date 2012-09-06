@@ -363,6 +363,8 @@
      <string>&amp;Edit</string>
     </property>
     <addaction name="action_Edit_JVMConfig"/>
+    <addaction name="action_Edit_Bitmap2D"/>
+    <addaction name="action_Edit_Bitmap3D"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Edit"/>
@@ -387,6 +389,16 @@
   <action name="action_Edit_JVMConfig">
    <property name="text">
     <string>&amp;JVM Config</string>
+   </property>
+  </action>
+  <action name="action_Edit_Bitmap2D">
+   <property name="text">
+    <string>&amp;2D Bitmap</string>
+   </property>
+  </action>
+  <action name="action_Edit_Bitmap3D">
+   <property name="text">
+    <string>&amp;3D Bitmap</string>
    </property>
   </action>
  </widget>
