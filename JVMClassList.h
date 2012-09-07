@@ -9,7 +9,7 @@
 class JVMClassList : private QList<JVMClass>
 {
 public:
-    JVMClassList(QDir dir);
+    JVMClassList(const QList<QFileInfo> &files);
 
     using QList<JVMClass>::const_reference;
     using QList<JVMClass>::const_iterator;

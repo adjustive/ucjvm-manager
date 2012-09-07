@@ -1,5 +1,7 @@
 #include "JVMClassModel.h"
 
+#include "JavaName.h"
+
 #include <QDebug>
 
 JVMClassModel::JVMClassModel(JVMClassList classList, QObject *parent)
@@ -21,7 +23,7 @@ QVariant JVMClassModel::data(const QModelIndex &index, int role) const
     switch (role)
     {
     case Qt::DisplayRole:
-        return item.name();
+        return JavaName::demangle(item.name());
     case Qt::UserRole:
         return QVariant::fromValue(item);
     }

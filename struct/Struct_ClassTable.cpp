@@ -6,7 +6,8 @@
 
 #include <QDebug>
 
-Struct_ClassTable::Struct_ClassTable(JVMClassList const &classList, quint32 baseAddress, QList<NativeFunction> const &nativeInterface)
+Struct_ClassTable::Struct_ClassTable(JVMClassList const &classList, quint32 baseAddress, QList<NativeFunction> const &nativeInterface, QStringList resourceFiles)
+    : resourceTable(resourceFiles)
 {
     foreach (JVMClass const &classData, classList)
         classes.append(Struct_Class(classData));
@@ -219,8 +220,7 @@ void Struct_ClassTable::writeStruct(DataWriter &data) const
     data.put16(classes.size(), "size");
     data.pad16();
 
-    data.putAddress(/*resource table address*/0, "resourceTable");
-//    data.putBytes("RTBL");
+    data.putAddress(resourceTable, "resourceTable");
 
     foreach (Struct_Class const &classData, classes)
         data.put32(classData.structStart, "classAddress");
@@ -230,6 +230,8 @@ void Struct_ClassTable::writeData(DataWriter &data) const
 {
     foreach (Struct_Class const &classData, classes)
         classData.write(data);
+
+    resourceTable.write(data);
 }
 
 
@@ -239,6 +241,8 @@ quint32 Struct_ClassTable::computeMemoryMap(quint32 baseAddress)
 
     for (int i = 0; i < classes.size(); i++)
         baseAddress = classes[i].computeMemoryMap(baseAddress);
+
+    baseAddress = resourceTable.computeMemoryMap(baseAddress);
 
     return baseAddress;
 }

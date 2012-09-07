@@ -15,16 +15,18 @@ struct LinkerPrivate
 {
     JVMConfig config;
     JVMClassList classList;
+    QStringList resourceFiles;
 
-    LinkerPrivate(JVMConfig config, JVMClassList classList)
+    LinkerPrivate(JVMConfig config, JVMClassList classList, QStringList resourceFiles)
         : config(config)
         , classList(classList)
+        , resourceFiles(resourceFiles)
     {
     }
 };
 
-Linker::Linker(JVMConfig config, JVMClassList classList)
-    : d_ptr(new LinkerPrivate(config, classList))
+Linker::Linker(JVMConfig config, JVMClassList classList, QStringList resourceFiles)
+    : d_ptr(new LinkerPrivate(config, classList, resourceFiles))
 {
 }
 
@@ -42,13 +44,7 @@ void Linker::link()
 
     quint32 const baseAddress = d->config.baseAddress();
 
-    Struct_ClassTable classTable(d->classList, baseAddress, d->config.nativeInterface());
-
-#if 0
-    DryRunWriter drw;
-    classTable.write(drw);
-    qFatal("%u", drw.memorySize());
-#endif
+    Struct_ClassTable classTable(d->classList, baseAddress, d->config.nativeInterface(), d->resourceFiles);
 
     {
         QFile out("memory.log");

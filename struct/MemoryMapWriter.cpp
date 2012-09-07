@@ -1,5 +1,6 @@
 #include "MemoryMapWriter.h"
 
+
 MemoryMapWriter::MemoryMapWriter(quint32 baseAddress)
     : DataWriter(baseAddress)
     , stream(&array)

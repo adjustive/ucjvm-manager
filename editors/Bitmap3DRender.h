@@ -10,6 +10,9 @@ class Bitmap3DRenderPrivate;
 class Bitmap3DRender : public QGLView
 {
     Q_OBJECT
+private:
+    QGLMaterial *material(QColor color);
+
 public:
     explicit Bitmap3DRender(QWidget *parent = 0);
     ~Bitmap3DRender();

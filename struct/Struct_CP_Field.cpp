@@ -49,9 +49,8 @@ void Struct_CP_Field::resolveFieldReferences(const ResolveContext &context)
            classAddress->javaTypeName().toUtf8().constData());
 }
 
-void Struct_CP_Field::writeStruct(DataWriter &data) const
+void Struct_CP_Field::writeConstantData(DataWriter &data) const
 {
-    Struct_CP::writeStruct(data);
     data.put16(classIndex, "classIndex");
     data.put16(descriptorIndex, "descriptorIndex");
     data.putAddress(fieldAddress, "fieldAddress");

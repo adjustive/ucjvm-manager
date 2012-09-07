@@ -1,27 +1,37 @@
 #include "Bitmap2D.h"
+#include "ResourceVisitor.h"
 
 #include <QDebug>
+#include <QFile>
+#include <QPoint>
+
 
 Bitmap2D::Bitmap2D(int width, int height)
 {
-    setCanvasSize(QSize(width, height));
+    d.size = QSize(width, height);
+
+    while (d.bitmap.size() < height * width)
+        d.bitmap.append(Qt::transparent);
 }
+
+
+Bitmap2D::Bitmap2D(QDataStream &stream)
+{
+    stream >> d.size;
+
+    while (d.bitmap.size() < d.size.height() * d.size.width())
+    {
+        QColor pixel;
+        stream >> pixel;
+        d.bitmap.append(pixel);
+    }
+}
+
 
 
 QSize Bitmap2D::canvasSize() const
 {
     return d.size;
-}
-
-void Bitmap2D::setCanvasSize(QSize size)
-{
-    d.size = size;
-
-    if (!d.bitmap.isEmpty())
-        d.bitmap.clear();
-
-    while (d.bitmap.size() < size.height() * size.width())
-        d.bitmap.append(Qt::transparent);
 }
 
 
@@ -53,4 +63,18 @@ bool Bitmap2D::contains(QPoint point) const
             && point.y() >= 0
             && point.x() < d.size.width()
             && point.y() < d.size.height();
+}
+
+
+void Bitmap2D::save(QDataStream &stream) const
+{
+    stream << d.size;
+    foreach (QColor pixel, d.bitmap)
+        stream << pixel;
+}
+
+
+void Bitmap2D::accept(ResourceVisitor &v)
+{
+    v.visit(*this);
 }

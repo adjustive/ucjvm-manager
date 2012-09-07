@@ -48,9 +48,8 @@ void Struct_CP_Method::resolveMethodReferences(const ResolveContext &context)
            realClass->javaTypeName().toUtf8().constData());
 }
 
-void Struct_CP_Method::writeStruct(DataWriter &data) const
+void Struct_CP_Method::writeConstantData(DataWriter &data) const
 {
-    Struct_CP::writeStruct(data);
     data.put16(classIndex, "classIndex");
     data.put16(descriptorIndex, "descriptorIndex");
     data.putAddress(address, "address");

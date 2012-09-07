@@ -14,9 +14,8 @@ void Struct_CP_Float::resolveClassReferences(const ResolveContext &context)
 {
 }
 
-void Struct_CP_Float::writeStruct(DataWriter &data) const
+void Struct_CP_Float::writeConstantData(DataWriter &data) const
 {
-    Struct_CP::writeStruct(data);
     data.putFloat(value, "value");
 }
 

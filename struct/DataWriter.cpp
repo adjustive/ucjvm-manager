@@ -2,7 +2,6 @@
 
 #include "Struct.h"
 
-#include <typeinfo>
 #include <limits>
 
 DataWriter::DataWriter(quint32 baseAddress)
@@ -144,7 +143,7 @@ void DataWriter::putAddress(Struct const &reference, const char *field)
     if (!permissive())
     {
         if (reference.structStart == 0)
-            qWarning("memory address for %p (%s) is NULL", &reference, typeid(reference).name());
+            qWarning("memory address for %p (%s) is NULL", &reference, reference.typeName());
         else if (reference.structStart < baseAddress)
             qFatal("memory address 0x%x is below base address 0x%x", reference.structStart, baseAddress);
     }

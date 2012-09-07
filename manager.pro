@@ -99,7 +99,15 @@ SOURCES += main.cpp\
     resources/Bitmap3D.cpp \
     editors/Bitmap3DDialog.cpp \
     editors/Bitmap3DRender.cpp \
-    editors/Bitmap3DView.cpp
+    editors/Bitmap3DView.cpp \
+    struct/Struct_ResourceTable.cpp \
+    struct/Struct_Resource.cpp \
+    struct/Struct_Resource_Bitmap2D.cpp \
+    resources/Resource.cpp \
+    resources/ResourceFactory.cpp \
+    resources/ResourceVisitor.cpp \
+    struct/Struct_Resource_Bitmap3D.cpp \
+    struct/Struct_ResourceName.cpp
 
 HEADERS  += MainWindow.h \
     JVMConfig.h \
@@ -185,7 +193,15 @@ HEADERS  += MainWindow.h \
     resources/Bitmap3D.h \
     editors/Bitmap3DDialog.h \
     editors/Bitmap3DRender.h \
-    editors/Bitmap3DView.h
+    editors/Bitmap3DView.h \
+    struct/Struct_ResourceTable.h \
+    struct/Struct_Resource.h \
+    struct/Struct_Resource_Bitmap2D.h \
+    resources/Resource.h \
+    resources/ResourceFactory.h \
+    resources/ResourceVisitor.h \
+    struct/Struct_Resource_Bitmap3D.h \
+    struct/Struct_ResourceName.h
 
 FORMS    += MainWindow.ui \
     FieldsView.ui \

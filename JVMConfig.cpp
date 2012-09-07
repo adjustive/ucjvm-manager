@@ -3,8 +3,6 @@
 #include <QXmlSimpleReader>
 #include <QDebug>
 
-#include <stdexcept>
-
 struct Handler : QXmlDefaultHandler
 {
     bool startElement(const QString &namespaceURI,
@@ -43,13 +41,18 @@ struct Handler : QXmlDefaultHandler
     QString operator[] (QString key) const
     {
         if (!config.contains(key))
-        {
-            qWarning() << "no such key:" << key;
-        }
+            qWarning() << "configuration file" << fileName << "contains no such key:" << key;
         return config[key];
     }
 
+
+    Handler(QString fileName)
+        : fileName(fileName)
+    {
+    }
+
 private:
+    QString fileName;
     QString key;
     QMap<QString, QString> config;
 };
@@ -63,19 +66,21 @@ JVMConfig::JVMConfig(QString path)
     QFile file(path);
     if (!file.open(QFile::ReadOnly))
     {
-        throw std::runtime_error("could not open file: " + file.fileName().toStdString());
+        qFatal("could not open file: %s", file.fileName().toUtf8().constData());
+        return;
     }
 
     QXmlInputSource source(&file);
 
-    Handler handler;
+    Handler handler(file.fileName());
     QXmlSimpleReader reader;
     reader.setContentHandler(&handler);
     reader.setErrorHandler(&handler);
 
     if (!reader.parse(&source))
     {
-        throw std::runtime_error("could not parse file: " + file.fileName().toStdString());
+        qFatal("could not parse file: %s", file.fileName().toUtf8().constData());
+        return;
     }
 
     d.configName = handler["configName"];

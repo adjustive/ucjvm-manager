@@ -14,9 +14,8 @@ void Struct_CP_Double::resolveClassReferences(const ResolveContext &context)
 {
 }
 
-void Struct_CP_Double::writeStruct(DataWriter &data) const
+void Struct_CP_Double::writeConstantData(DataWriter &data) const
 {
-    Struct_CP::writeStruct(data);
     data.putDouble(value, "value");
 }
 

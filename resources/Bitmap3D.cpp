@@ -1,4 +1,8 @@
 #include "Bitmap3D.h"
+#include "ResourceVisitor.h"
+
+#include <QPoint>
+
 
 Bitmap3D::Bitmap3D(int width, int height, int depth)
 {
@@ -8,6 +12,15 @@ Bitmap3D::Bitmap3D(int width, int height, int depth)
 
     while (d.array.size() != depth)
         d.array.append(Bitmap2D(width, height));
+}
+
+Bitmap3D::Bitmap3D(QDataStream &stream)
+{
+    int depth;
+    stream >> depth;
+
+    while (d.array.size() != depth)
+        d.array.append(Bitmap2D(stream));
 }
 
 
@@ -38,4 +51,18 @@ Bitmap2D &Bitmap3D::layer(int layer)
 QColor Bitmap3D::pixel(int x, int y, int z) const
 {
     return d.array[z].pixel(QPoint(x, y));
+}
+
+
+void Bitmap3D::save(QDataStream &stream) const
+{
+    stream << d.array.size();
+    foreach (Bitmap2D const &bitmap, d.array)
+        bitmap.save(stream);
+}
+
+
+void Bitmap3D::accept(ResourceVisitor &v)
+{
+    v.visit(*this);
 }

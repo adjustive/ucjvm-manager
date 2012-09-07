@@ -9,7 +9,7 @@ struct LinkerPrivate;
 class Linker
 {
 public:
-    Linker(JVMConfig config, JVMClassList classList);
+    Linker(JVMConfig config, JVMClassList classList, QStringList resourceFiles);
     ~Linker();
 
     void link();

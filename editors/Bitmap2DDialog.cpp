@@ -1,8 +1,16 @@
 #include "Bitmap2DDialog.h"
 #include "ui_Bitmap2DDialog.h"
 
+#include "Bitmap2D.h"
+#include "ResourceFactory.h"
+
 #include <QDebug>
 #include <QColorDialog>
+
+QString const Bitmap2DDialog::fileSuffix = "b2d";
+QString const Bitmap2DDialog::fileFilter = "2D Bitmap (*.b2d)";
+static ResourceFactory::Insert<Bitmap2DDialog> insert;
+
 
 Bitmap2DDialog::Bitmap2DDialog(Bitmap2D &bitmap, QWidget *parent)
     : QDialog(parent)

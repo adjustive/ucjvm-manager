@@ -9,6 +9,7 @@ class Bitmap2DViewPrivate;
 class Bitmap2DView : public QWidget
 {
     Q_OBJECT
+
 public:
     explicit Bitmap2DView(QWidget *parent = 0);
     ~Bitmap2DView();

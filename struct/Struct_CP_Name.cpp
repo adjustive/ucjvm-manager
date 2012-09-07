@@ -15,9 +15,8 @@ void Struct_CP_Name::resolveClassReferences(const ResolveContext &context)
 {
 }
 
-void Struct_CP_Name::writeStruct(DataWriter &data) const
+void Struct_CP_Name::writeConstantData(DataWriter &data) const
 {
-    Struct_CP::writeStruct(data);
     data.put16(nameIndex, "nameIndex");
     data.put16(descriptorIndex, "descriptorIndex");
 }

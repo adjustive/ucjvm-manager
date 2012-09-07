@@ -19,9 +19,8 @@ void Struct_CP_Class::resolveClassReferences(const ResolveContext &context)
     classAddress = &context.classTable().byName(context.constantTable().getUtf8(index));
 }
 
-void Struct_CP_Class::writeStruct(DataWriter &data) const
+void Struct_CP_Class::writeConstantData(DataWriter &data) const
 {
-    Struct_CP::writeStruct(data);
     data.put16(index, "index");
     data.putAddress(classAddress, "classAddress");
 }

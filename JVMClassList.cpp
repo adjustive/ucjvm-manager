@@ -27,9 +27,8 @@ static JVMClass parseClass(QFileInfo file)
     return JVMClass(data);
 }
 
-JVMClassList::JVMClassList(QDir dir)
+JVMClassList::JVMClassList(QList<QFileInfo> const &files)
 {
-    QList<QFileInfo> files = collectClasses(QList<QFileInfo>(), dir);
     reserve(files.size());
     std::transform(files.begin(), files.end(), std::back_inserter(*this), parseClass);
 
@@ -74,7 +73,7 @@ void JVMClassList::createArrayClasses()
 
             if (name[0] == '[' && !containsName(name))
             {
-                qDebug() << "creating array classes" << name << "and" << "[" + name;
+//                qDebug() << "creating array classes" << name << "and" << "[" + name;
                 append(createArrayClass(name));
                 if (!containsName("[" + name))
                 {

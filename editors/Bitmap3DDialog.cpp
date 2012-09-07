@@ -1,6 +1,14 @@
 #include "Bitmap3DDialog.h"
 #include "ui_Bitmap3DDialog.h"
 
+#include "Bitmap3D.h"
+#include "ResourceFactory.h"
+
+QString const Bitmap3DDialog::fileSuffix = "b3d";
+QString const Bitmap3DDialog::fileFilter = "3D Bitmap (*.b3d)";
+static ResourceFactory::Insert<Bitmap3DDialog> insert;
+
+
 Bitmap3DDialog::Bitmap3DDialog(Bitmap3D &bitmap, QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::Bitmap3DDialog)

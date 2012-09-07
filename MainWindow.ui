@@ -97,7 +97,11 @@
             </attribute>
             <layout class="QHBoxLayout" name="horizontalLayout_5">
              <item>
-              <widget class="QListView" name="resourceList"/>
+              <widget class="QListView" name="resourceList">
+               <property name="editTriggers">
+                <set>QAbstractItemView::NoEditTriggers</set>
+               </property>
+              </widget>
              </item>
             </layout>
            </widget>
@@ -356,6 +360,14 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
+    <widget class="QMenu" name="menu_New">
+     <property name="title">
+      <string>&amp;New</string>
+     </property>
+     <addaction name="action_File_New_Bitmap2D"/>
+     <addaction name="action_File_New_Bitmap3D"/>
+    </widget>
+    <addaction name="menu_New"/>
     <addaction name="action_File_Exit"/>
    </widget>
    <widget class="QMenu" name="menu_Edit">
@@ -363,8 +375,7 @@
      <string>&amp;Edit</string>
     </property>
     <addaction name="action_Edit_JVMConfig"/>
-    <addaction name="action_Edit_Bitmap2D"/>
-    <addaction name="action_Edit_Bitmap3D"/>
+    <addaction name="action_Edit_Resource"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Edit"/>
@@ -391,14 +402,19 @@
     <string>&amp;JVM Config</string>
    </property>
   </action>
-  <action name="action_Edit_Bitmap2D">
+  <action name="action_File_New_Bitmap2D">
    <property name="text">
     <string>&amp;2D Bitmap</string>
    </property>
   </action>
-  <action name="action_Edit_Bitmap3D">
+  <action name="action_File_New_Bitmap3D">
    <property name="text">
     <string>&amp;3D Bitmap</string>
+   </property>
+  </action>
+  <action name="action_Edit_Resource">
+   <property name="text">
+    <string>&amp;Resource</string>
    </property>
   </action>
  </widget>

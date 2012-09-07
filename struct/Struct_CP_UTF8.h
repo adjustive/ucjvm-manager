@@ -13,7 +13,7 @@ public:
 
     void resolveClassReferences(const ResolveContext &context);
 
-    void writeStruct(DataWriter &data) const;
+    void writeConstantData(DataWriter &data) const;
     quint32 computeMemoryMap(quint32 baseAddress);
     void printMemoryMap(QTextStream &ts) const;
 

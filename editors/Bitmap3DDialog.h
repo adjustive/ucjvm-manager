@@ -14,6 +14,13 @@ class Bitmap3DDialog : public QDialog
     Q_OBJECT
     
 public:
+    typedef Bitmap3D ResourceType;
+
+public:
+    static QString const fileSuffix;
+    static QString const fileFilter;
+
+public:
     explicit Bitmap3DDialog(Bitmap3D &bitmap, QWidget *parent = 0);
     ~Bitmap3DDialog();
     

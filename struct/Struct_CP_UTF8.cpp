@@ -14,9 +14,8 @@ void Struct_CP_UTF8::resolveClassReferences(const ResolveContext &context)
 {
 }
 
-void Struct_CP_UTF8::writeStruct(DataWriter &data) const
+void Struct_CP_UTF8::writeConstantData(DataWriter &data) const
 {
-    Struct_CP::writeStruct(data);
     data.put16(this->data.size(), "size");
     data.putBytes(this->data, "data");
 }
