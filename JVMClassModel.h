@@ -15,6 +15,8 @@ public:
     int rowCount(const QModelIndex &parent) const;
     QVariant data(const QModelIndex &index, int role) const;
 
+    QModelIndex byName(QString className) const;
+
     JVMClassList classes() const;
     
 private:

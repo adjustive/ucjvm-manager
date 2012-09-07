@@ -26,6 +26,10 @@ private:
     void loadClasses(QDir path);
     void loadResources(QDir path);
 
+    template<typename Resource>
+    static void saveResource(Resource &resource, QString path);
+    template<typename Editor>
+    static void saveResourceAs(typename Editor::ResourceType &resource, QString path);
     template<typename Editor>
     void newResource(typename Editor::ResourceType &resource);
     template<typename Editor>
@@ -51,6 +55,8 @@ private slots:
     void on_resourceList_doubleClicked(const QModelIndex &index);
 
     void on_action_Edit_Resource_triggered();
+
+    void on_superclassName_linkActivated(const QString &link);
 
 private:
     Ui::MainWindow *ui;

@@ -12,9 +12,7 @@ ExceptionHandlers::ExceptionHandlers(QDataStream &data)
     data >> count;
 
     for (int i = 0; i < count; i++)
-    {
         d.handlers.append(ExceptionHandler(data));
-    }
 
     Q_ASSERT(d.handlers.size() == count);
 }

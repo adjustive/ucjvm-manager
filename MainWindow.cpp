@@ -173,7 +173,7 @@ void MainWindow::on_link_clicked()
     }
     else
     {
-        QMessageBox::warning(this, "No classes loaded", "Press the Load button before the Link button");
+        QMessageBox::warning(this, tr("No classes loaded"), tr("Press the Load button before the Link button"));
     }
 }
 
@@ -187,7 +187,12 @@ void MainWindow::onClassSelectionChanged(const QModelIndex &current, const QMode
     ui->majorVersion->setText(QString("%0").arg(currentClass.majorVersion()));
 
     ui->className->setText(JavaName::demangle(currentClass.name()));
-    ui->superclassName->setText(JavaName::demangle(currentClass.superName()));
+
+    QString superclassName = currentClass.superName();
+    if (superclassName == "-")
+        ui->superclassName->setText("-");
+    else
+        ui->superclassName->setText(QString("<a href='%0'>%0</a>").arg(JavaName::demangle(superclassName)));
 
     ui->flags->setText(currentClass.flagsString());
 
@@ -198,6 +203,9 @@ void MainWindow::onClassSelectionChanged(const QModelIndex &current, const QMode
     ui->showInterfaces->setEnabled(currentClass.interfaceCount() != 0);
     ui->showFields->setEnabled(currentClass.fieldCount() != 0);
     ui->showMethods->setEnabled(currentClass.methodCount() != 0);
+
+    ui->staticDataSize->setText(QString("%0").arg(currentClass.staticDataSize()));
+    ui->instanceDataSize->setText(QString("%0").arg(currentClass.instanceDataSize()));
 }
 
 void MainWindow::on_showFields_clicked()
@@ -222,12 +230,12 @@ void MainWindow::on_action_Edit_JVMConfig_triggered()
 }
 
 template<typename Resource>
-void saveResource(Resource &resource, QString path)
+void MainWindow::saveResource(Resource &resource, QString path)
 {
     QFile file(path);
     if (!file.open(QFile::WriteOnly))
     {
-        QMessageBox::warning(0, "Cannot write file", "Unable to open file `" + file.fileName() + "' for writing");
+        QMessageBox::warning(0, tr("Cannot write file"), tr("Unable to open file `%0' for writing").arg(file.fileName()));
     }
     else
     {
@@ -237,9 +245,9 @@ void saveResource(Resource &resource, QString path)
 }
 
 template<typename Editor>
-void saveResourceAs(typename Editor::ResourceType &resource, QString path)
+void MainWindow::saveResourceAs(typename Editor::ResourceType &resource, QString path)
 {
-    QFileDialog fileDialog(0, "Save resource as", path, Editor::fileFilter);
+    QFileDialog fileDialog(0, tr("Save resource as"), path, Editor::fileFilter);
     fileDialog.setAcceptMode(QFileDialog::AcceptSave);
     fileDialog.setDefaultSuffix(Editor::fileSuffix);
 
@@ -263,7 +271,7 @@ void MainWindow::on_action_File_New_Bitmap2D_triggered()
             << "64x64";
 
     bool ok;
-    QString size = QInputDialog::getItem(this, "Bitmap size", "Bitmap size", sizes, 0, false, &ok);
+    QString size = QInputDialog::getItem(this, tr("Bitmap size"), tr("Bitmap size"), sizes, 0, false, &ok);
     if (ok)
     {
         QStringList splitSize = size.split('x');
@@ -284,7 +292,7 @@ void MainWindow::on_action_File_New_Bitmap3D_triggered()
             << "32x32x32";
 
     bool ok;
-    QString size = QInputDialog::getItem(this, "Bitmap size", "Bitmap size", sizes, 0, false, &ok);
+    QString size = QInputDialog::getItem(this, tr("Bitmap size"), tr("Bitmap size"), sizes, 0, false, &ok);
     if (ok)
     {
         QStringList splitSize = size.split('x');
@@ -326,7 +334,7 @@ void MainWindow::editResource(QString path)
     QFile resourceFile(resourceFileInfo.absoluteFilePath());
     if (!resourceFile.open(QFile::ReadOnly))
     {
-        QMessageBox::warning(this, "Cannot read file", "Unable to open file `" + resourceFile.fileName() + "' for reading");
+        QMessageBox::warning(this, tr("Cannot read file"), tr("Unable to open file `%0' for reading").arg(resourceFile.fileName()));
         return;
     }
 
@@ -347,4 +355,16 @@ void MainWindow::on_action_Edit_Resource_triggered()
 {
     foreach (QModelIndex index, ui->resourceList->selectionModel()->selectedIndexes())
         editResource(resourcePath(qvariant_cast<QString>(index.data())));
+}
+
+
+void MainWindow::on_superclassName_linkActivated(const QString &link)
+{
+    JVMClassModel *model = qobject_cast<JVMClassModel *>(ui->classList->model());
+    Q_ASSERT(model != NULL);
+
+    QModelIndex index = model->byName(link);
+    Q_ASSERT(index.isValid());
+
+    ui->classList->selectionModel()->setCurrentIndex(index, QItemSelectionModel::SelectCurrent);
 }

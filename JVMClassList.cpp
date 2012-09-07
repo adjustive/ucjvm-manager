@@ -22,7 +22,7 @@ static JVMClass parseClass(QFileInfo file)
 {
     QFile fh(file.filePath());
     if (!fh.open(QFile::ReadOnly))
-        throw "unable to open";
+        qFatal("unable to open");
     QDataStream data(&fh);
     return JVMClass(data);
 }
@@ -76,9 +76,7 @@ void JVMClassList::createArrayClasses()
 //                qDebug() << "creating array classes" << name << "and" << "[" + name;
                 append(createArrayClass(name));
                 if (!containsName("[" + name))
-                {
                     append(createArrayClass("[" + name));
-                }
             }
         }
     }

@@ -41,7 +41,7 @@ Field::FieldType Field::dataType() const
     case 'J': return FIELD_TYPE_LONG;
     }
 
-    throw "unknown field type";
+    qFatal("unknown field type");
 }
 
 QString Field::name() const { return d.fieldName->string(); }

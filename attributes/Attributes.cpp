@@ -13,7 +13,5 @@ Attributes::Attributes(QDataStream &data, ConstantPool const &cp)
     data >> count;
 
     for (int i = 0; i < count; i++)
-    {
         attributes.append(AttributesInfo::parse(data, cp));
-    }
 }

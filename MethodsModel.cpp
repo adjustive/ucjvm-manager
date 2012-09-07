@@ -58,12 +58,12 @@ QVariant MethodsModel::headerData(int section, Qt::Orientation orientation, int 
         case Qt::Horizontal:
             switch (section)
             {
-            case 0: return "Flags";
-            case 1: return "Type";
-            case 2: return "Method name";
-            case 3: return "Max stack";
-            case 4: return "Max locals";
-            case 5: return "Code size";
+            case 0: return tr("Flags");
+            case 1: return tr("Type");
+            case 2: return tr("Method name");
+            case 3: return tr("Max stack");
+            case 4: return tr("Max locals");
+            case 5: return tr("Code size");
             }
             break;
         case Qt::Vertical:

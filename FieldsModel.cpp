@@ -52,9 +52,9 @@ QVariant FieldsModel::headerData(int section, Qt::Orientation orientation, int r
         case Qt::Horizontal:
             switch (section)
             {
-            case 0: return "Flags";
-            case 1: return "Type";
-            case 2: return "Field name";
+            case 0: return tr("Flags");
+            case 1: return tr("Type");
+            case 2: return tr("Field name");
             }
             break;
         case Qt::Vertical:

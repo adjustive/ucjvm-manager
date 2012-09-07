@@ -12,9 +12,7 @@ Fields::Fields(QDataStream &data, ConstantPool const &cp)
     data >> count;
 
     for (int i = 0; i < count; i++)
-    {
         d.fields.append(Field(data, cp));
-    }
 }
 
 

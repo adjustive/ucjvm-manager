@@ -57,7 +57,7 @@ JVMClass::JVMClass(QDataStream &data)
     quint32 magic;
     data >> magic;
     if (magic != 0xCAFEBABE)
-        throw "wrong header";
+        qFatal("wrong header");
 
     data >> d->minorVersion;
     data >> d->majorVersion;

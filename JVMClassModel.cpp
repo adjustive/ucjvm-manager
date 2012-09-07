@@ -31,6 +31,14 @@ QVariant JVMClassModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
+QModelIndex JVMClassModel::byName(QString className) const
+{
+    for (int i = 0; i < classList.size(); i++)
+        if (JavaName::demangle(classList.at(i).name()) == className)
+            return index(i);
+    return QModelIndex();
+}
+
 JVMClassList JVMClassModel::classes() const
 {
     return classList;

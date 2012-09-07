@@ -4,13 +4,13 @@ char const *MessageModel::msgTypeString(QtMsgType type)
 {
     switch (type)
     {
-    case QtDebugMsg: return "Debug";
-    case QtWarningMsg: return "Warning";
-    case QtCriticalMsg: return "Critical";
-    case QtFatalMsg: return "Fatal";
+    case QtDebugMsg: return tr("Debug");
+    case QtWarningMsg: return tr("Warning");
+    case QtCriticalMsg: return tr("Critical");
+    case QtFatalMsg: return tr("Fatal");
     }
 
-    return "<invalid>";
+    return tr("<invalid>");
 }
 
 
@@ -62,9 +62,9 @@ QVariant MessageModel::headerData(int section, Qt::Orientation orientation, int 
         case Qt::Horizontal:
             switch (section)
             {
-            case 0: return "Time";
-            case 1: return "Type";
-            case 2: return "Message";
+            case 0: return tr("Time");
+            case 1: return tr("Type");
+            case 2: return tr("Message");
             }
             break;
         case Qt::Vertical:
