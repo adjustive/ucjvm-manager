@@ -21,18 +21,18 @@ Bitmap3DView::~Bitmap3DView()
 }
 
 
-void Bitmap3DView::setBitmap(Bitmap3D &bitmap)
+void Bitmap3DView::setBitmap(Bitmap3D *bitmap)
 {
-    this->bitmap = &bitmap;
+    this->bitmap = bitmap;
 
-    ui->layer->setMaximum(bitmap.depth() - 1);
-    ui->viewer->setBitmap(bitmap.layer(0));
+    ui->layer->setMaximum(bitmap->depth() - 1);
+    ui->viewer->setBitmap(&bitmap->layer(0));
 }
 
 
 void Bitmap3DView::on_layer_valueChanged(int layer)
 {
-    ui->viewer->setBitmap(bitmap->layer(layer));
+    ui->viewer->setBitmap(&bitmap->layer(layer));
 }
 
 void Bitmap3DView::on_selectColor_clicked()

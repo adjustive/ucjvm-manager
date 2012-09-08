@@ -17,7 +17,7 @@ public:
     explicit Bitmap3DView(QWidget *parent = 0);
     ~Bitmap3DView();
 
-    void setBitmap(Bitmap3D &bitmap);
+    void setBitmap(Bitmap3D *bitmap);
 
 signals:
     void changed();

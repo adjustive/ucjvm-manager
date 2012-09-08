@@ -7,6 +7,8 @@
 class QDir;
 class QFileInfo;
 
+#include "ResourceEditor.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -25,16 +27,6 @@ private:
 
     void loadClasses(QDir path);
     void loadResources(QDir path);
-
-    template<typename Resource>
-    static void saveResource(Resource &resource, QString path);
-    template<typename Editor>
-    static void saveResourceAs(typename Editor::ResourceType &resource, QString path);
-    template<typename Editor>
-    void newResource(typename Editor::ResourceType &resource);
-    template<typename Editor>
-    bool editResource(QFileInfo const &resourceFileInfo, QDataStream &stream);
-    void editResource(QString path);
 
 private slots:
     void on_pathSearch_clicked();
@@ -61,6 +53,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QStringListModel resourceModel;
+    ResourceEditor::Collection resourceEditors;
 };
 
 #endif // MAINWINDOW_H

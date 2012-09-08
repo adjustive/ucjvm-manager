@@ -44,11 +44,11 @@ Bitmap2DView::~Bitmap2DView()
 }
 
 
-void Bitmap2DView::setBitmap(Bitmap2D &bitmap)
+void Bitmap2DView::setBitmap(Bitmap2D *bitmap)
 {
     Q_D(Bitmap2DView);
 
-    d->bitmap = &bitmap;
+    d->bitmap = bitmap;
     emit changed();
 }
 

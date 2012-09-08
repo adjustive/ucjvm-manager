@@ -33,6 +33,8 @@ public:
     explicit JVMClass(QDataStream &data);
     explicit JVMClass(ConstantPool const &constantPool);
 
+    void setSuperClass(const JVMClass &classData);
+
     QString name() const;
     QString superName() const;
 
@@ -62,6 +64,8 @@ public:
 
     quint16 staticDataSize() const;
     quint16 instanceDataSize() const;
+    quint16 inheritedStaticDataSize() const;
+    quint16 inheritedInstanceDataSize() const;
 
 private:
     Q_DECLARE_PRIVATE(JVMClass)

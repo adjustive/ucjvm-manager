@@ -51,10 +51,10 @@ QGLMaterial *Bitmap3DRender::material(QColor color)
 }
 
 
-void Bitmap3DRender::setBitmap(Bitmap3D &bitmap)
+void Bitmap3DRender::setBitmap(Bitmap3D *bitmap)
 {
     Q_D(Bitmap3DRender);
-    d->bitmap = &bitmap;
+    d->bitmap = bitmap;
 }
 
 

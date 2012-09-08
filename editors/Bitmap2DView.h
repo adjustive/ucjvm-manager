@@ -14,7 +14,7 @@ public:
     explicit Bitmap2DView(QWidget *parent = 0);
     ~Bitmap2DView();
     
-    void setBitmap(Bitmap2D &bitmap);
+    void setBitmap(Bitmap2D *bitmap);
 
     QColor color() const;
     void setColor(QColor color);

@@ -1,7 +1,8 @@
 #ifndef BITMAP2DEDITOR_H
 #define BITMAP2DEDITOR_H
 
-#include <QDialog>
+#include "ResourceEditor.h"
+#include "Bitmap2D.h"
 
 namespace Ui {
 class Bitmap2DDialog;
@@ -9,19 +10,19 @@ class Bitmap2DDialog;
 
 class Bitmap2D;
 
-class Bitmap2DDialog : public QDialog
+class Bitmap2DDialog : public ResourceEditorT<Bitmap2DDialog, Bitmap2D>
 {
     Q_OBJECT
 
-public:
-    typedef Bitmap2D ResourceType;
-    
-public:
-    static QString const fileSuffix;
-    static QString const fileFilter;
+private:
+    const QString &fileSuffix() const;
+    const QString &fileFilter() const;
+
+    Bitmap2D *newResource();
+    void setResource(ResourceType *resource);
 
 public:
-    explicit Bitmap2DDialog(Bitmap2D &bitmap, QWidget *parent = 0);
+    explicit Bitmap2DDialog(QWidget *parent = 0);
     ~Bitmap2DDialog();
     
 private slots:

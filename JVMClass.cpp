@@ -16,6 +16,7 @@ struct JVMClassPrivate
     quint16 accessFlags;
     quint16 thisClass;
     quint16 superClass;
+    JVMClass const *superClassPointer;
 
     ConstantPool constantPool;
     Interfaces interfaces;
@@ -67,6 +68,7 @@ JVMClass::JVMClass(QDataStream &data)
     data >> d->accessFlags;
     data >> d->thisClass;
     data >> d->superClass;
+    d->superClassPointer = NULL;
 
     d->interfaces = Interfaces(data);
     d->fields = Fields(data, d->constantPool);
@@ -97,9 +99,17 @@ JVMClass::JVMClass(const ConstantPool &constantPool)
     d->accessFlags = ACC_PUBLIC;
     d->thisClass = 1;
     d->superClass = 3;
+    d->superClassPointer = NULL;
 
     d->staticDataSize = 0;
     d->instanceDataSize = 0;
+}
+
+
+void JVMClass::setSuperClass(JVMClass const &classData)
+{
+    Q_D(JVMClass);
+    d->superClassPointer = &classData;
 }
 
 
@@ -118,7 +128,7 @@ QString JVMClass::superName() const
     Q_D(const JVMClass);
 
     if (d->superClass == 0)
-        return "-";
+        return QString();
 
     QSharedPointer<ConstantPoolInfo_Class> superClass = d->constantPool.get<ConstantPoolInfo_Class>(d->superClass);
     QSharedPointer<ConstantPoolInfo_Utf8> superClassName = d->constantPool.get<ConstantPoolInfo_Utf8>(superClass->nameIndex());
@@ -251,4 +261,20 @@ quint16 JVMClass::instanceDataSize() const
 {
     Q_D(const JVMClass);
     return d->instanceDataSize;
+}
+
+quint16 JVMClass::inheritedStaticDataSize() const
+{
+    Q_D(const JVMClass);
+    if (d->superClassPointer == NULL)
+        return 0;
+    return d->superClassPointer->staticDataSize() + d->superClassPointer->inheritedStaticDataSize();
+}
+
+quint16 JVMClass::inheritedInstanceDataSize() const
+{
+    Q_D(const JVMClass);
+    if (d->superClassPointer == NULL)
+        return 0;
+    return d->superClassPointer->instanceDataSize() + d->superClassPointer->inheritedInstanceDataSize();
 }

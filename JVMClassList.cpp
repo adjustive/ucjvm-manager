@@ -33,15 +33,39 @@ JVMClassList::JVMClassList(QList<QFileInfo> const &files)
     std::transform(files.begin(), files.end(), std::back_inserter(*this), parseClass);
 
     createArrayClasses();
+
+    for (int i = 0; i < size(); i++)
+    {
+        JVMClass &classData = (*this)[i];
+        QString superName = classData.superName();
+
+        // java.lang.Object
+        if (superName.isEmpty())
+            continue;
+
+        JVMClass const *superClass = byName(superName);
+        if (superClass == NULL)
+        {
+            qWarning() << "superclass" << superName << "for class" << classData.name() << "not found";
+            continue;
+        }
+
+        classData.setSuperClass(*superClass);
+    }
 }
 
 
 bool JVMClassList::containsName(QString className) const
 {
+    return byName(className) != NULL;
+}
+
+JVMClass const *JVMClassList::byName(QString className) const
+{
     foreach (JVMClass const &classData, *this)
         if (classData.name() == className)
-            return true;
-    return false;
+            return &classData;
+    return NULL;
 }
 
 static JVMClass createArrayClass(QString className)

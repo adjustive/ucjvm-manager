@@ -4,13 +4,13 @@ char const *MessageModel::msgTypeString(QtMsgType type)
 {
     switch (type)
     {
-    case QtDebugMsg: return tr("Debug");
-    case QtWarningMsg: return tr("Warning");
-    case QtCriticalMsg: return tr("Critical");
-    case QtFatalMsg: return tr("Fatal");
+    case QtDebugMsg: return "Debug";
+    case QtWarningMsg: return "Warning";
+    case QtCriticalMsg: return "Critical";
+    case QtFatalMsg: return "Fatal";
     }
 
-    return tr("<invalid>");
+    return "<invalid>";
 }
 
 

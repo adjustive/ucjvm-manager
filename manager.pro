@@ -107,7 +107,9 @@ SOURCES += main.cpp\
     resources/ResourceFactory.cpp \
     resources/ResourceVisitor.cpp \
     struct/Struct_Resource_Bitmap3D.cpp \
-    struct/Struct_ResourceName.cpp
+    struct/Struct_ResourceName.cpp \
+    editors/ResourceEditor.cpp \
+    Delegate.cpp
 
 HEADERS  += MainWindow.h \
     JVMConfig.h \
@@ -201,7 +203,10 @@ HEADERS  += MainWindow.h \
     resources/ResourceFactory.h \
     resources/ResourceVisitor.h \
     struct/Struct_Resource_Bitmap3D.h \
-    struct/Struct_ResourceName.h
+    struct/Struct_ResourceName.h \
+    editors/ResourceEditor.h \
+    Delegate.h \
+    DelegateN.h
 
 FORMS    += MainWindow.ui \
     FieldsView.ui \

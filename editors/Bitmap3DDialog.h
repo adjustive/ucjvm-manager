@@ -1,7 +1,8 @@
 #ifndef BITMAP3DDIALOG_H
 #define BITMAP3DDIALOG_H
 
-#include <QDialog>
+#include "ResourceEditor.h"
+#include "Bitmap3D.h"
 
 namespace Ui {
 class Bitmap3DDialog;
@@ -9,19 +10,19 @@ class Bitmap3DDialog;
 
 class Bitmap3D;
 
-class Bitmap3DDialog : public QDialog
+class Bitmap3DDialog : public ResourceEditorT<Bitmap3DDialog, Bitmap3D>
 {
     Q_OBJECT
-    
-public:
-    typedef Bitmap3D ResourceType;
+
+private:
+    const QString &fileSuffix() const;
+    const QString &fileFilter() const;
+
+    Bitmap3D *newResource();
+    void setResource(ResourceType *resource);
 
 public:
-    static QString const fileSuffix;
-    static QString const fileFilter;
-
-public:
-    explicit Bitmap3DDialog(Bitmap3D &bitmap, QWidget *parent = 0);
+    explicit Bitmap3DDialog(QWidget *parent);
     ~Bitmap3DDialog();
     
 private:

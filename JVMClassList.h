@@ -22,6 +22,7 @@ public:
     using QList<JVMClass>::push_back;
 
     bool containsName(QString className) const;
+    JVMClass const *byName(QString className) const;
     void createArrayClasses();
 };
 

@@ -17,7 +17,7 @@ public:
     explicit Bitmap3DRender(QWidget *parent = 0);
     ~Bitmap3DRender();
 
-    void setBitmap(Bitmap3D &bitmap);
+    void setBitmap(Bitmap3D *bitmap);
 
     void createScene();
     void paintGL(QGLPainter *painter);

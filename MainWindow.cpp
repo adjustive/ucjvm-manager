@@ -36,6 +36,7 @@ static void msgHandler(QtMsgType type, char const *message)
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+    , resourceEditors(this)
 {
     ui->setupUi(this);
 
@@ -189,7 +190,7 @@ void MainWindow::onClassSelectionChanged(const QModelIndex &current, const QMode
     ui->className->setText(JavaName::demangle(currentClass.name()));
 
     QString superclassName = currentClass.superName();
-    if (superclassName == "-")
+    if (superclassName.isEmpty())
         ui->superclassName->setText("-");
     else
         ui->superclassName->setText(QString("<a href='%0'>%0</a>").arg(JavaName::demangle(superclassName)));
@@ -206,6 +207,8 @@ void MainWindow::onClassSelectionChanged(const QModelIndex &current, const QMode
 
     ui->staticDataSize->setText(QString("%0").arg(currentClass.staticDataSize()));
     ui->instanceDataSize->setText(QString("%0").arg(currentClass.instanceDataSize()));
+    ui->inheritedStaticDataSize->setText(QString("%0").arg(currentClass.inheritedStaticDataSize()));
+    ui->inheritedInstanceDataSize->setText(QString("%0").arg(currentClass.inheritedInstanceDataSize()));
 }
 
 void MainWindow::on_showFields_clicked()
@@ -229,132 +232,30 @@ void MainWindow::on_action_Edit_JVMConfig_triggered()
     view.exec();
 }
 
-template<typename Resource>
-void MainWindow::saveResource(Resource &resource, QString path)
-{
-    QFile file(path);
-    if (!file.open(QFile::WriteOnly))
-    {
-        QMessageBox::warning(0, tr("Cannot write file"), tr("Unable to open file `%0' for writing").arg(file.fileName()));
-    }
-    else
-    {
-        QDataStream stream(&file);
-        resource.save(stream);
-    }
-}
-
-template<typename Editor>
-void MainWindow::saveResourceAs(typename Editor::ResourceType &resource, QString path)
-{
-    QFileDialog fileDialog(0, tr("Save resource as"), path, Editor::fileFilter);
-    fileDialog.setAcceptMode(QFileDialog::AcceptSave);
-    fileDialog.setDefaultSuffix(Editor::fileSuffix);
-
-    if (fileDialog.exec() == QDialog::Accepted)
-        saveResource(resource, fileDialog.selectedFiles().at(0));
-}
-
-template<typename Editor>
-void MainWindow::newResource(typename Editor::ResourceType &resource)
-{
-    Editor editor(resource);
-
-    if (editor.exec() == QDialog::Accepted)
-        saveResourceAs<Editor>(resource, resourcePath());
-}
-
 void MainWindow::on_action_File_New_Bitmap2D_triggered()
 {
-    QStringList sizes = QStringList()
-            << "32x16"
-            << "64x64";
-
-    bool ok;
-    QString size = QInputDialog::getItem(this, tr("Bitmap size"), tr("Bitmap size"), sizes, 0, false, &ok);
-    if (ok)
-    {
-        QStringList splitSize = size.split('x');
-        Q_ASSERT(splitSize.size() == 2);
-        int width  = splitSize.at(0).toInt();
-        int height = splitSize.at(1).toInt();
-
-        Bitmap2D bitmap(width, height);
-        newResource<Bitmap2DDialog>(bitmap);
-    }
+    QString fileName = resourceEditors.newResource("b2d", resourcePath());
+    if (!fileName.isEmpty())
+        resourceModel.setStringList(resourceModel.stringList() << fileName);
 }
 
 void MainWindow::on_action_File_New_Bitmap3D_triggered()
 {
-    QStringList sizes = QStringList()
-            << "8x8x8"
-            << "16x16x16"
-            << "32x32x32";
-
-    bool ok;
-    QString size = QInputDialog::getItem(this, tr("Bitmap size"), tr("Bitmap size"), sizes, 0, false, &ok);
-    if (ok)
-    {
-        QStringList splitSize = size.split('x');
-        Q_ASSERT(splitSize.size() == 3);
-        int width  = splitSize.at(0).toInt();
-        int height = splitSize.at(1).toInt();
-        int depth  = splitSize.at(2).toInt();
-
-        Bitmap3D bitmap(width, height, depth);
-        newResource<Bitmap3DDialog>(bitmap);
-    }
+    QString fileName = resourceEditors.newResource("b3d", resourcePath());
+    if (!fileName.isEmpty())
+        resourceModel.setStringList(resourceModel.stringList() << fileName);
 }
 
-
-template<typename Editor>
-bool MainWindow::editResource(QFileInfo const &resourceFileInfo, QDataStream &stream)
-{
-    typedef typename Editor::ResourceType Resource;
-
-    if (resourceFileInfo.suffix() == Editor::fileSuffix)
-    {
-        Resource resource(stream);
-        Editor editor(resource);
-
-        if (editor.exec() == QDialog::Accepted)
-            saveResource(resource, resourceFileInfo.absoluteFilePath());
-
-        return true;
-    }
-
-    return false;
-}
-
-void MainWindow::editResource(QString path)
-{
-    QFileInfo resourceFileInfo(path);
-    Q_ASSERT(resourceFileInfo.exists());
-
-    QFile resourceFile(resourceFileInfo.absoluteFilePath());
-    if (!resourceFile.open(QFile::ReadOnly))
-    {
-        QMessageBox::warning(this, tr("Cannot read file"), tr("Unable to open file `%0' for reading").arg(resourceFile.fileName()));
-        return;
-    }
-
-    QDataStream stream(&resourceFile);
-
-    if (editResource<Bitmap2DDialog>(resourceFileInfo, stream))
-        return;
-    if (editResource<Bitmap3DDialog>(resourceFileInfo, stream))
-        return;
-}
 
 void MainWindow::on_resourceList_doubleClicked(const QModelIndex &index)
 {
-    editResource(resourcePath(qvariant_cast<QString>(index.data())));
+    resourceEditors.editResource(resourcePath(qvariant_cast<QString>(index.data())));
 }
 
 void MainWindow::on_action_Edit_Resource_triggered()
 {
     foreach (QModelIndex index, ui->resourceList->selectionModel()->selectedIndexes())
-        editResource(resourcePath(qvariant_cast<QString>(index.data())));
+        resourceEditors.editResource(resourcePath(qvariant_cast<QString>(index.data())));
 }
 
 
