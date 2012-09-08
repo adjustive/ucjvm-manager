@@ -1,4 +1,4 @@
-#include "JVMClass.h"
+#include "Class.h"
 
 #include "ConstantPoolInfo_Class.h"
 #include "ConstantPoolInfo_Utf8.h"
@@ -9,14 +9,14 @@
 #include <QStringList>
 
 
-struct JVMClassPrivate
+struct ClassPrivate
 {
     quint16 minorVersion;
     quint16 majorVersion;
     quint16 accessFlags;
     quint16 thisClass;
     quint16 superClass;
-    JVMClass const *superClassPointer;
+    Class const *superClassPointer;
 
     ConstantPool constantPool;
     Interfaces interfaces;
@@ -29,31 +29,31 @@ struct JVMClassPrivate
 };
 
 
-JVMClass::JVMClass()
-    : d_ptr(new JVMClassPrivate)
+Class::Class()
+    : d_ptr(NULL)
 {
 }
 
-JVMClass::~JVMClass()
+Class::~Class()
 {
 }
 
-JVMClass::JVMClass(JVMClass const &rhs)
+Class::Class(Class const &rhs)
     : d_ptr(rhs.d_ptr)
 {
 }
 
-JVMClass &JVMClass::operator = (JVMClass const &rhs)
+Class &Class::operator = (Class const &rhs)
 {
     d_ptr = rhs.d_ptr;
     return *this;
 }
 
 
-JVMClass::JVMClass(QDataStream &data)
-    : d_ptr(new JVMClassPrivate)
+Class::Class(QDataStream &data)
+    : d_ptr(new ClassPrivate)
 {
-    Q_D(JVMClass);
+    Q_D(Class);
 
     quint32 magic;
     data >> magic;
@@ -86,10 +86,10 @@ JVMClass::JVMClass(QDataStream &data)
 }
 
 
-JVMClass::JVMClass(const ConstantPool &constantPool)
-    : d_ptr(new JVMClassPrivate)
+Class::Class(const ConstantPool &constantPool)
+    : d_ptr(new ClassPrivate)
 {
-    Q_D(JVMClass);
+    Q_D(Class);
 
     d->minorVersion = 0;
     d->majorVersion = 1;
@@ -106,16 +106,16 @@ JVMClass::JVMClass(const ConstantPool &constantPool)
 }
 
 
-void JVMClass::setSuperClass(JVMClass const &classData)
+void Class::setSuperClass(Class const &classData)
 {
-    Q_D(JVMClass);
+    Q_D(Class);
     d->superClassPointer = &classData;
 }
 
 
-QString JVMClass::name() const
+QString Class::name() const
 {
-    Q_D(const JVMClass);
+    Q_D(const Class);
 
     QSharedPointer<ConstantPoolInfo_Class> thisClass = d->constantPool.get<ConstantPoolInfo_Class>(d->thisClass);
     QSharedPointer<ConstantPoolInfo_Utf8> thisClassName = d->constantPool.get<ConstantPoolInfo_Utf8>(thisClass->nameIndex());
@@ -123,9 +123,9 @@ QString JVMClass::name() const
     return thisClassName->string();
 }
 
-QString JVMClass::superName() const
+QString Class::superName() const
 {
-    Q_D(const JVMClass);
+    Q_D(const Class);
 
     if (d->superClass == 0)
         return QString();
@@ -136,49 +136,49 @@ QString JVMClass::superName() const
     return superClassName->string();
 }
 
-quint16 JVMClass::minorVersion() const
+quint16 Class::minorVersion() const
 {
-    Q_D(const JVMClass);
+    Q_D(const Class);
     return d->minorVersion;
 }
 
-quint16 JVMClass::majorVersion() const
+quint16 Class::majorVersion() const
 {
-    Q_D(const JVMClass);
+    Q_D(const Class);
     return d->majorVersion;
 }
 
-bool JVMClass::isPublic() const
+bool Class::isPublic() const
 {
-    Q_D(const JVMClass);
+    Q_D(const Class);
     return d->accessFlags & ACC_PUBLIC;
 }
 
-bool JVMClass::isFinal() const
+bool Class::isFinal() const
 {
-    Q_D(const JVMClass);
+    Q_D(const Class);
     return d->accessFlags & ACC_FINAL;
 }
 
-bool JVMClass::isSuper() const
+bool Class::isSuper() const
 {
-    Q_D(const JVMClass);
+    Q_D(const Class);
     return d->accessFlags & ACC_SUPER;
 }
 
-bool JVMClass::isInterface() const
+bool Class::isInterface() const
 {
-    Q_D(const JVMClass);
+    Q_D(const Class);
     return d->accessFlags & ACC_INTERFACE;
 }
 
-bool JVMClass::isAbstract() const
+bool Class::isAbstract() const
 {
-    Q_D(const JVMClass);
+    Q_D(const Class);
     return d->accessFlags & ACC_ABSTRACT;
 }
 
-QString JVMClass::flagsString() const
+QString Class::flagsString() const
 {
     QStringList flags;
 
@@ -191,89 +191,89 @@ QString JVMClass::flagsString() const
     return flags.join(", ");
 }
 
-quint16 JVMClass::interfaceCount() const
+quint16 Class::interfaceCount() const
 {
-    Q_D(const JVMClass);
+    Q_D(const Class);
     return d->interfaces.count();
 }
 
-quint16 JVMClass::fieldCount() const
+quint16 Class::fieldCount() const
 {
-    Q_D(const JVMClass);
+    Q_D(const Class);
     return d->fields.count();
 }
 
-quint16 JVMClass::methodCount() const
+quint16 Class::methodCount() const
 {
-    Q_D(const JVMClass);
+    Q_D(const Class);
     return d->methods.count();
 }
 
-ConstantPool const &JVMClass::constantPool() const
+ConstantPool const &Class::constantPool() const
 {
-    Q_D(const JVMClass);
+    Q_D(const Class);
     return d->constantPool;
 }
 
-Interfaces const &JVMClass::interfaces() const
+Interfaces const &Class::interfaces() const
 {
-    Q_D(const JVMClass);
+    Q_D(const Class);
     return d->interfaces;
 }
 
-Fields const &JVMClass::fields() const
+Fields const &Class::fields() const
 {
-    Q_D(const JVMClass);
+    Q_D(const Class);
     return d->fields;
 }
 
-Methods const &JVMClass::methods() const
+Methods const &Class::methods() const
 {
-    Q_D(const JVMClass);
+    Q_D(const Class);
     return d->methods;
 }
 
-Attributes const &JVMClass::attributes() const
+Attributes const &Class::attributes() const
 {
-    Q_D(const JVMClass);
+    Q_D(const Class);
     return d->attributes;
 }
 
-Field const &JVMClass::field(int index) const
+Field const &Class::field(int index) const
 {
-    Q_D(const JVMClass);
+    Q_D(const Class);
     return d->fields.get(index);
 }
 
-Method const &JVMClass::method(int index) const
+Method const &Class::method(int index) const
 {
-    Q_D(const JVMClass);
+    Q_D(const Class);
     return d->methods.get(index);
 }
 
-quint16 JVMClass::staticDataSize() const
+quint16 Class::staticDataSize() const
 {
-    Q_D(const JVMClass);
+    Q_D(const Class);
     return d->staticDataSize;
 }
 
-quint16 JVMClass::instanceDataSize() const
+quint16 Class::instanceDataSize() const
 {
-    Q_D(const JVMClass);
+    Q_D(const Class);
     return d->instanceDataSize;
 }
 
-quint16 JVMClass::inheritedStaticDataSize() const
+quint16 Class::inheritedStaticDataSize() const
 {
-    Q_D(const JVMClass);
+    Q_D(const Class);
     if (d->superClassPointer == NULL)
         return 0;
     return d->superClassPointer->staticDataSize() + d->superClassPointer->inheritedStaticDataSize();
 }
 
-quint16 JVMClass::inheritedInstanceDataSize() const
+quint16 Class::inheritedInstanceDataSize() const
 {
-    Q_D(const JVMClass);
+    Q_D(const Class);
     if (d->superClassPointer == NULL)
         return 0;
     return d->superClassPointer->instanceDataSize() + d->superClassPointer->inheritedInstanceDataSize();

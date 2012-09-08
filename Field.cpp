@@ -42,18 +42,19 @@ Field::FieldType Field::dataType() const
     }
 
     qFatal("unknown field type");
+    return FieldType();
 }
 
 QString Field::name() const { return d.fieldName->string(); }
 QString Field::descriptor() const { return d.fieldDescriptor->string(); }
 
-bool Field::isPublic() const { return d.accessFlags & ACC_PUBLIC; }
-bool Field::isPrivate() const { return d.accessFlags & ACC_PRIVATE; }
-bool Field::isProtected() const { return d.accessFlags & ACC_PROTECTED; }
-bool Field::isStatic() const { return d.accessFlags & ACC_STATIC; }
-bool Field::isFinal() const { return d.accessFlags & ACC_FINAL; }
-bool Field::isVolatile() const { return d.accessFlags & ACC_VOLATILE; }
-bool Field::isTransient() const { return d.accessFlags & ACC_TRANSIENT; }
+bool Field::isPublic    () const { return d.accessFlags & ACC_PUBLIC    ; }
+bool Field::isPrivate   () const { return d.accessFlags & ACC_PRIVATE   ; }
+bool Field::isProtected () const { return d.accessFlags & ACC_PROTECTED ; }
+bool Field::isStatic    () const { return d.accessFlags & ACC_STATIC    ; }
+bool Field::isFinal     () const { return d.accessFlags & ACC_FINAL     ; }
+bool Field::isVolatile  () const { return d.accessFlags & ACC_VOLATILE  ; }
+bool Field::isTransient () const { return d.accessFlags & ACC_TRANSIENT ; }
 
 QString Field::flagsString() const
 {

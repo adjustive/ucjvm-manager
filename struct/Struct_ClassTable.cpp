@@ -1,15 +1,15 @@
 #include "Struct_ClassTable.h"
 
-#include "JVMClassList.h"
+#include "ClassList.h"
 #include "DataWriter.h"
 #include "ResolveContext.h"
 
 #include <QDebug>
 
-Struct_ClassTable::Struct_ClassTable(JVMClassList const &classList, quint32 baseAddress, QList<NativeFunction> const &nativeInterface, QStringList resourceFiles)
+Struct_ClassTable::Struct_ClassTable(ClassList const &classList, quint32 baseAddress, QList<NativeFunction> const &nativeInterface, QStringList resourceFiles)
     : resourceTable(resourceFiles)
 {
-    foreach (JVMClass const &classData, classList)
+    foreach (Class const &classData, classList)
         classes.append(Struct_Class(classData));
 
     sort();

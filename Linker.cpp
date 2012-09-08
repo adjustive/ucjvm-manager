@@ -13,11 +13,11 @@
 
 struct LinkerPrivate
 {
-    JVMConfig config;
-    JVMClassList classList;
+    Config config;
+    ClassList classList;
     QStringList resourceFiles;
 
-    LinkerPrivate(JVMConfig config, JVMClassList classList, QStringList resourceFiles)
+    LinkerPrivate(Config config, ClassList classList, QStringList resourceFiles)
         : config(config)
         , classList(classList)
         , resourceFiles(resourceFiles)
@@ -25,7 +25,7 @@ struct LinkerPrivate
     }
 };
 
-Linker::Linker(JVMConfig config, JVMClassList classList, QStringList resourceFiles)
+Linker::Linker(Config config, ClassList classList, QStringList resourceFiles)
     : d_ptr(new LinkerPrivate(config, classList, resourceFiles))
 {
 }

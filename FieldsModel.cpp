@@ -2,7 +2,7 @@
 
 #include <JavaName.h>
 
-FieldsModel::FieldsModel(JVMClass classData, QObject *parent)
+FieldsModel::FieldsModel(Class classData, QObject *parent)
     : QAbstractTableModel(parent)
     , classData(classData)
 {

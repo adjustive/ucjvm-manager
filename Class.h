@@ -10,9 +10,9 @@
 #include "Methods.h"
 #include "Attributes.h"
 
-struct JVMClassPrivate;
+struct ClassPrivate;
 
-class JVMClass
+class Class
 {
 public:
     enum Access
@@ -25,15 +25,15 @@ public:
     };
 
 public:    
-    JVMClass();
-    ~JVMClass();
-    JVMClass(const JVMClass &rhs);
-    JVMClass &operator =(const JVMClass &rhs);
+    Class();
+    ~Class();
+    Class(const Class &rhs);
+    Class &operator =(const Class &rhs);
 
-    explicit JVMClass(QDataStream &data);
-    explicit JVMClass(ConstantPool const &constantPool);
+    explicit Class(QDataStream &data);
+    explicit Class(ConstantPool const &constantPool);
 
-    void setSuperClass(const JVMClass &classData);
+    void setSuperClass(const Class &classData);
 
     QString name() const;
     QString superName() const;
@@ -68,10 +68,10 @@ public:
     quint16 inheritedInstanceDataSize() const;
 
 private:
-    Q_DECLARE_PRIVATE(JVMClass)
-    QSharedPointer<JVMClassPrivate> d_ptr;
+    Q_DECLARE_PRIVATE(Class)
+    QSharedPointer<ClassPrivate> d_ptr;
 };
 
-Q_DECLARE_METATYPE(JVMClass)
+Q_DECLARE_METATYPE(Class)
 
 #endif // JVMCLASS_H

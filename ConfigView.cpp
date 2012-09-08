@@ -3,7 +3,7 @@
 
 #include "NativeInterfaceModel.h"
 
-ConfigView::ConfigView(JVMConfig config, QWidget *parent)
+ConfigView::ConfigView(Config config, QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::ConfigView)
     , config(config)

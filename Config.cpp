@@ -1,4 +1,4 @@
-#include "JVMConfig.h"
+#include "Config.h"
 
 #include <QXmlSimpleReader>
 #include <QDebug>
@@ -57,11 +57,11 @@ private:
     QMap<QString, QString> config;
 };
 
-JVMConfig::JVMConfig()
+Config::Config()
 {
 }
 
-JVMConfig::JVMConfig(QString path)
+Config::Config(QString path)
 {
     QFile file(path);
     if (!file.open(QFile::ReadOnly))
@@ -105,27 +105,27 @@ JVMConfig::JVMConfig(QString path)
     }
 }
 
-QString JVMConfig::configName() const
+QString Config::configName() const
 {
     return d.configName;
 }
 
-QString JVMConfig::description() const
+QString Config::description() const
 {
     return d.description;
 }
 
-quint32 JVMConfig::baseAddress() const
+quint32 Config::baseAddress() const
 {
     return d.baseAddress;
 }
 
-quint32 JVMConfig::memorySize() const
+quint32 Config::memorySize() const
 {
     return d.memorySize;
 }
 
-QList<NativeFunction> const &JVMConfig::nativeInterface() const
+QList<NativeFunction> const &Config::nativeInterface() const
 {
     return d.nativeInterface;
 }

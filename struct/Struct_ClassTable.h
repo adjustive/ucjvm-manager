@@ -3,7 +3,7 @@
 
 #include "Struct_Class.h"
 #include "Struct_ResourceTable.h"
-struct JVMClassList;
+struct ClassList;
 
 #include <QList>
 class QTextStream;
@@ -11,7 +11,7 @@ class QTextStream;
 class Struct_ClassTable : public Struct
 {
 public:
-    Struct_ClassTable(const JVMClassList &classList, quint32 baseAddress, QList<NativeFunction> const &nativeInterface, QStringList resourceFiles);
+    Struct_ClassTable(const ClassList &classList, quint32 baseAddress, QList<NativeFunction> const &nativeInterface, QStringList resourceFiles);
 
     Struct_Class const &byName(QString name) const;
 

@@ -3,24 +3,24 @@
 
 #include <QAbstractListModel>
 
-#include "JVMClassList.h"
+#include "ClassList.h"
 
-class JVMClassModel : public QAbstractListModel
+class ClassModel : public QAbstractListModel
 {
     Q_OBJECT
 
 public:
-    explicit JVMClassModel(JVMClassList classList, QObject *parent = 0);
+    explicit ClassModel(ClassList classList, QObject *parent = 0);
 
     int rowCount(const QModelIndex &parent) const;
     QVariant data(const QModelIndex &index, int role) const;
 
     QModelIndex byName(QString className) const;
 
-    JVMClassList classes() const;
+    ClassList classes() const;
     
 private:
-    JVMClassList classList;
+    ClassList classList;
 };
 
 #endif // JVMCLASSMODEL_H

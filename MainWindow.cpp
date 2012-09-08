@@ -1,8 +1,8 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 
-#include "JVMConfig.h"
-#include "JVMClassModel.h"
+#include "Config.h"
+#include "ClassModel.h"
 #include "MessageModel.h"
 #include "FieldsView.h"
 #include "MethodsView.h"
@@ -49,7 +49,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     foreach (QFileInfo entry, config.entryInfoList(QStringList("*.cfg")))
     {
-        JVMConfig cfg(entry.filePath());
+        Config cfg(entry.filePath());
         QString name = QString("%1 @ 0x%0").arg(cfg.baseAddress(), 0, 16).arg(cfg.configName());
         ui->config->addItem(name, QVariant::fromValue(cfg));
     }
@@ -117,10 +117,10 @@ void MainWindow::loadClasses(QDir path)
 {
     QList<QFileInfo> files;
     findFiles("class", files, path);
-    JVMClassList classList(files);
+    ClassList classList(files);
 
     delete ui->classList->model();
-    ui->classList->setModel(new JVMClassModel(classList, this));
+    ui->classList->setModel(new ClassModel(classList, this));
 
     connect(ui->classList->selectionModel(),
             SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
@@ -158,10 +158,10 @@ static QString prependString(QString prefix, QString string)
 
 void MainWindow::on_link_clicked()
 {
-    if (JVMClassModel *classModel = qobject_cast<JVMClassModel *>(ui->classList->model()))
+    if (ClassModel *classModel = qobject_cast<ClassModel *>(ui->classList->model()))
     {
-        JVMConfig config = qvariant_cast<JVMConfig>(ui->config->itemData(ui->config->currentIndex()));
-        JVMClassList classList = classModel->classes();
+        Config config = qvariant_cast<Config>(ui->config->itemData(ui->config->currentIndex()));
+        ClassList classList = classModel->classes();
         QStringList resourceFiles = resourceModel.stringList();
         std::transform(resourceFiles.begin(), resourceFiles.end(), resourceFiles.begin(),
                        std::bind1st(
@@ -182,7 +182,7 @@ void MainWindow::onClassSelectionChanged(const QModelIndex &current, const QMode
 {
     Q_UNUSED(previous);
 
-    JVMClass const &currentClass = qvariant_cast<JVMClass>(current.data(Qt::UserRole));
+    Class const &currentClass = qvariant_cast<Class>(current.data(Qt::UserRole));
 
     ui->minorVersion->setText(QString("%0").arg(currentClass.minorVersion()));
     ui->majorVersion->setText(QString("%0").arg(currentClass.majorVersion()));
@@ -213,21 +213,21 @@ void MainWindow::onClassSelectionChanged(const QModelIndex &current, const QMode
 
 void MainWindow::on_showFields_clicked()
 {
-    JVMClass const &currentClass = qvariant_cast<JVMClass>(ui->classList->currentIndex().data(Qt::UserRole));
+    Class const &currentClass = qvariant_cast<Class>(ui->classList->currentIndex().data(Qt::UserRole));
     FieldsView view(currentClass);
     view.exec();
 }
 
 void MainWindow::on_showMethods_clicked()
 {
-    JVMClass const &currentClass = qvariant_cast<JVMClass>(ui->classList->currentIndex().data(Qt::UserRole));
+    Class const &currentClass = qvariant_cast<Class>(ui->classList->currentIndex().data(Qt::UserRole));
     MethodsView view(currentClass);
     view.exec();
 }
 
 void MainWindow::on_action_Edit_JVMConfig_triggered()
 {
-    JVMConfig config = qvariant_cast<JVMConfig>(ui->config->itemData(ui->config->currentIndex()));
+    Config config = qvariant_cast<Config>(ui->config->itemData(ui->config->currentIndex()));
     ConfigView view(config);
     view.exec();
 }
@@ -261,7 +261,7 @@ void MainWindow::on_action_Edit_Resource_triggered()
 
 void MainWindow::on_superclassName_linkActivated(const QString &link)
 {
-    JVMClassModel *model = qobject_cast<JVMClassModel *>(ui->classList->model());
+    ClassModel *model = qobject_cast<ClassModel *>(ui->classList->model());
     Q_ASSERT(model != NULL);
 
     QModelIndex index = model->byName(link);

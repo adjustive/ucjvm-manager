@@ -2,7 +2,7 @@
 
 #include "JavaName.h"
 
-MethodsModel::MethodsModel(JVMClass classData, QObject *parent)
+MethodsModel::MethodsModel(Class classData, QObject *parent)
     : QAbstractTableModel(parent)
     , classData(classData)
 {

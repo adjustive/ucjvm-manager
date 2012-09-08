@@ -1,24 +1,24 @@
-#include "JVMClassModel.h"
+#include "ClassModel.h"
 
 #include "JavaName.h"
 
 #include <QDebug>
 
-JVMClassModel::JVMClassModel(JVMClassList classList, QObject *parent)
+ClassModel::ClassModel(ClassList classList, QObject *parent)
     : QAbstractListModel(parent)
     , classList(classList)
 {
 }
 
-int JVMClassModel::rowCount(const QModelIndex &parent) const
+int ClassModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
     return classList.size();
 }
 
-QVariant JVMClassModel::data(const QModelIndex &index, int role) const
+QVariant ClassModel::data(const QModelIndex &index, int role) const
 {
-    JVMClass const &item = classList.at(index.row());
+    Class const &item = classList.at(index.row());
 
     switch (role)
     {
@@ -31,7 +31,7 @@ QVariant JVMClassModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-QModelIndex JVMClassModel::byName(QString className) const
+QModelIndex ClassModel::byName(QString className) const
 {
     for (int i = 0; i < classList.size(); i++)
         if (JavaName::demangle(classList.at(i).name()) == className)
@@ -39,7 +39,7 @@ QModelIndex JVMClassModel::byName(QString className) const
     return QModelIndex();
 }
 
-JVMClassList JVMClassModel::classes() const
+ClassList ClassModel::classes() const
 {
     return classList;
 }

@@ -3,7 +3,7 @@
 
 #include <QDialog>
 
-#include "JVMConfig.h"
+#include "Config.h"
 
 namespace Ui {
 class ConfigView;
@@ -14,12 +14,12 @@ class ConfigView : public QDialog
     Q_OBJECT
     
 public:
-    explicit ConfigView(JVMConfig config, QWidget *parent = 0);
+    explicit ConfigView(Config config, QWidget *parent = 0);
     ~ConfigView();
     
 private:
     Ui::ConfigView *ui;
-    JVMConfig config;
+    Config config;
 };
 
 #endif // CONFIGVIEW_H

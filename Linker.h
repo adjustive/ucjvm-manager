@@ -1,15 +1,15 @@
 #ifndef LINKER_H
 #define LINKER_H
 
-#include "JVMConfig.h"
-#include "JVMClassList.h"
+#include "Config.h"
+#include "ClassList.h"
 
 struct LinkerPrivate;
 
 class Linker
 {
 public:
-    Linker(JVMConfig config, JVMClassList classList, QStringList resourceFiles);
+    Linker(Config config, ClassList classList, QStringList resourceFiles);
     ~Linker();
 
     void link();

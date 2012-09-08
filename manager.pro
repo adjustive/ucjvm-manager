@@ -16,9 +16,9 @@ LIBS += -L../qt3d-build -Wl,-rpath,../qt3d-build -lqt3d
 
 SOURCES += main.cpp\
         MainWindow.cpp \
-    JVMConfig.cpp \
+    Config.cpp \
     NativeFunction.cpp \
-    JVMClass.cpp \
+    Class.cpp \
     constants/ConstantPool.cpp \
     constants/ConstantPoolInfo.cpp \
     constants/ConstantPoolInfo_Fieldref.cpp \
@@ -53,8 +53,8 @@ SOURCES += main.cpp\
     ExceptionHandlers.cpp \
     Method.cpp \
     constants/ConstantPoolInfo_Dummy.cpp \
-    JVMClassModel.cpp \
-    JVMClassList.cpp \
+    ClassModel.cpp \
+    ClassList.cpp \
     MessageModel.cpp \
     FieldsView.cpp \
     FieldsModel.cpp \
@@ -112,9 +112,9 @@ SOURCES += main.cpp\
     Delegate.cpp
 
 HEADERS  += MainWindow.h \
-    JVMConfig.h \
+    Config.h \
     NativeFunction.h \
-    JVMClass.h \
+    Class.h \
     constants/ConstantPool.h \
     constants/ConstantPoolInfo.h \
     constants/ConstantPoolInfo_Fieldref.h \
@@ -149,8 +149,8 @@ HEADERS  += MainWindow.h \
     ExceptionHandlers.h \
     Method.h \
     constants/ConstantPoolInfo_Dummy.h \
-    JVMClassModel.h \
-    JVMClassList.h \
+    ClassModel.h \
+    ClassList.h \
     MessageModel.h \
     FieldsView.h \
     FieldsModel.h \

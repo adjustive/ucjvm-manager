@@ -1,14 +1,14 @@
 #include "Struct_Class.h"
 
 #include "Struct_CP_Class.h"
-#include "JVMClass.h"
+#include "Class.h"
 #include "DataWriter.h"
 #include "JavaName.h"
 #include "ResolveContext.h"
 
 #include <QTextStream>
 
-Struct_Class::Struct_Class(const JVMClass &classData)
+Struct_Class::Struct_Class(const Class &classData)
     : constantPoolTable(classData.constantPool())
     , fieldPoolTable(classData.fields())
     , methodPoolTable(classData.methods())

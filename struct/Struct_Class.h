@@ -7,13 +7,13 @@
 #include "Struct_Field_Table.h"
 #include "Struct_Method_Table.h"
 #include "Struct_Exception_Handler_Table.h"
-class JVMClass;
+class Class;
 class Struct_ClassTable;
 
 class Struct_Class : public Struct
 {
 public:
-    Struct_Class(JVMClass const &classData);
+    Struct_Class(Class const &classData);
 
     QString javaTypeName() const;
     Struct_Class const *superClass() const;

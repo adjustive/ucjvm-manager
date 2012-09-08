@@ -1,4 +1,4 @@
-#include "JVMClassList.h"
+#include "ClassList.h"
 
 #include "ConstantPoolInfo_Class.h"
 #include "ConstantPoolInfo_Utf8.h"
@@ -6,16 +6,16 @@
 #include <QDebug>
 
 
-static JVMClass parseClass(QFileInfo file)
+static Class parseClass(QFileInfo file)
 {
     QFile fh(file.filePath());
     if (!fh.open(QFile::ReadOnly))
         qFatal("unable to open class file: %s", file.fileName().toUtf8().constData());
     QDataStream data(&fh);
-    return JVMClass(data);
+    return Class(data);
 }
 
-JVMClassList::JVMClassList(QList<QFileInfo> const &files)
+ClassList::ClassList(QList<QFileInfo> const &files)
 {
     reserve(files.size());
     std::transform(files.begin(), files.end(), std::back_inserter(*this), parseClass);
@@ -25,20 +25,20 @@ JVMClassList::JVMClassList(QList<QFileInfo> const &files)
 }
 
 
-bool JVMClassList::containsName(QString className) const
+bool ClassList::containsName(QString className) const
 {
     return byName(className) != NULL;
 }
 
-JVMClass const *JVMClassList::byName(QString className) const
+Class const *ClassList::byName(QString className) const
 {
-    foreach (JVMClass const &classData, *this)
+    foreach (Class const &classData, *this)
         if (classData.name() == className)
             return &classData;
     return NULL;
 }
 
-static JVMClass createArrayClass(QString className)
+static Class createArrayClass(QString className)
 {
     ConstantPoolInfo_Utf8 *thisClassName = new ConstantPoolInfo_Utf8(className);
     ConstantPoolInfo_Utf8 *superClassName = new ConstantPoolInfo_Utf8("java/lang/Object");
@@ -53,12 +53,12 @@ static JVMClass createArrayClass(QString className)
     constantPool.add(superClassInfo);
     constantPool.add(superClassName);
 
-    return JVMClass(constantPool);
+    return Class(constantPool);
 }
 
-void JVMClassList::createArrayClasses()
+void ClassList::createArrayClasses()
 {
-    foreach (JVMClass const &classData, *this)
+    foreach (Class const &classData, *this)
     {
         foreach (QSharedPointer<ConstantPoolInfo_Class> referencedClass, classData.constantPool().findAll<ConstantPoolInfo_Class>())
         {
@@ -76,11 +76,11 @@ void JVMClassList::createArrayClasses()
     }
 }
 
-void JVMClassList::linkSuperClasses()
+void ClassList::linkSuperClasses()
 {
     for (int i = 0; i < size(); i++)
     {
-        JVMClass &classData = (*this)[i];
+        Class &classData = (*this)[i];
         QString superName = classData.superName();
 
         // java.lang.Object
@@ -90,7 +90,7 @@ void JVMClassList::linkSuperClasses()
             continue;
         }
 
-        JVMClass const *superClass = byName(superName);
+        Class const *superClass = byName(superName);
         if (superClass == NULL)
         {
             qWarning() << "superclass" << superName << "for class" << classData.name() << "not found";

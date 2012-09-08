@@ -6,7 +6,7 @@
 #include <QVariant>
 #include <QList>
 
-struct JVMConfigPrivate
+struct ConfigPrivate
 {
     QString configName;
     QString description;
@@ -17,11 +17,11 @@ struct JVMConfigPrivate
 };
 
 
-class JVMConfig
+class Config
 {
 public:
-    JVMConfig();
-    explicit JVMConfig(QString path);
+    Config();
+    explicit Config(QString path);
 
     QString configName() const;
     QString description() const;
@@ -31,9 +31,9 @@ public:
     QList<NativeFunction> const &nativeInterface() const;
 
 private:
-    JVMConfigPrivate d;
+    ConfigPrivate d;
 };
 
-Q_DECLARE_METATYPE(JVMConfig)
+Q_DECLARE_METATYPE(Config)
 
 #endif // JVMCONFIG_H

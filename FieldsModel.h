@@ -3,14 +3,14 @@
 
 #include <QAbstractTableModel>
 
-#include "JVMClass.h"
+#include "Class.h"
 
 class FieldsModel : public QAbstractTableModel
 {
     Q_OBJECT
 
 public:
-    explicit FieldsModel(JVMClass classData, QObject *parent = 0);
+    explicit FieldsModel(Class classData, QObject *parent = 0);
 
     int rowCount(const QModelIndex &parent) const;
     int columnCount(const QModelIndex &parent) const;
@@ -18,7 +18,7 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
 
 private:
-    JVMClass classData;
+    Class classData;
 };
 
 #endif // FIELDSMODEL_H

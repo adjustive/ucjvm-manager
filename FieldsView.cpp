@@ -3,7 +3,7 @@
 
 #include "FieldsModel.h"
 
-FieldsView::FieldsView(JVMClass classData, QWidget *parent)
+FieldsView::FieldsView(Class classData, QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::FieldsView)
     , classData(classData)

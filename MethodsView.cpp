@@ -3,7 +3,7 @@
 
 #include "MethodsModel.h"
 
-MethodsView::MethodsView(JVMClass classData, QWidget *parent)
+MethodsView::MethodsView(Class classData, QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::MethodsView)
     , classData(classData)
