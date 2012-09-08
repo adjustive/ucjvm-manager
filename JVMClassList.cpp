@@ -5,24 +5,12 @@
 
 #include <QDebug>
 
-static QList<QFileInfo> collectClasses(QList<QFileInfo> files, QDir dir)
-{
-    foreach (QFileInfo info, dir.entryInfoList())
-    {
-        if (info.suffix() == "class")
-            files.append(info);
-        if (info.isDir() && info.fileName()[0] != '.')
-            files = collectClasses(files, QDir(info.filePath()));
-    }
-
-    return files;
-}
 
 static JVMClass parseClass(QFileInfo file)
 {
     QFile fh(file.filePath());
     if (!fh.open(QFile::ReadOnly))
-        qFatal("unable to open");
+        qFatal("unable to open class file: %s", file.fileName().toUtf8().constData());
     QDataStream data(&fh);
     return JVMClass(data);
 }
