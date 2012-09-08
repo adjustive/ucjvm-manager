@@ -24,6 +24,7 @@ public:
     bool containsName(QString className) const;
     JVMClass const *byName(QString className) const;
     void createArrayClasses();
+    void linkSuperClasses();
 };
 
 #endif // JVMCLASSLIST_H

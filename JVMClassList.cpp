@@ -21,25 +21,7 @@ JVMClassList::JVMClassList(QList<QFileInfo> const &files)
     std::transform(files.begin(), files.end(), std::back_inserter(*this), parseClass);
 
     createArrayClasses();
-
-    for (int i = 0; i < size(); i++)
-    {
-        JVMClass &classData = (*this)[i];
-        QString superName = classData.superName();
-
-        // java.lang.Object
-        if (superName.isEmpty())
-            continue;
-
-        JVMClass const *superClass = byName(superName);
-        if (superClass == NULL)
-        {
-            qWarning() << "superclass" << superName << "for class" << classData.name() << "not found";
-            continue;
-        }
-
-        classData.setSuperClass(*superClass);
-    }
+    linkSuperClasses();
 }
 
 
@@ -91,5 +73,30 @@ void JVMClassList::createArrayClasses()
                     append(createArrayClass("[" + name));
             }
         }
+    }
+}
+
+void JVMClassList::linkSuperClasses()
+{
+    for (int i = 0; i < size(); i++)
+    {
+        JVMClass &classData = (*this)[i];
+        QString superName = classData.superName();
+
+        // java.lang.Object
+        if (superName.isEmpty())
+        {
+            Q_ASSERT(classData.name() == "java/lang/Object");
+            continue;
+        }
+
+        JVMClass const *superClass = byName(superName);
+        if (superClass == NULL)
+        {
+            qWarning() << "superclass" << superName << "for class" << classData.name() << "not found";
+            continue;
+        }
+
+        classData.setSuperClass(*superClass);
     }
 }
