@@ -38,9 +38,9 @@ private:
     virtual void writeFloat(float value) = 0;
     virtual void writeDouble(double value) = 0;
 
-    virtual void wrote(quint16 bytes);
+    void wrote(quint16 bytes);
 
-    virtual void checkAlign(Size alignment) const;
+    void checkAlign(Size alignment) const;
 
 public:
     DataWriter(quint32 baseAddress);
@@ -49,7 +49,7 @@ public:
     void align(quint8 alignment);
     void verifyPosition(quint32 currentAddress, quint32 nextAddress);
 
-    virtual quint32 memorySize() const;
+    quint32 memorySize() const;
 
     void put8(quint8 value, char const *field);
     void put16(quint16 value, char const *field);

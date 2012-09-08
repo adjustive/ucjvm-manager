@@ -169,7 +169,7 @@ void MainWindow::on_link_clicked()
                            resourcePath(".")));
         qDebug() << resourceFiles;
 
-        Linker linker(config, classList, resourceFiles);
+        Linker linker(config, classList, resourceFiles, resourceEditors);
         linker.link();
     }
     else

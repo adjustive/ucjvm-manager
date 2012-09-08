@@ -26,6 +26,7 @@ public:
 
         QString newResource(QString type, QString resourcePath) const;
         void editResource(QString path) const;
+        Resource *readResource(QString path) const;
 
     private:
         // suffix -> editor

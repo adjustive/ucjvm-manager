@@ -6,8 +6,8 @@
 
 #include <QDebug>
 
-Struct_ClassTable::Struct_ClassTable(ClassList const &classList, quint32 baseAddress, QList<NativeFunction> const &nativeInterface, QStringList resourceFiles)
-    : resourceTable(resourceFiles)
+Struct_ClassTable::Struct_ClassTable(ClassList const &classList, quint32 baseAddress, QList<NativeFunction> const &nativeInterface, QStringList resourceFiles, const ResourceEditor::Collection &editors)
+    : resourceTable(resourceFiles, editors)
 {
     foreach (Class const &classData, classList)
         classes.append(Struct_Class(classData));

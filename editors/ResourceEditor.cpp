@@ -60,6 +60,27 @@ void ResourceEditor::Collection::editResource(QString path) const
         editor->editResource(path);
 }
 
+Resource *ResourceEditor::Collection::readResource(QString path) const
+{
+    Resource *resource = NULL;
+
+    QFileInfo info(path);
+    if (ResourceEditor *editor = this->editor(info.suffix()))
+    {
+        QFile file(path);
+        if (!file.open(QFile::ReadOnly))
+        {
+            qWarning() << "could not open resource file:" << path;
+            return NULL;
+        }
+
+        QDataStream stream(&file);
+        resource = editor->readResource(stream);
+    }
+
+    return resource;
+}
+
 
 
 ResourceEditor::ResourceEditor(QWidget *parent)

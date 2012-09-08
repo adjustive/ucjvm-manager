@@ -3,13 +3,14 @@
 
 #include "Config.h"
 #include "ClassList.h"
+#include "ResourceEditor.h"
 
 struct LinkerPrivate;
 
 class Linker
 {
 public:
-    Linker(Config config, ClassList classList, QStringList resourceFiles);
+    Linker(Config config, ClassList classList, QStringList resourceFiles, ResourceEditor::Collection const &editors);
     ~Linker();
 
     void link();

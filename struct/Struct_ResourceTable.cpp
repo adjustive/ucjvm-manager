@@ -1,7 +1,7 @@
 #include "Struct_ResourceTable.h"
 
 #include "DataWriter.h"
-#include "ResourceFactory.h"
+#include "Resource.h"
 #include "ResourceVisitor.h"
 
 #include "Struct_Resource_Bitmap2D.h"
@@ -46,25 +46,15 @@ public:
 };
 
 
-Struct_ResourceTable::Struct_ResourceTable(QStringList resourceFiles)
+Struct_ResourceTable::Struct_ResourceTable(QStringList resourceFiles, ResourceEditor::Collection const &editors)
 {
     ResourceMaker resourceMaker(resources);
 
     foreach (QString const &resourceFile, resourceFiles)
     {
-        QFileInfo info(resourceFile);
-        QFile file(resourceFile);
-        if (!file.open(QFile::ReadOnly))
-        {
-            qWarning() << "could not open resource file:" << resourceFile;
-            continue;
-        }
-
-        QDataStream stream(&file);
-
-        Resource *resource = ResourceFactory::instance().create(info.suffix(), stream);
+        Resource *resource = editors.readResource(resourceFile);
         Q_ASSERT(resource != NULL);
-        resourceMaker.resourceName = info.fileName();
+        resourceMaker.resourceName = QFileInfo(resourceFile).fileName();
         resource->accept(resourceMaker);
         delete resource;
     }

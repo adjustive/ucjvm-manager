@@ -11,7 +11,7 @@ class QTextStream;
 class Struct_ClassTable : public Struct
 {
 public:
-    Struct_ClassTable(const ClassList &classList, quint32 baseAddress, QList<NativeFunction> const &nativeInterface, QStringList resourceFiles);
+    Struct_ClassTable(const ClassList &classList, quint32 baseAddress, QList<NativeFunction> const &nativeInterface, QStringList resourceFiles, ResourceEditor::Collection const &editors);
 
     Struct_Class const &byName(QString name) const;
 

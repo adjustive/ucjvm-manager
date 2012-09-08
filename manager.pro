@@ -104,7 +104,6 @@ SOURCES += main.cpp\
     struct/Struct_Resource.cpp \
     struct/Struct_Resource_Bitmap2D.cpp \
     resources/Resource.cpp \
-    resources/ResourceFactory.cpp \
     resources/ResourceVisitor.cpp \
     struct/Struct_Resource_Bitmap3D.cpp \
     struct/Struct_ResourceName.cpp \
@@ -200,7 +199,6 @@ HEADERS  += MainWindow.h \
     struct/Struct_Resource.h \
     struct/Struct_Resource_Bitmap2D.h \
     resources/Resource.h \
-    resources/ResourceFactory.h \
     resources/ResourceVisitor.h \
     struct/Struct_Resource_Bitmap3D.h \
     struct/Struct_ResourceName.h \

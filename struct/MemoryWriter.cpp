@@ -4,6 +4,7 @@ MemoryWriter::MemoryWriter(quint32 baseAddress)
     : DataWriter(baseAddress)
     , stream(&array, QIODevice::WriteOnly)
 {
+    array.reserve(128 * 1024);
 }
 
 void MemoryWriter::write8(quint8 value)

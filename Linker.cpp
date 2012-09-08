@@ -16,17 +16,19 @@ struct LinkerPrivate
     Config config;
     ClassList classList;
     QStringList resourceFiles;
+    ResourceEditor::Collection const &editors;
 
-    LinkerPrivate(Config config, ClassList classList, QStringList resourceFiles)
+    LinkerPrivate(Config config, ClassList classList, QStringList resourceFiles, ResourceEditor::Collection const &editors)
         : config(config)
         , classList(classList)
         , resourceFiles(resourceFiles)
+        , editors(editors)
     {
     }
 };
 
-Linker::Linker(Config config, ClassList classList, QStringList resourceFiles)
-    : d_ptr(new LinkerPrivate(config, classList, resourceFiles))
+Linker::Linker(Config config, ClassList classList, QStringList resourceFiles, const ResourceEditor::Collection &editors)
+    : d_ptr(new LinkerPrivate(config, classList, resourceFiles, editors))
 {
 }
 
@@ -44,8 +46,9 @@ void Linker::link()
 
     quint32 const baseAddress = d->config.baseAddress();
 
-    Struct_ClassTable classTable(d->classList, baseAddress, d->config.nativeInterface(), d->resourceFiles);
+    Struct_ClassTable classTable(d->classList, baseAddress, d->config.nativeInterface(), d->resourceFiles, d->editors);
 
+    if (0)
     {
         QFile out("memory.log");
         out.open(QFile::WriteOnly);
@@ -55,6 +58,7 @@ void Linker::link()
         classTable.printMemoryMap(ts);
     }
 
+    if (0)
     {
         MemoryMapWriter memMap(baseAddress);
         classTable.write(memMap);
