@@ -101,7 +101,9 @@ Config::Config(QString path)
              handler["functionParams_" + number]
         ));
         if (!ok)
+        {
             qWarning("failed to parse ID for native function %d", i);
+        }
     }
 }
 
@@ -127,6 +129,7 @@ quint32 Config::memorySize() const
 
 MemoryModel const &Config::memoryModel() const
 {
+    // TODO: memory models
     return MemoryModel::AVR32;
 }
 
