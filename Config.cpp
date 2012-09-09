@@ -3,7 +3,7 @@
 #include <QXmlSimpleReader>
 #include <QDebug>
 
-struct Handler : QXmlDefaultHandler
+struct ConfigXmlHandler : QXmlDefaultHandler
 {
     bool startElement(const QString &namespaceURI,
                       const QString &localName,
@@ -46,7 +46,7 @@ struct Handler : QXmlDefaultHandler
     }
 
 
-    Handler(QString fileName)
+    ConfigXmlHandler(QString fileName)
         : fileName(fileName)
     {
     }
@@ -72,7 +72,7 @@ Config::Config(QString path)
 
     QXmlInputSource source(&file);
 
-    Handler handler(file.fileName());
+    ConfigXmlHandler handler(file.fileName());
     QXmlSimpleReader reader;
     reader.setContentHandler(&handler);
     reader.setErrorHandler(&handler);
