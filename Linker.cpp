@@ -45,8 +45,14 @@ void Linker::link()
     gettimeofday(&start, NULL);
 
     quint32 const baseAddress = d->config.baseAddress();
+    MemoryModel const &memoryModel = d->config.memoryModel();
 
-    Struct_ClassTable classTable(d->classList, baseAddress, d->config.nativeInterface(), d->resourceFiles, d->editors);
+    Struct_ClassTable classTable(d->classList,
+                                 baseAddress,
+                                 d->config.nativeInterface(),
+                                 d->resourceFiles,
+                                 d->editors,
+                                 memoryModel);
 
     if (0)
     {
@@ -60,7 +66,7 @@ void Linker::link()
 
     if (0)
     {
-        MemoryMapWriter memMap(baseAddress);
+        MemoryMapWriter memMap(memoryModel, baseAddress);
         classTable.write(memMap);
         memMap.flush();
 
@@ -70,7 +76,7 @@ void Linker::link()
     }
 
     {
-        MemoryWriter writer(baseAddress);
+        MemoryWriter writer(memoryModel, baseAddress);
         classTable.write(writer);
 
         QFile out("new.bin");

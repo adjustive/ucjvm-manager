@@ -141,12 +141,12 @@ void Struct_CP_Table::writeData(DataWriter &data) const
         cp->write(data);
 }
 
-quint32 Struct_CP_Table::computeMemoryMap(quint32 baseAddress)
+quint32 Struct_CP_Table::computeMemoryMap(const MemoryModel &memoryModel, quint32 baseAddress)
 {
-    baseAddress = setMemoryAddress(baseAddress);
+    baseAddress = setMemoryAddress(memoryModel, baseAddress);
 
     foreach (QSharedPointer<Struct_CP> cp, constants)
-        baseAddress = cp->computeMemoryMap(baseAddress);
+        baseAddress = cp->computeMemoryMap(memoryModel, baseAddress);
 
     return baseAddress;
 }

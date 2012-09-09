@@ -1,9 +1,19 @@
 #include "MemoryWriter.h"
 
-MemoryWriter::MemoryWriter(quint32 baseAddress)
-    : DataWriter(baseAddress)
+MemoryWriter::MemoryWriter(MemoryModel const &memoryModel, quint32 baseAddress)
+    : DataWriter(memoryModel, baseAddress)
     , stream(&array, QIODevice::WriteOnly)
 {
+    switch (memoryModel.byteOrder())
+    {
+    case MemoryModel::BigEndian:
+        stream.setByteOrder(QDataStream::BigEndian);
+        break;
+    case MemoryModel::LittleEndian:
+        stream.setByteOrder(QDataStream::LittleEndian);
+        break;
+    }
+
     array.reserve(128 * 1024);
 }
 

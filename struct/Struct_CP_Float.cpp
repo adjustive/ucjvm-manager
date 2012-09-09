@@ -19,9 +19,9 @@ void Struct_CP_Float::writeConstantData(DataWriter &data) const
     data.putFloat(value, "value");
 }
 
-quint32 Struct_CP_Float::computeMemoryMap(quint32 baseAddress)
+quint32 Struct_CP_Float::computeMemoryMap(MemoryModel const &memoryModel, quint32 baseAddress)
 {
-    baseAddress = setMemoryAddress(baseAddress);
+    baseAddress = setMemoryAddress(memoryModel, baseAddress);
     return baseAddress;
 }
 

@@ -11,14 +11,19 @@ class QTextStream;
 class Struct_ClassTable : public Struct
 {
 public:
-    Struct_ClassTable(const ClassList &classList, quint32 baseAddress, QList<NativeFunction> const &nativeInterface, QStringList resourceFiles, ResourceEditor::Collection const &editors);
+    Struct_ClassTable(const ClassList &classList,
+                      quint32 baseAddress,
+                      QList<NativeFunction> const &nativeInterface,
+                      QStringList resourceFiles,
+                      ResourceEditor::Collection const &editors,
+                      MemoryModel const &memoryModel);
 
     Struct_Class const &byName(QString name) const;
 
-    quint8 alignment() const { return 4; }
+    MemoryModel::Align alignment() const { return MemoryModel::ADDRESS_ALIGN; }
     void writeStruct(DataWriter &data) const;
     void writeData(DataWriter &data) const;
-    quint32 computeMemoryMap(quint32 baseAddress);
+    quint32 computeMemoryMap(const MemoryModel &memoryModel, quint32 baseAddress);
     void printMemoryMap(QTextStream &ts) const;
 
     char const *typeName() const { return "ClassTable"; }

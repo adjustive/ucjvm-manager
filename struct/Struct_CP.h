@@ -29,7 +29,7 @@ public:
     virtual Type type() const = 0;
 
 private:
-    quint8 alignment() const { return 1; }
+    MemoryModel::Align alignment() const { return MemoryModel::INT8_ALIGN; }
     void writeStruct(DataWriter &data) const;
     virtual void writeConstantData(DataWriter &data) const = 0;
 };

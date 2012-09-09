@@ -42,9 +42,9 @@ void Struct_Field::writeStruct(DataWriter &data) const
     data.pad8();
 }
 
-quint32 Struct_Field::computeMemoryMap(quint32 baseAddress)
+quint32 Struct_Field::computeMemoryMap(MemoryModel const &memoryModel, quint32 baseAddress)
 {
-    baseAddress = setMemoryAddress(baseAddress);
+    baseAddress = setMemoryAddress(memoryModel, baseAddress);
     return baseAddress;
 }
 

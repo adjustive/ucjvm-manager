@@ -19,9 +19,9 @@ void Struct_Exception_Handler::writeStruct(DataWriter &data) const
     data.put16(catchType, "catchType");
 }
 
-quint32 Struct_Exception_Handler::computeMemoryMap(quint32 baseAddress)
+quint32 Struct_Exception_Handler::computeMemoryMap(MemoryModel const &memoryModel, quint32 baseAddress)
 {
-    baseAddress = setMemoryAddress(baseAddress);
+    baseAddress = setMemoryAddress(memoryModel, baseAddress);
     return baseAddress;
 }
 

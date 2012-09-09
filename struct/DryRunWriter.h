@@ -9,7 +9,7 @@ private:
     bool permissive() const { return true; }
 
 public:
-    DryRunWriter(quint32 baseAddress);
+    DryRunWriter(const MemoryModel &memoryModel, quint32 baseAddress);
 
     void write8 (quint8 ) { }
     void write16(quint16) { }

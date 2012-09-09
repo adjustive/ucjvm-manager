@@ -57,9 +57,9 @@ void Struct_CP_Field::writeConstantData(DataWriter &data) const
     data.putAddress(classAddress, "classAddress");
 }
 
-quint32 Struct_CP_Field::computeMemoryMap(quint32 baseAddress)
+quint32 Struct_CP_Field::computeMemoryMap(MemoryModel const &memoryModel, quint32 baseAddress)
 {
-    baseAddress = setMemoryAddress(baseAddress);
+    baseAddress = setMemoryAddress(memoryModel, baseAddress);
     return baseAddress;
 }
 

@@ -13,9 +13,9 @@ void Struct_ResourceName::writeStruct(DataWriter &data) const
     data.putBytes(name.toUtf8(), "data");
 }
 
-quint32 Struct_ResourceName::computeMemoryMap(quint32 baseAddress)
+quint32 Struct_ResourceName::computeMemoryMap(const MemoryModel &memoryModel, quint32 baseAddress)
 {
-    baseAddress = setMemoryAddress(baseAddress);
+    baseAddress = setMemoryAddress(memoryModel, baseAddress);
     return baseAddress;
 }
 

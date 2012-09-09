@@ -18,12 +18,12 @@ void Struct_Exception_Handler_Table::writeData(DataWriter &data) const
         handler.write(data);
 }
 
-quint32 Struct_Exception_Handler_Table::computeMemoryMap(quint32 baseAddress)
+quint32 Struct_Exception_Handler_Table::computeMemoryMap(const MemoryModel &memoryModel, quint32 baseAddress)
 {
-    baseAddress = setMemoryAddress(baseAddress);
+    baseAddress = setMemoryAddress(memoryModel, baseAddress);
 
     for (int i = 0; i < handlers.size(); i++)
-        baseAddress = handlers[i].computeMemoryMap(baseAddress);
+        baseAddress = handlers[i].computeMemoryMap(memoryModel, baseAddress);
 
     return baseAddress;
 }

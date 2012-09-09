@@ -4,6 +4,8 @@
 #include <QByteArray>
 #include <QSharedPointer>
 
+#include "MemoryModel.h"
+
 class Struct;
 
 class DataWriter
@@ -43,10 +45,10 @@ private:
     void checkAlign(Size alignment) const;
 
 public:
-    DataWriter(quint32 baseAddress);
+    DataWriter(const MemoryModel &memoryModel, quint32 baseAddress);
 
     static quint32 align(quint32 address, quint8 alignment);
-    void align(quint8 alignment);
+    void align(MemoryModel::Align alignment);
     void verifyPosition(quint32 currentAddress, quint32 nextAddress);
 
     quint32 memorySize() const;
@@ -72,6 +74,9 @@ public:
     virtual void end(char const *section, quint32 address);
 
     virtual char const *typeName() const = 0;
+
+private:
+    MemoryModel const &memoryModel;
 
 protected:
     quint32 const baseAddress;

@@ -103,9 +103,9 @@ void Struct_Class::computeFieldOffsets()
 
 void Struct_Class::writeStruct(DataWriter &data) const
 {
-    data.put32(constantPoolTable.structStart, "constantPoolTable");
-    data.put32(fieldPoolTable.structStart, "fieldPoolTable");
-    data.put32(methodPoolTable.structStart, "methodPoolTable");
+    data.putAddress(constantPoolTable, "constantPoolTable");
+    data.putAddress(fieldPoolTable, "fieldPoolTable");
+    data.putAddress(methodPoolTable, "methodPoolTable");
 
     data.put16(inheritedStaticDataSize + ownStaticDataSize, "staticDataSize");
     data.put16(inheritedInstanceDataSize + ownInstanceDataSize, "instanceDataSize");
@@ -123,16 +123,16 @@ void Struct_Class::writeData(DataWriter &data) const
     exceptionsTable.write(data);
 }
 
-quint32 Struct_Class::computeMemoryMap(quint32 baseAddress)
+quint32 Struct_Class::computeMemoryMap(const MemoryModel &memoryModel, quint32 baseAddress)
 {
-    baseAddress = setMemoryAddress(baseAddress);
+    baseAddress = setMemoryAddress(memoryModel, baseAddress);
 
-    baseAddress = constantPoolTable.computeMemoryMap(baseAddress);
-    baseAddress = fieldPoolTable.computeMemoryMap(baseAddress);
-    baseAddress = methodPoolTable.computeMemoryMap(baseAddress);
+    baseAddress = constantPoolTable.computeMemoryMap(memoryModel, baseAddress);
+    baseAddress = fieldPoolTable.computeMemoryMap(memoryModel, baseAddress);
+    baseAddress = methodPoolTable.computeMemoryMap(memoryModel, baseAddress);
 
-    baseAddress = exceptionHandlerTable.computeMemoryMap(baseAddress);
-    baseAddress = exceptionsTable.computeMemoryMap(baseAddress);
+    baseAddress = exceptionHandlerTable.computeMemoryMap(memoryModel, baseAddress);
+    baseAddress = exceptionsTable.computeMemoryMap(memoryModel, baseAddress);
 
     return baseAddress;
 }

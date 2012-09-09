@@ -20,9 +20,9 @@ void Struct_CP_UTF8::writeConstantData(DataWriter &data) const
     data.putBytes(this->data, "data");
 }
 
-quint32 Struct_CP_UTF8::computeMemoryMap(quint32 baseAddress)
+quint32 Struct_CP_UTF8::computeMemoryMap(MemoryModel const &memoryModel, quint32 baseAddress)
 {
-    baseAddress = setMemoryAddress(baseAddress);
+    baseAddress = setMemoryAddress(memoryModel, baseAddress);
     return baseAddress;
 }
 

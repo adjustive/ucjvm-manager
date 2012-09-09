@@ -19,9 +19,9 @@ void Struct_CP_Long::writeConstantData(DataWriter &data) const
     data.put64(value, "value");
 }
 
-quint32 Struct_CP_Long::computeMemoryMap(quint32 baseAddress)
+quint32 Struct_CP_Long::computeMemoryMap(MemoryModel const &memoryModel, quint32 baseAddress)
 {
-    baseAddress = setMemoryAddress(baseAddress);
+    baseAddress = setMemoryAddress(memoryModel, baseAddress);
     return baseAddress;
 }
 

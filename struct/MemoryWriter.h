@@ -21,7 +21,7 @@ private:
     void end(const char *section, quint32 address);
 
 public:
-    MemoryWriter(quint32 baseAddress);
+    MemoryWriter(const MemoryModel &memoryModel, quint32 baseAddress);
 
     char const *typeName() const { return "MemoryWriter"; }
 

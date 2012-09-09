@@ -64,12 +64,12 @@ void Struct_Field_Table::writeData(DataWriter &data) const
         field.write(data);
 }
 
-quint32 Struct_Field_Table::computeMemoryMap(quint32 baseAddress)
+quint32 Struct_Field_Table::computeMemoryMap(const MemoryModel &memoryModel, quint32 baseAddress)
 {
-    baseAddress = setMemoryAddress(baseAddress);
+    baseAddress = setMemoryAddress(memoryModel, baseAddress);
 
     for (int i = 0; i < fields.size(); i++)
-        baseAddress = fields[i].computeMemoryMap(baseAddress);
+        baseAddress = fields[i].computeMemoryMap(memoryModel, baseAddress);
 
     return baseAddress;
 }

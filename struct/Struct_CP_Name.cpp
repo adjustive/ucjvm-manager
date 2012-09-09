@@ -21,9 +21,9 @@ void Struct_CP_Name::writeConstantData(DataWriter &data) const
     data.put16(descriptorIndex, "descriptorIndex");
 }
 
-quint32 Struct_CP_Name::computeMemoryMap(quint32 baseAddress)
+quint32 Struct_CP_Name::computeMemoryMap(MemoryModel const &memoryModel, quint32 baseAddress)
 {
-    baseAddress = setMemoryAddress(baseAddress);
+    baseAddress = setMemoryAddress(memoryModel, baseAddress);
     return baseAddress;
 }
 

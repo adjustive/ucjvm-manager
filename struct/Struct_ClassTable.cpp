@@ -6,7 +6,12 @@
 
 #include <QDebug>
 
-Struct_ClassTable::Struct_ClassTable(ClassList const &classList, quint32 baseAddress, QList<NativeFunction> const &nativeInterface, QStringList resourceFiles, const ResourceEditor::Collection &editors)
+Struct_ClassTable::Struct_ClassTable(ClassList const &classList,
+                                     quint32 baseAddress,
+                                     QList<NativeFunction> const &nativeInterface,
+                                     QStringList resourceFiles,
+                                     const ResourceEditor::Collection &editors,
+                                     const MemoryModel &memoryModel)
     : resourceTable(resourceFiles, editors)
 {
     foreach (Class const &classData, classList)
@@ -22,7 +27,7 @@ Struct_ClassTable::Struct_ClassTable(ClassList const &classList, quint32 baseAdd
     resolveClassReferences();
     computeClassSizes();
     computeFieldOffsets();
-    computeMemoryMap(baseAddress);
+    computeMemoryMap(memoryModel, baseAddress);
 }
 
 
@@ -223,7 +228,7 @@ void Struct_ClassTable::writeStruct(DataWriter &data) const
     data.putAddress(resourceTable, "resourceTable");
 
     foreach (Struct_Class const &classData, classes)
-        data.put32(classData.structStart, "classAddress");
+        data.putAddress(classData, "classAddress");
 }
 
 void Struct_ClassTable::writeData(DataWriter &data) const
@@ -235,14 +240,14 @@ void Struct_ClassTable::writeData(DataWriter &data) const
 }
 
 
-quint32 Struct_ClassTable::computeMemoryMap(quint32 baseAddress)
+quint32 Struct_ClassTable::computeMemoryMap(MemoryModel const &memoryModel, quint32 baseAddress)
 {
-    baseAddress = setMemoryAddress(baseAddress);
+    baseAddress = setMemoryAddress(memoryModel, baseAddress);
 
     for (int i = 0; i < classes.size(); i++)
-        baseAddress = classes[i].computeMemoryMap(baseAddress);
+        baseAddress = classes[i].computeMemoryMap(memoryModel, baseAddress);
 
-    baseAddress = resourceTable.computeMemoryMap(baseAddress);
+    baseAddress = resourceTable.computeMemoryMap(memoryModel, baseAddress);
 
     return baseAddress;
 }

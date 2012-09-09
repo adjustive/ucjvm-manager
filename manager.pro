@@ -108,7 +108,8 @@ SOURCES += main.cpp\
     struct/Struct_Resource_Bitmap3D.cpp \
     struct/Struct_ResourceName.cpp \
     editors/ResourceEditor.cpp \
-    Delegate.cpp
+    Delegate.cpp \
+    struct/MemoryModel.cpp
 
 HEADERS  += MainWindow.h \
     Config.h \
@@ -204,7 +205,8 @@ HEADERS  += MainWindow.h \
     struct/Struct_ResourceName.h \
     editors/ResourceEditor.h \
     Delegate.h \
-    DelegateN.h
+    DelegateN.h \
+    struct/MemoryModel.h
 
 FORMS    += MainWindow.ui \
     FieldsView.ui \

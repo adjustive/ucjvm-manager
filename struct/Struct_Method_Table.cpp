@@ -49,12 +49,12 @@ void Struct_Method_Table::writeData(DataWriter &data) const
         method.write(data);
 }
 
-quint32 Struct_Method_Table::computeMemoryMap(quint32 baseAddress)
+quint32 Struct_Method_Table::computeMemoryMap(const MemoryModel &memoryModel, quint32 baseAddress)
 {
-    baseAddress = setMemoryAddress(baseAddress);
+    baseAddress = setMemoryAddress(memoryModel, baseAddress);
 
     for (int i = 0; i < methods.size(); i++)
-        baseAddress = methods[i].computeMemoryMap(baseAddress);
+        baseAddress = methods[i].computeMemoryMap(memoryModel, baseAddress);
 
     return baseAddress;
 }

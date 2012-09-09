@@ -10,9 +10,9 @@ class Struct_Exceptions : public Struct
 public:
     Struct_Exceptions();
 
-    quint8 alignment() const { return 2; }
+    MemoryModel::Align alignment() const { return MemoryModel::INT16_ALIGN; }
     void writeStruct(DataWriter &data) const;
-    quint32 computeMemoryMap(quint32 baseAddress);
+    quint32 computeMemoryMap(MemoryModel const &memoryModel, quint32 baseAddress);
     void printMemoryMap(QTextStream &ts) const;
 
     char const *typeName() const { return "Exceptions"; }

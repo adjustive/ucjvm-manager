@@ -125,6 +125,11 @@ quint32 Config::memorySize() const
     return d.memorySize;
 }
 
+MemoryModel const &Config::memoryModel() const
+{
+    return MemoryModel::AVR32;
+}
+
 QList<NativeFunction> const &Config::nativeInterface() const
 {
     return d.nativeInterface;

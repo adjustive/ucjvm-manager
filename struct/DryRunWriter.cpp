@@ -1,6 +1,6 @@
 #include "DryRunWriter.h"
 
-DryRunWriter::DryRunWriter(quint32 baseAddress)
-    : DataWriter(baseAddress)
+DryRunWriter::DryRunWriter(MemoryModel const &memoryModel, quint32 baseAddress)
+    : DataWriter(memoryModel, baseAddress)
 {
 }

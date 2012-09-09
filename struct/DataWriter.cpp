@@ -4,8 +4,9 @@
 
 #include <limits>
 
-DataWriter::DataWriter(quint32 baseAddress)
-    : baseAddress(baseAddress)
+DataWriter::DataWriter(MemoryModel const &memoryModel, quint32 baseAddress)
+    : memoryModel(memoryModel)
+    , baseAddress(baseAddress)
     , nextAddress(0)
     , currentAddress(baseAddress)
 {
@@ -49,15 +50,11 @@ quint32 DataWriter::align(quint32 address, quint8 alignment)
     return (address & ~(alignment - 1)) + alignment * !!(address & (alignment - 1));
 }
 
-void DataWriter::align(quint8 alignment)
+void DataWriter::align(MemoryModel::Align alignment)
 {
-//    if (currentAddress % alignment != 0)
-//    {
-//        log << "aligning to " << uint(alignment) << std::endl;
-        while (currentAddress % alignment != 0)
-            pad8();
-//        log << "aligning complete" << std::endl;
-//    }
+    quint8 alignSize = memoryModel.alignmentInBytes(alignment);
+    while (currentAddress % alignSize != 0)
+        pad8();
 }
 
 void DataWriter::verifyPosition(quint32 currentAddress, quint32 nextAddress)

@@ -1,8 +1,8 @@
 #include "MemoryMapWriter.h"
 
 
-MemoryMapWriter::MemoryMapWriter(quint32 baseAddress)
-    : DataWriter(baseAddress)
+MemoryMapWriter::MemoryMapWriter(MemoryModel const &memoryModel, quint32 baseAddress)
+    : DataWriter(memoryModel, baseAddress)
     , stream(&array)
     , level(0)
 {

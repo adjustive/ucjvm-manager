@@ -15,7 +15,7 @@ public:
     void resolveMethodReferences(const ResolveContext &context);
 
     void writeConstantData(DataWriter &data) const;
-    quint32 computeMemoryMap(quint32 baseAddress);
+    quint32 computeMemoryMap(MemoryModel const &memoryModel, quint32 baseAddress);
     void printMemoryMap(QTextStream &ts) const;
 
     Type type() const { return CONSTANT_TYPE_METHOD_REF; }

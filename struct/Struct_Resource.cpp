@@ -23,11 +23,11 @@ void Struct_Resource::writeData(DataWriter &data) const
 }
 
 
-quint32 Struct_Resource::computeMemoryMap(quint32 baseAddress)
+quint32 Struct_Resource::computeMemoryMap(const MemoryModel &memoryModel, quint32 baseAddress)
 {
-    baseAddress = setMemoryAddress(baseAddress);
+    baseAddress = setMemoryAddress(memoryModel, baseAddress);
 
-    baseAddress = name.computeMemoryMap(baseAddress);
+    baseAddress = name.computeMemoryMap(memoryModel, baseAddress);
 
     return baseAddress;
 }

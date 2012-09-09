@@ -8,9 +8,9 @@ class Struct_ResourceName : public Struct
 public:
     Struct_ResourceName(QString name);
 
-    quint8 alignment() const { return 1; }
+    MemoryModel::Align alignment() const { return MemoryModel::INT8_ALIGN; }
     void writeStruct(DataWriter &data) const;
-    quint32 computeMemoryMap(quint32 baseAddress);
+    quint32 computeMemoryMap(MemoryModel const &memoryModel, quint32 baseAddress);
     void printMemoryMap(QTextStream &ts) const;
 
     char const *typeName() const { return "ResourceName"; }

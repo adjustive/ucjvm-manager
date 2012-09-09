@@ -11,7 +11,7 @@ class MemoryMapWriter : public DataWriter
     bool permissive() const { return false; }
 
 public:
-    MemoryMapWriter(quint32 baseAddress);
+    MemoryMapWriter(const MemoryModel &memoryModel, quint32 baseAddress);
 
     void write8(quint8 value);
     void write16(quint16 value);

@@ -76,12 +76,12 @@ void Struct_ResourceTable::writeData(DataWriter &data) const
 }
 
 
-quint32 Struct_ResourceTable::computeMemoryMap(quint32 baseAddress)
+quint32 Struct_ResourceTable::computeMemoryMap(const MemoryModel &memoryModel, quint32 baseAddress)
 {
-    baseAddress = setMemoryAddress(baseAddress);
+    baseAddress = setMemoryAddress(memoryModel, baseAddress);
 
     foreach (QSharedPointer<Struct_Resource> const &resource, resources)
-        baseAddress = resource->computeMemoryMap(baseAddress);
+        baseAddress = resource->computeMemoryMap(memoryModel, baseAddress);
 
     return baseAddress;
 }

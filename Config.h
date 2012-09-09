@@ -2,6 +2,7 @@
 #define JVMCONFIG_H
 
 #include "NativeFunction.h"
+#include "MemoryModel.h"
 
 #include <QVariant>
 #include <QList>
@@ -27,6 +28,7 @@ public:
     QString description() const;
     quint32 baseAddress() const;
     quint32 memorySize() const;
+    MemoryModel const &memoryModel() const;
 
     QList<NativeFunction> const &nativeInterface() const;
 

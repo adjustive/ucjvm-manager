@@ -26,9 +26,9 @@ void Struct_CP_Dummy::writeConstantData(DataWriter &data) const
     Q_UNUSED(data);
 }
 
-quint32 Struct_CP_Dummy::computeMemoryMap(quint32 baseAddress)
+quint32 Struct_CP_Dummy::computeMemoryMap(MemoryModel const &memoryModel, quint32 baseAddress)
 {
-    setMemoryAddress(std::numeric_limits<quint32>::max());
+    setMemoryAddress(memoryModel, std::numeric_limits<quint32>::max());
     return baseAddress;
 }
 

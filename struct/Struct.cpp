@@ -26,13 +26,13 @@ Struct::~Struct()
 {
 }
 
-quint32 Struct::setMemoryAddress(quint32 baseAddress)
+quint32 Struct::setMemoryAddress(MemoryModel const &memoryModel, quint32 baseAddress)
 {
 //    log << typeName() << "@" << this << ": computing memory size" << std::endl;
 
-    QPair<quint32, quint32> memorySize = computeMemorySize(baseAddress);
+    QPair<quint32, quint32> memorySize = computeMemorySize(memoryModel, baseAddress);
 
-    structStart = DataWriter::align(baseAddress, alignment());
+    structStart = DataWriter::align(baseAddress, memoryModel.alignmentInBytes(alignment()));
     dataStart = structStart + memorySize.first - (structStart - baseAddress);
     dataEnd = dataStart + memorySize.second;
 
@@ -42,11 +42,11 @@ quint32 Struct::setMemoryAddress(quint32 baseAddress)
     return baseAddress + memorySize.first;
 }
 
-QPair<quint32, quint32> Struct::computeMemorySize(quint32 baseAddress) const
+QPair<quint32, quint32> Struct::computeMemorySize(MemoryModel const &memoryModel, quint32 baseAddress) const
 {
     quint32 structSize;
     {
-        DryRunWriter dryRun(baseAddress);
+        DryRunWriter dryRun(memoryModel, baseAddress);
         dryRun.align(alignment());
         writeStruct(dryRun);
         structSize = dryRun.memorySize();
@@ -56,7 +56,7 @@ QPair<quint32, quint32> Struct::computeMemorySize(quint32 baseAddress) const
 
     quint32 dataSize;
     {
-        DryRunWriter dryRun(baseAddress);
+        DryRunWriter dryRun(memoryModel, baseAddress);
         writeData(dryRun);
         dataSize = dryRun.memorySize();
     }

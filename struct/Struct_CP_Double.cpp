@@ -19,9 +19,9 @@ void Struct_CP_Double::writeConstantData(DataWriter &data) const
     data.putDouble(value, "value");
 }
 
-quint32 Struct_CP_Double::computeMemoryMap(quint32 baseAddress)
+quint32 Struct_CP_Double::computeMemoryMap(MemoryModel const &memoryModel, quint32 baseAddress)
 {
-    baseAddress = setMemoryAddress(baseAddress);
+    baseAddress = setMemoryAddress(memoryModel, baseAddress);
     return baseAddress;
 }
 
