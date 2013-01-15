@@ -3,6 +3,7 @@
 
 #include "Config.h"
 #include "ClassModel.h"
+#include "SourceModel.h"
 #include "MessageModel.h"
 #include "FieldsView.h"
 #include "MethodsView.h"
@@ -14,6 +15,7 @@
 #include "Bitmap2D.h"
 #include "Bitmap3D.h"
 
+#include <QProcess>
 #include <QDir>
 #include <QFileDialog>
 #include <QDebug>
@@ -66,6 +68,14 @@ MainWindow::~MainWindow()
 QString MainWindow::classPath(QString file) const
 {
     QString path = ui->path->text() + "/bin";
+    if (!file.isEmpty())
+        path += "/" + file;
+    return path;
+}
+
+QString MainWindow::sourcePath(QString file) const
+{
+    QString path = ui->path->text() + "/src";
     if (!file.isEmpty())
         path += "/" + file;
     return path;
@@ -127,6 +137,16 @@ void MainWindow::loadClasses(QDir path)
             SLOT(onClassSelectionChanged(QModelIndex,QModelIndex)));
 }
 
+void MainWindow::loadSources(QDir path)
+{
+    QList<QFileInfo> files;
+    findFiles("java", files, path);
+    SourceList sourceList(files);
+
+    delete ui->sourceList->model();
+    ui->sourceList->setModel(new SourceModel(path, sourceList, this));
+}
+
 static QString getFileName(QFileInfo const &info)
 {
     return info.fileName();
@@ -146,7 +166,15 @@ void MainWindow::loadResources(QDir path)
 void MainWindow::on_load_clicked()
 {
     loadClasses(QDir(classPath()));
+    loadSources(QDir(sourcePath()));
     loadResources(QDir(resourcePath()));
+}
+
+
+void MainWindow::on_compile_clicked()
+{
+    if (SourceModel *model = qobject_cast<SourceModel *>(ui->sourceList->model()))
+        model->compile(sourcePath(), classPath());
 }
 
 
@@ -177,6 +205,19 @@ void MainWindow::on_link_clicked()
         QMessageBox::warning(this, tr("No classes loaded"), tr("Press the Load button before the Link button"));
     }
 }
+
+
+void MainWindow::on_run_clicked()
+{
+    QProcess device;
+    device.start("../../device-build/device", QStringList("new.bin"), QProcess::ReadOnly);
+    device.waitForFinished(1000);
+    device.terminate();
+
+    qDebug() << device.readAllStandardOutput();
+    qWarning() << device.readAllStandardError();
+}
+
 
 void MainWindow::onClassSelectionChanged(const QModelIndex &current, const QModelIndex &previous)
 {

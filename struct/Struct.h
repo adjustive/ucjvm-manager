@@ -31,7 +31,9 @@ public:
     virtual void resolveFieldReferences(ResolveContext const &context) { Q_UNUSED(context); }
     virtual void resolveMethodReferences(ResolveContext const &context) { Q_UNUSED(context); }
 
+#if 0
     virtual quint32 computeMemoryMap(MemoryModel const &memoryModel, quint32 baseAddress) = 0;
+#endif
     virtual void printMemoryMap(QTextStream &ts) const = 0;
 
     virtual char const *typeName() const = 0;

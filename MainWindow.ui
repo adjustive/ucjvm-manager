@@ -49,19 +49,33 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="load">
+        <widget class="QComboBox" name="config"/>
+       </item>
+       <item>
+        <widget class="QToolButton" name="load">
          <property name="text">
           <string>&amp;Load</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="config"/>
+        <widget class="QToolButton" name="compile">
+         <property name="text">
+          <string>C&amp;ompile</string>
+         </property>
+        </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="link">
+        <widget class="QToolButton" name="link">
          <property name="text">
           <string>Lin&amp;k</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="run">
+         <property name="text">
+          <string>&amp;Run</string>
          </property>
         </widget>
        </item>
@@ -83,7 +97,7 @@
            </property>
            <widget class="QWidget" name="tab_3">
             <attribute name="title">
-             <string>Classes</string>
+             <string>&amp;Classes</string>
             </attribute>
             <layout class="QHBoxLayout" name="horizontalLayout_4">
              <item>
@@ -93,7 +107,7 @@
            </widget>
            <widget class="QWidget" name="tab">
             <attribute name="title">
-             <string>Resources</string>
+             <string>&amp;Resources</string>
             </attribute>
             <layout class="QHBoxLayout" name="horizontalLayout_5">
              <item>
@@ -102,6 +116,16 @@
                 <set>QAbstractItemView::NoEditTriggers</set>
                </property>
               </widget>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QWidget" name="tab_2">
+            <attribute name="title">
+             <string>&amp;Sources</string>
+            </attribute>
+            <layout class="QHBoxLayout" name="horizontalLayout_7">
+             <item>
+              <widget class="QListView" name="sourceList"/>
              </item>
             </layout>
            </widget>

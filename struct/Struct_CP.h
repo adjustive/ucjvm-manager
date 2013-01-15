@@ -28,6 +28,8 @@ public:
 
     virtual Type type() const = 0;
 
+    virtual quint32 computeMemoryMap(MemoryModel const &memoryModel, quint32 baseAddress) = 0;
+
 private:
     MemoryModel::Align alignment() const { return MemoryModel::INT8_ALIGN; }
     void writeStruct(DataWriter &data) const;

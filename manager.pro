@@ -109,7 +109,10 @@ SOURCES += main.cpp\
     struct/Struct_ResourceName.cpp \
     editors/ResourceEditor.cpp \
     Delegate.cpp \
-    struct/MemoryModel.cpp
+    struct/MemoryModel.cpp \
+    SourceModel.cpp \
+    SourceList.cpp \
+    Source.cpp
 
 HEADERS  += MainWindow.h \
     Config.h \
@@ -206,7 +209,10 @@ HEADERS  += MainWindow.h \
     editors/ResourceEditor.h \
     Delegate.h \
     DelegateN.h \
-    struct/MemoryModel.h
+    struct/MemoryModel.h \
+    SourceModel.h \
+    SourceList.h \
+    Source.h
 
 FORMS    += MainWindow.ui \
     FieldsView.ui \

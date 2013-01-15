@@ -36,15 +36,16 @@ QString const &Bitmap3DDialog::fileFilter() const
 Bitmap3D *Bitmap3DDialog::newResource()
 {
     QStringList sizes = QStringList()
-            << "32x16"
-            << "64x64";
+            << "8x8x8"
+            << "16x16x16"
+            << "32x32x32";
 
     bool ok;
     QString size = QInputDialog::getItem(this, tr("Bitmap size"), tr("Bitmap size"), sizes, 0, false, &ok);
     if (ok)
     {
         QStringList splitSize = size.split('x');
-        Q_ASSERT(splitSize.size() == 2);
+        Q_ASSERT(splitSize.size() == 3);
         int width  = splitSize.at(0).toInt();
         int height = splitSize.at(1).toInt();
         int depth  = splitSize.at(2).toInt();

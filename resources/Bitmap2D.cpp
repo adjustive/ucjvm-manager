@@ -12,6 +12,8 @@ Bitmap2D::Bitmap2D(int width, int height)
 
     while (d.bitmap.size() < height * width)
         d.bitmap.append(Qt::transparent);
+
+    d.changed = false;
 }
 
 
@@ -54,15 +56,27 @@ QColor Bitmap2D::pixel(QPoint point) const
 void Bitmap2D::setPixel(QPoint point, QColor color)
 {
     d.bitmap[point.y() * d.size.width() + point.x()] = color;
+    d.changed = true;
 }
 
 
 bool Bitmap2D::contains(QPoint point) const
 {
     return point.x() >= 0
-            && point.y() >= 0
-            && point.x() < d.size.width()
-            && point.y() < d.size.height();
+        && point.y() >= 0
+        && point.x() < d.size.width()
+        && point.y() < d.size.height();
+}
+
+
+bool Bitmap2D::changed() const
+{
+    return d.changed;
+}
+
+void Bitmap2D::resetChanged()
+{
+    d.changed = false;
 }
 
 

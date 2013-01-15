@@ -91,4 +91,12 @@ void Linker::link()
 
         qDebug("linking done: %d bytes %ld.%06lu secs", writer.size(), diff.tv_sec, diff.tv_usec);
     }
+
+    {
+        QFile out("new.ld");
+        out.open(QFile::WriteOnly);
+
+        QTextStream ts(&out);
+        ts << "0x" << hex << baseAddress;
+    }
 }

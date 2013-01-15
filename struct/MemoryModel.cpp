@@ -60,7 +60,7 @@ MemoryModel::MemoryModel(const MemoryModelPrivate &d)
 
 quint8 MemoryModel::sizeInBytes(Size size) const
 {
-    switch (size)
+    switch (size.value)
     {
     case INT8_SIZE:     return d.int8_size;
     case INT16_SIZE:    return d.int16_size;
@@ -73,13 +73,13 @@ quint8 MemoryModel::sizeInBytes(Size size) const
     case ADDRESS_SIZE:  return d.address_size;
     }
 
-    qFatal("invalid case: %d", size);
+    qFatal("invalid case: %d", size.value);
     return 0;
 }
 
 quint8 MemoryModel::alignmentInBytes(Align align) const
 {
-    switch (align)
+    switch (align.value)
     {
     case INT8_ALIGN:    return d.int8_align;
     case INT16_ALIGN:   return d.int16_align;
@@ -92,7 +92,7 @@ quint8 MemoryModel::alignmentInBytes(Align align) const
     case ADDRESS_ALIGN: return d.address_align;
     }
 
-    qFatal("invalid case: %d", align);
+    qFatal("invalid case: %d", align.value);
     return 0;
 }
 

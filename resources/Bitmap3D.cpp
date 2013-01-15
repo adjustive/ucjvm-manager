@@ -54,6 +54,21 @@ QColor Bitmap3D::pixel(int x, int y, int z) const
 }
 
 
+bool Bitmap3D::changed() const
+{
+    foreach (Bitmap2D const &bitmap, d.array)
+        if (bitmap.changed())
+            return true;
+    return false;
+}
+
+void Bitmap3D::resetChanged()
+{
+    foreach (Bitmap2D const &bitmap, d.array)
+        const_cast<Bitmap2D &>(bitmap).resetChanged();
+}
+
+
 void Bitmap3D::save(QDataStream &stream) const
 {
     stream << d.array.size();

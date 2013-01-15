@@ -5,6 +5,8 @@
 #include <QMap>
 #include <QList>
 
+#include <typeinfo>
+
 #include "Delegate.h"
 
 class Resource;
@@ -79,7 +81,9 @@ private:
 
     void setResource(Resource *resource)
     {
-        setResource(dynamic_cast<ResourceType *>(resource));
+        if (resource && !dynamic_cast<ResourceType *>(resource))
+            qFatal("Expected type: %s, but got %s", typeid(ResourceType).name(), typeid(*resource).name());
+        setResource(static_cast<ResourceType *>(resource));
     }
 
     virtual void setResource(ResourceType *resource) = 0;

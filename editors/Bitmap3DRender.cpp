@@ -5,12 +5,15 @@
 #include <qglbuilder.h>
 #include <qglcube.h>
 #include <qglsphere.h>
+#include <qglcolormaterial.h>
+
+#include <boost/scoped_ptr.hpp>
 
 
 struct Bitmap3DRenderPrivate
 {
     Bitmap3D *bitmap;
-    QGLSceneNode *scene;
+    boost::scoped_ptr<QGLSceneNode> scene;
     QGLMaterialCollection materials;
     float scale;
 };
@@ -22,14 +25,12 @@ Bitmap3DRender::Bitmap3DRender(QWidget *parent)
 {
     Q_D(Bitmap3DRender);
     d->bitmap = NULL;
-    d->scene = NULL;
     d->scale = 5.0f;
 }
 
 Bitmap3DRender::~Bitmap3DRender()
 {
     Q_D(Bitmap3DRender);
-    delete d->scene;
     delete d_ptr;
 }
 
@@ -42,8 +43,9 @@ QGLMaterial *Bitmap3DRender::material(QColor color)
     if (material == NULL)
     {
         material = new QGLMaterial;
-        material->setColor(color);
         material->setObjectName(color.name());
+        color.setAlpha(1);
+        material->setColor(color);
         d->materials.addMaterial(material);
     }
 
@@ -90,8 +92,7 @@ void Bitmap3DRender::createScene()
         }
     }
 
-    delete d->scene;
-    d->scene = builder.finalizedSceneNode();
+    d->scene.reset(builder.finalizedSceneNode());
     d->scene->setEffect(QGL::LitDecalTexture2D);
 }
 
@@ -109,7 +110,23 @@ static void drawBox(QGLPainter *painter, float width, float height, float depth)
         /* 7 = 111 */ QVector3D(-width, -height, -depth),
     };
 
-    int const indices[][2] = {
+#if 0
+    static int const indices[][2] = {
+        { 0, 1 },
+        { 0, 2 },
+        { 0, 4 },
+        { 1, 3 },
+        { 1, 5 },
+        { 2, 3 },
+        { 2, 6 },
+        { 3, 7 },
+        { 4, 5 },
+        { 4, 6 },
+        { 5, 7 },
+        { 6, 7 },
+    };
+#else
+    static int const indices[][2] = {
         // back
         { 7, 3 },
         { 3, 1 },
@@ -130,6 +147,7 @@ static void drawBox(QGLPainter *painter, float width, float height, float depth)
         { 5, 4 },
         { 6, 7 },
     };
+#endif
 
     QVector3DArray vertexData;
 
@@ -145,6 +163,7 @@ static void drawBox(QGLPainter *painter, float width, float height, float depth)
     painter->setColor(Qt::white);
     painter->setVertexAttribute(QGL::Position, vertexData);
     painter->draw(QGL::Lines, lineCount);
+    painter->setColor(Qt::white);
 }
 
 void Bitmap3DRender::paintGL(QGLPainter *painter)
@@ -154,11 +173,16 @@ void Bitmap3DRender::paintGL(QGLPainter *painter)
     if (d->bitmap == NULL)
         return;
 
-    createScene();
-
     painter->modelViewMatrix().rotate(20.0, 0.5, 1.0, 0.0);
+//    painter->setClearColor(Qt::white);
 
-    if (strcmp(reinterpret_cast<char const *>(glGetString(GL_VERSION)), "3.3.0 NVIDIA 302.17") != 0)
+    if (!d->scene || d->bitmap->changed())
+    {
+        d->bitmap->resetChanged();
+        createScene();
+    }
+
+    if (strncmp(reinterpret_cast<char const *>(glGetString(GL_VERSION)), "3.3.0 NVIDIA", 12) != 0)
     {
         drawBox(painter,
                 (d->bitmap->width () / 2 + 1) / d->scale,

@@ -20,7 +20,7 @@
       <widget class="Bitmap3DView" name="editor" native="true"/>
      </item>
      <item>
-      <widget class="QSlider" name="verticalSlider">
+      <widget class="Line" name="line">
        <property name="orientation">
         <enum>Qt::Vertical</enum>
        </property>

@@ -37,24 +37,24 @@ class ResourceMaker : public ResourceVisitor
     }
 
 public:
-    ResourceMaker(QList<QSharedPointer<Struct_Resource> > &resources)
+    ResourceMaker(QList<QSharedPointer<Struct_Resource> > &resources, QString resourceName)
         : resources(resources)
+        , resourceName(resourceName)
     {
     }
 
+private:
     QString resourceName;
 };
 
 
 Struct_ResourceTable::Struct_ResourceTable(QStringList resourceFiles, ResourceEditor::Collection const &editors)
 {
-    ResourceMaker resourceMaker(resources);
-
     foreach (QString const &resourceFile, resourceFiles)
     {
         Resource *resource = editors.readResource(resourceFile);
         Q_ASSERT(resource != NULL);
-        resourceMaker.resourceName = QFileInfo(resourceFile).fileName();
+        ResourceMaker resourceMaker(resources, QFileInfo(resourceFile).fileName());
         resource->accept(resourceMaker);
         delete resource;
     }

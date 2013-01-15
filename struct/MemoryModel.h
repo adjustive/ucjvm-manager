@@ -3,12 +3,23 @@
 
 #include <QtGlobal>
 
+template<typename T>
+struct Enum
+{
+    Enum(T value)
+        : value(value)
+    {
+    }
+
+    T value;
+};
+
 struct MemoryModelPrivate;
 
 class MemoryModel
 {
 public:
-    enum Size
+    enum SizeType
     {
         INT8_SIZE,
         INT16_SIZE,
@@ -20,8 +31,9 @@ public:
 
         ADDRESS_SIZE
     };
+    typedef Enum<SizeType> Size;
 
-    enum Align
+    enum AlignType
     {
         INT8_ALIGN,
         INT16_ALIGN,
@@ -33,6 +45,7 @@ public:
 
         ADDRESS_ALIGN
     };
+    typedef Enum<AlignType> Align;
 
     enum ByteOrder
     {

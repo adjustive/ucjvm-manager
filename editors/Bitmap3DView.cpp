@@ -25,8 +25,11 @@ void Bitmap3DView::setBitmap(Bitmap3D *bitmap)
 {
     this->bitmap = bitmap;
 
-    ui->layer->setMaximum(bitmap->depth() - 1);
-    ui->viewer->setBitmap(&bitmap->layer(0));
+    if (bitmap)
+    {
+        ui->layer->setMaximum(bitmap->depth() - 1);
+        ui->viewer->setBitmap(&bitmap->layer(0));
+    }
 }
 
 

@@ -22,6 +22,9 @@ public:
 
     QColor pixel(int x, int y, int z) const;
 
+    bool changed() const;
+    void resetChanged();
+
     void save(QDataStream &stream) const;
 
     void accept(ResourceVisitor &v);

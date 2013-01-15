@@ -13,6 +13,7 @@ struct Bitmap2DPrivate
 {
     QSize size;
     QList<QColor> bitmap;
+    bool changed;
 };
 
 class Bitmap2D : public Resource
@@ -30,6 +31,9 @@ public:
     void setPixel(QPoint point, QColor color);
 
     bool contains(QPoint point) const;
+
+    bool changed() const;
+    void resetChanged();
 
     void save(QDataStream &stream) const;
 
