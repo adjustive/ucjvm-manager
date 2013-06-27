@@ -1,0 +1,41 @@
+#ifndef STRUCT_FIELD_H
+#define STRUCT_FIELD_H
+
+#include "Struct.h"
+
+class Field;
+
+class Struct_Field : public Struct
+{
+public:
+    Struct_Field(Field const &field);
+
+    quint16 setDataOffset(quint16 base);
+
+    bool isStatic() const;
+
+    MemoryModel::Align alignment() const { return MemoryModel::INT16_ALIGN; }
+    void writeStruct(DataWriter &data) const;
+    quint32 computeMemoryMap(const MemoryModel &memoryModel, quint32 baseAddress);
+    void printMemoryMap(QTextStream &ts) const;
+
+    char const *typeName() const { return "Field"; }
+
+private:
+    quint16 accessFlags;
+    quint16 dataOffset;
+    quint16 constantValueReference;
+    quint8 fieldType;
+
+public:
+    quint16 nameIndex;
+    quint16 descriptorIndex;
+
+    QString name;
+    QString descriptor;
+
+private:
+    quint16 dataSize;
+};
+
+#endif // STRUCT_FIELD_H
