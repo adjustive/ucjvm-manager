@@ -12,7 +12,7 @@ TEMPLATE = app
 INCLUDEPATH += attributes constants struct editors resources
 INCLUDEPATH += ../qt3d/painting ../qt3d/global ../qt3d/math3d ../qt3d/api ../qt3d/arrays ../qt3d/effects ../qt3d/geometry ../qt3d/graphicsview ../qt3d/materials ../qt3d/network ../qt3d/scene ../qt3d/surfaces ../qt3d/textures ../qt3d/viewing
 
-LIBS += -L../qt3d-build -Wl,-rpath,../qt3d-build -lqt3d
+LIBS += -L../qt3d -Wl,-rpath,../qt3d -lqt3d
 
 SOURCES += main.cpp\
         MainWindow.cpp \
